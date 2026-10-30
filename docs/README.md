@@ -6,7 +6,7 @@ Start here. Each folder has one job.
 | --- | --- | --- |
 | `architecture/` | How the code is organized now and where new code goes | [overview](architecture/overview.md), [repository map](architecture/repository-map.md) |
 | `adr/` | Architecture decision records (ADRs): decisions that are made | [adr/README.md](adr/README.md) |
-| `design/` | Visual language, tokens, components, SwiftUI mapping | [design-reference.md](design/design-reference.md) |
+| `design/` | Visual language, tokens, components, SwiftUI mapping | [design-reference.md](design/design-reference.md), [artboards](design/artboards/README.md) |
 | `screens/` | One spec per screen or sheet | [screens/README.md](screens/README.md) |
 | `features/` | One spec per behavior or workflow | [features/README.md](features/README.md) |
 | — | Phases, checkpoints, and the completion log. Start every task here. | [roadmap.md](roadmap.md) |

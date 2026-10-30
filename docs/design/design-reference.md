@@ -42,6 +42,8 @@ The canvas describes the app as a calm, reliable time blocker. It names its insp
 | 2p | Month | [Calendar](../screens/calendar.md) |
 | 2q | Plan my day · suggestion sheet | [Plan my day](../screens/plan-my-day.md) |
 
+The exported PNGs of these artboards are in [artboards/](artboards/README.md).
+
 The mockup frame is 440 × 956 pt with a 66 pt corner radius. It draws a mock status bar, Dynamic Island, and home indicator. Do not draw these in the app. iOS provides them.
 
 ## Principles
