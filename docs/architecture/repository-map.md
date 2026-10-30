@@ -16,9 +16,9 @@ Each row gives a path, whether it exists now, and its job.
 | `Luna/Features/QuickAdd/`, `EditBlock/`, `Focus/` | Yes | Empty placeholder sheet and cover until 1c.1, 1c.3, 1c.6. |
 | `Luna/Shared/Settings/` | Yes | `AppTheme` and `SettingsKey` (the `@AppStorage` keys). |
 | `Luna/Shared/Model/` | Yes | Value types (`Block`, `Step`, `Band`, `AnytimeTask`, `InboxItem`, `Habit`, `Area`, `Project`), pure rules (`Timeline`, `DayLimit`, `DurationFormat`), `PlannerStore`, `AppClock`, and DEBUG-only `SampleData`. |
-| `Luna/Shared/Design/` | Yes | Tokens from [design-reference.md](../design/design-reference.md): `LunaColor`, `BlockColor`, `LunaTextStyle`, `LunaSpacing`, `LunaRadius`, `LunaShadow`, `LunaMotion`. `DesignTokensPreview` shows all tokens in Xcode previews only. |
-| `Luna/Shared/Components/` | Planned | Reusable views that two or more features use. |
-| `LunaTests/` | Yes | Unit tests. Mirror the `Luna/` folders as tests grow. `LunaTests/Design/` tests the tokens. `LunaTests/Model/` tests the model and the store. `LunaTests/AppShell/` tests the router. `LunaTests/Settings/` tests the theme. |
+| `Luna/Shared/Design/` | Yes | Tokens from [design-reference.md](../design/design-reference.md): `LunaColor`, `BlockColor`, `LunaTextStyle`, `LunaSpacing`, `LunaRadius`, `LunaShadow`, `LunaMotion`, `LunaGlass`. `DesignTokensPreview` shows all tokens in Xcode previews only. |
+| `Luna/Shared/Components/` | Yes | Reusable views that two or more features use: `BlockPill`, `CheckCircle`, `ChipButton`, `RoundAddButton`, `IconTile`, `ProgressRing`, `GroupedList`, `GroupedRow`, `LargeTitleHeader`, `PressScaleButtonStyle`. DEBUG-only `ComponentsGallery`. |
+| `LunaTests/` | Yes | Unit tests. Mirror the `Luna/` folders as tests grow. `LunaTests/Design/` tests the tokens. `LunaTests/Model/` tests the model and the store. `LunaTests/AppShell/` tests the router. `LunaTests/Components/` tests the component rules. `LunaTests/Settings/` tests the theme. |
 | `docs/architecture/` | Yes | This map and the [overview](overview.md). |
 | `docs/adr/` | Yes | [Decision records](../adr/README.md). |
 | `docs/design/` | Yes | [Design reference](../design/design-reference.md). |

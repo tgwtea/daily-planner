@@ -57,6 +57,7 @@ These terms have one meaning in all docs and in code names.
 | App shell | The root view: the five tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
 | Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail). In code: `AppRoute`. |
 | Router | The `@Observable` navigation state: selected tab, one route path per tab, and the open sheet or cover. In code: `AppRouter`. |
+| Shared component | A reusable view that two or more screens use, built from design tokens. In code: `Luna/Shared/Components/`. `ComponentsGallery` shows all of them in DEBUG builds (previews and the `-LunaComponentsGallery` launch argument). |
 | Design token | A named design value in code (color role, text style, spacing, radius, shadow, motion). See `Luna/Shared/Design/`. |
 
 ## Naming

@@ -65,41 +65,6 @@ struct LunaTabBar: View {
     }
 }
 
-/// Scales the label while pressed. No scale under Reduce Motion.
-private struct PressScaleButtonStyle: ButtonStyle {
-    let scale: CGFloat
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed && !reduceMotion ? scale : 1)
-            .animation(.easeOut(duration: LunaMotion.instant), value: configuration.isPressed)
-    }
-}
-
-private extension View {
-    /// System glass, or the opaque fallback with a border under Reduce Transparency.
-    func lunaGlass(in shape: some Shape) -> some View {
-        modifier(LunaGlassModifier(shape: AnyShape(shape)))
-    }
-}
-
-private struct LunaGlassModifier: ViewModifier {
-    let shape: AnyShape
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-
-    func body(content: Content) -> some View {
-        if reduceTransparency {
-            content
-                .background(Color.glassFallback, in: shape)
-                .overlay(shape.stroke(Color.glassBorder, lineWidth: 1))
-                .lunaShadow(.floating)
-        } else {
-            content.glassEffect(.regular, in: shape)
-        }
-    }
-}
-
 #Preview("Dark") {
     ZStack(alignment: .bottom) {
         Color.bgCanvas.ignoresSafeArea()

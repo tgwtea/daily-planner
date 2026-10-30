@@ -178,7 +178,7 @@ In code: `LunaRadius` (`Luna/Shared/Design/LunaRadius.swift`). Icon tiles use 12
 | Normal | 250 ms | Chevron rotate, pill color, progress bars |
 | Slow | 350 ms | Sheet in, ring progress, swipe reveal, hero pill height |
 
-- Press: scale to 0.97 (0.94 for icon buttons, 0.88–0.92 for check marks and the "+" button).
+- Press: scale to 0.97 (0.94 for icon buttons, 0.95 for the timeline pill, 0.88–0.92 for check marks and the "+" button). In code: `PressScaleButtonStyle` with a `LunaMotion.PressScale` value. Reduce Motion turns the scale off.
 - Selection and pill changes use a slight-overshoot spring (`cubic-bezier(.34,1.3,.64,1)`). Map it to `.spring(duration: 0.25, bounce: 0.15)` or similar.
 - Sheets enter with ease-out in 350 ms and exit with ease-in in 250 ms. Use the system sheet animation.
 - The focus ring moves linearly once a second.
@@ -203,6 +203,20 @@ These patterns appear on two or more screens. Build each one as a shared view wh
 | Floating tab bar | Main tabs | Glass capsule, 64 pt high, 5 tabs, plus a separate 64 pt primary "+" circle |
 | Segmented control | Calendar | Day, 3 days, Week, Month |
 | Selected-day fill | Week strip, calendar, month | Circle filled with `text-primary`, number in `text-inverse` |
+
+In code (1a.5): `Luna/Shared/Components/`. `LargeTitleHeader`, `ChipButton` (34 pt, `isCompact` 30 pt), `RoundAddButton`, `CheckCircle` (`.small` 18, `.regular` 26, `.large` 30), `IconTile`, `GroupedList` with `GroupedRow`, `ProgressRing`, and `BlockPill` (the timeline pill). The tab bar is `LunaTabBar`. Glass is `View.lunaGlass(in:)` (`LunaGlass.swift`). The other patterns come with their screens.
+
+Component values from the prototype (read 2026-10-31):
+
+- Pill: fill rules in [Today](../screens/today.md#states). Done wins over active. The active fill is a hard stop at the progress point. Icon 20 pt. A routine pill shows its icon at the top.
+- Check circle: ring 2 pt (1.75 pt at 18 pt). Check 14 pt (11 pt at 18 pt). The ring takes the block color. Edit block steps use `border-strong` when off. Plan proposals fill with `text-primary` and a `text-inverse` check.
+- Chip: padding 0 × 12 pt, 15 pt semibold, 16 pt icon, count in `text-tertiary`, chevron in `icon-secondary`.
+- Round add button: 34 pt `surface-primary` circle, 16 pt plus in `icon-secondary`.
+- Icon tile: 36 pt, radius 12, 18 pt ink icon.
+- Progress ring: 60 pt, 3 pt stroke, round cap, starts at the top, 350 ms.
+- Grouped list: a 1 pt `divider-default` line above each row after the first. It spans the full row width.
+
+**Assumption (1a.5):** the prototype does not draw the settings row icon box. The app uses a 32 pt `surface-tertiary` box, radius 8, with a 16 pt `text-primary` icon. The 30 pt check circle uses a 16 pt check. A chip, a check circle, and the add button keep a 44 pt hit area around the smaller shape.
 
 ## Icons
 

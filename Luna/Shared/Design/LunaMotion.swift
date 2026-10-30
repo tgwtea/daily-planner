@@ -18,6 +18,8 @@ enum LunaMotion {
     enum PressScale {
         static let standard: CGFloat = 0.97
         static let iconButton: CGFloat = 0.94
+        /// The timeline block pill.
+        static let pill: CGFloat = 0.95
         /// Check marks and the "+" button (mockup: 0.88–0.92).
         static let checkMark: CGFloat = 0.90
     }

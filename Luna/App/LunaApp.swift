@@ -21,11 +21,23 @@ struct LunaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            rootView
                 .environment(store)
                 .environment(router)
                 .environment(\.appClock, clock)
                 .preferredColorScheme(theme.colorScheme)
         }
+    }
+
+    @ViewBuilder private var rootView: some View {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains(ComponentsGallery.launchArgument) {
+            ComponentsGallery()
+        } else {
+            RootView()
+        }
+        #else
+        RootView()
+        #endif
     }
 }
