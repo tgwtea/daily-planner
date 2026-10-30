@@ -292,7 +292,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 0.1 | Repository and Xcode project | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | Build and test compile pass. Tests not run: no iOS 26 runtime. |
 | 0.2 | Durable documentation | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | |
 | 1a.1 | Test environment | Done | Claude Code (Opus 5.5) | 2026-10-30 | dd1691b | iOS 27.0 runtime, iPhone 17 simulator. Smoke test passes. |
-| 1a.2 | Design tokens | In progress | Claude Code (Opus 5.5) | | | |
+| 1a.2 | Design tokens | Done | Claude Code (Opus 5.5) | 2026-10-30 | 54628b1 | Colors in Swift code. Previews checked in the simulator in dark and light. |
 | 1a.3 | Domain model and in-memory store | Not started | | | | |
 | 1a.4 | App shell and navigation | Not started | | | | |
 | 1a.5 | Shared components | Not started | | | | |
