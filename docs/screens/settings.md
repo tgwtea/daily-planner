@@ -36,6 +36,5 @@ The values in brackets are the mockup defaults.
 
 ## Open questions
 
-- Theme choices: the mockup shows "Dark" and has a light artboard. Is "System" a choice? See [open-questions.md](../open-questions.md#settings).
-- What do "Show calendar events" off and "Scroll to now" off change exactly?
-- What does the Plan button do when Suggestions is off?
+- The theme and switch decisions are in [Settings and appearance](../features/settings-and-appearance.md#decisions). The Suggestions decision is in [Plan my day suggestions](../features/plan-my-day-suggestions.md#decisions).
+- See [open-questions.md](../open-questions.md#settings).

@@ -34,4 +34,4 @@ The mockup draws a lock screen: lock icon, "Thursday, October 29", a 104 pt cloc
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#focus).
+None. The Dynamic Island layouts are in [Focus and Live Activity](../features/focus-and-live-activity.md#decisions).

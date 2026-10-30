@@ -18,6 +18,8 @@ Tab bar (glass) ─┬─ Today ──┬─ Calendar (push)
 Focus ── Live Activity (system lock screen and Dynamic Island)
 ```
 
+**Decided (2026-10-30):** the system `TabView` tab bar plus a custom glass "+" circle at the bottom trailing edge. Edit block is a large sheet. Focus is a full-screen cover. A project row pushes a project detail screen.
+
 The tab bar and the "+" button show on the five main tabs. They hide on Calendar, Edit block, Focus, and while Quick add is open.
 
 ## Index

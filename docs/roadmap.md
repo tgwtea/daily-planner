@@ -8,7 +8,7 @@ A prompt such as "Phase 1b checkpoint 3: Habits" means checkpoint `1b.3` below. 
 
 1. Find the checkpoint by its ID. Read its **Read** list in full. Read [AGENTS.md](../AGENTS.md) if you did not read it in this session.
 2. Check **Depends on**. Each dependency must have the status `Done` in the [completion log](#completion-log). If one is not done, stop. Tell the user which checkpoint must come first.
-3. Check **Decisions**. Each decision links to [open-questions.md](open-questions.md).
+3. Check **Decisions**. A **Decided** line holds the user's answer. Use it. Any other decision links to [open-questions.md](open-questions.md).
    - If the question has an answer in the feature spec, use that answer.
    - If not, ask the user. Give the **Default** as your recommendation.
    - If the user cannot answer, or the prompt says "use defaults", use the Default. Record it as an **Assumption** in the feature spec. Remove the question from `open-questions.md`, or mark it "Default applied in 1b.3".
@@ -81,14 +81,14 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Depends on:** 1a.2
 - **Read:** all files in [features/](features/README.md) (the Observed data sections), [architecture/overview.md](architecture/overview.md)
 - **Build:** `Luna/Shared/Model/`. Value types: `Block` (kind task, routine, event; start `Date`; duration; icon; color; steps; done), `Step`, `Band`, `AnytimeTask`, `InboxItem`, `Habit` (value, goal, history), `Area`, `Project`. One `@Observable` store type that holds them, with intents (toggle done, toggle step, log habit, schedule an Inbox item, and so on). Sample data that matches the mockup (Thursday, October 29, 2026, 10:20 AM), shown only in previews and a debug launch argument. Pure functions: band of a time, pill height, free gaps, duration format.
-- **Decisions:** band ranges ([Timeline](open-questions.md#timeline)). **Default:** bands start at the Settings values (6 AM, 12 PM, 6 PM). A block before 6 AM goes in Morning.
+- **Decided (2026-10-30):** bands start at the Settings values (6 AM, 12 PM, 6 PM). A block before 6 AM goes in Morning. No block crosses midnight. Blocks can overlap. See [Timeline and day bands](features/timeline-and-day-bands.md#decisions).
 - **Done when:** unit tests cover band assignment, pill height, gap detection (20 min rule), and duration format.
 
 ### 1a.4 App shell and navigation
 - **Depends on:** 1a.3
 - **Read:** [screens/README.md](screens/README.md), [design-reference.md](design/design-reference.md#native-swiftui-notes)
-- **Build:** Root `TabView` with Today, Inbox, Projects, Habits, Settings (each an empty titled placeholder view). The floating "+" button next to the tab bar opens an empty Quick add sheet. A navigation route type for Calendar, Edit block, and Focus. Theme from `@AppStorage`. Replace `ContentView`.
-- **Decisions:** the "+" button placement ([Navigation](open-questions.md#navigation)). **Default:** the system iOS 26 tab bar plus a custom glass circle button at the bottom trailing edge.
+- **Build:** Root `TabView` with Today, Inbox, Projects, Habits, Settings (each an empty titled placeholder view). The floating "+" button next to the tab bar opens an empty Quick add sheet. A navigation route type for pushed screens (Calendar, project detail). Edit block is a large sheet. Focus is a full-screen cover. Theme from `@AppStorage`. Replace `ContentView`.
+- **Decided (2026-10-30):** the system iOS 26 tab bar plus a custom glass circle button at the bottom trailing edge.
 - **Done when:** all five tabs switch. The "+" button opens and closes the sheet. The tab bar hides on pushed screens.
 
 ### 1a.5 Shared components
@@ -97,44 +97,62 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Build:** `Luna/Shared/Components/`: block pill, check circle, capsule chip button, round add button, colored icon tile, progress ring, grouped list container and row, large title header. Each with previews and accessibility labels.
 - **Done when:** previews match the pattern table. The press scale and Reduce Motion behavior work.
 
+### 1a.6 Artboard PNG export — Human gate
+- **Depends on:** 0.2
+- **Build (agent):** create `docs/design/artboards/` with a `README.md` that lists each artboard ID from the [design reference](design/design-reference.md) and its file name, for example `2b-today-dark.png`.
+- **Human:** export each artboard as a PNG in dark and light appearance from the design project. Put the files in `docs/design/artboards/`.
+- **Done when:** every listed artboard has a dark and a light PNG. Screen checkpoints compare against these files. See [AGENTS.md](../AGENTS.md#validation).
+
 ---
 
 ## Phase 1b: Main tabs
 
 ### 1b.1 Today
-- **Depends on:** 1a.5
+- **Depends on:** 1a.5, 1a.6
 - **Read:** [screens/today.md](screens/today.md), [features/timeline-and-day-bands.md](features/timeline-and-day-bands.md), [features/block-completion-and-routines.md](features/block-completion-and-routines.md), [features/anytime-tasks.md](features/anytime-tasks.md)
 - **Build:** header, week strip, Anytime section, three bands with collapse, block rows, routine rows, free gap rows, active block with now line and remaining time, day footer, empty-day state, Inbox pill (count only, no drawer yet). Scroll to now on open. The habit strip is a placeholder until 1b.3. The Plan and Calendar buttons do nothing yet.
-- **Decisions:** header "+" target ([Capture](open-questions.md#capture)). **Default:** the header "+" opens Quick add empty. A band "+" pre-fills a time in that band.
+- **Decided (2026-10-30):** the header "+" opens Quick add empty. A band "+" pre-fills the next free time in that band. The Anytime "+" pre-fills Anytime. The week strip pages by week. Ghost times are band start plus 2 hours.
 - **Done when:** artboards 2b, 2c, 2e, and 2f match. Toggle done, toggle steps, collapse, and day selection work. Unit tests cover the active-block and progress math.
 
 ### 1b.2 Inbox
 - **Depends on:** 1b.1
 - **Read:** [screens/inbox.md](screens/inbox.md), [features/inbox-scheduling.md](features/inbox-scheduling.md)
 - **Build:** the Inbox tab list, swipe actions to place in a band, the empty state, the slot search function.
-- **Decisions:** no-slot feedback ([Inbox](open-questions.md#inbox)). **Default:** a short inline message "No free time in Morning" and a warning haptic.
+- **Decided (2026-10-30):** a short inline message "No free time in <Band>" and a warning haptic. Rows reorder, edit, and delete with native `List` actions.
 - **Done when:** artboard 2k matches. Unit tests cover the slot search: band start, 7 AM floor, now rounded up to 15 min, overlap, no fit.
 
 ### 1b.3 Habits
 - **Depends on:** 1b.1
 - **Read:** [screens/habits.md](screens/habits.md), [features/habits.md](features/habits.md), [screens/today.md](screens/today.md) (habit strip)
 - **Build:** the Habits tab (history card with heatmap and stats, habit cards with week row and streak), and the habit strip on Today. Logging from both places.
-- **Decisions:** create and edit habits ([Habits](open-questions.md#habits)). **Default:** out of scope for 1b.3. Use the sample habits. Add a later checkpoint for habit management.
+- **Decided (2026-10-30):** habit management is out of scope for 1b.3. Use the sample habits. Checkpoint 1b.7 adds management. The history card combines all habits.
 - **Done when:** artboard 2m and the Today habit strip match. Unit tests cover log and reset, streak, and month percent.
 
 ### 1b.4 Projects
 - **Depends on:** 1a.5
 - **Read:** [screens/projects.md](screens/projects.md), [features/projects-and-areas.md](features/projects-and-areas.md)
 - **Build:** smart list rows, areas, project rows with progress rings. Display only.
-- **Decisions:** smart list and project destinations ([Projects](open-questions.md#projects)). **Default:** rows show but do not navigate. Leave the spec `Partial`.
+- **Decided (2026-10-30):** rows show but do not navigate in 1b.4. Checkpoint 1b.6 adds the destinations. Leave the spec `Partial`.
 - **Done when:** artboard 2l matches.
 
 ### 1b.5 Settings
 - **Depends on:** 1a.4
 - **Read:** [screens/settings.md](screens/settings.md), [features/settings-and-appearance.md](features/settings-and-appearance.md)
 - **Build:** all groups and switches with `@AppStorage`. Band start pickers. Theme choice. Wire "Show free time" to Today. Calendars row shows a placeholder until 2.2.
-- **Decisions:** theme options ([Settings](open-questions.md#settings)). **Default:** Dark, Light, System. Dark is the default.
+- **Decided (2026-10-30):** Dark, Light, System. Dark is the default. "Show calendar events" off hides events on Today and Calendar.
 - **Done when:** artboard 2n matches. The theme and free-time switches change the app at once.
+
+### 1b.6 Project detail and smart lists
+- **Depends on:** 1b.4
+- **Read:** [screens/projects.md](screens/projects.md), [features/projects-and-areas.md](features/projects-and-areas.md#decisions)
+- **Build:** the pushed project detail screen (progress ring header, notes, Scheduled, Anytime, and Done groups, add button). The four smart lists. The toolbar "+" menu with New Project and New Area sheets. Inbox tags link to projects.
+- **Done when:** each row on Projects navigates. Unit tests cover the smart list filters.
+
+### 1b.7 Habit management
+- **Depends on:** 1b.3
+- **Read:** [features/habits.md](features/habits.md#decisions), [screens/habits.md](screens/habits.md)
+- **Build:** the habit editor sheet (name, icon, color, goal, weekdays). Swipe to archive. Drag to reorder. Weekday schedules in the streak rule.
+- **Done when:** a user can create, edit, archive, and reorder a habit. Unit tests cover the streak with weekday schedules.
 
 ---
 
@@ -144,42 +162,42 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Depends on:** 1b.2
 - **Read:** [screens/quick-add.md](screens/quick-add.md), [features/quick-add-parsing.md](features/quick-add-parsing.md)
 - **Build:** the parser type, the sheet with live chips, color cycle, icon cycle, save rules.
-- **Decisions:** no-time items with a day word ([Capture](open-questions.md#capture)). **Default:** follow the mockup. Send them to the Inbox.
+- **Decided (2026-10-30):** a no-time item with a day word goes to that day's Anytime. The parser also reads weekday names, dates, and 24-hour times. The tool buttons open inline native pickers.
 - **Done when:** artboard 2g matches. Unit tests cover every example and edge case in the feature spec.
 
 ### 1c.2 Inbox drawer
 - **Depends on:** 1c.1
 - **Read:** [screens/inbox-drawer.md](screens/inbox-drawer.md), [features/inbox-scheduling.md](features/inbox-scheduling.md)
 - **Build:** the drawer sheet from the Inbox pill and "Open Inbox". Tap to place. Drag to a free gap with a drop target.
-- **Decisions:** drag details ([Inbox](open-questions.md#inbox)). **Default:** snap to 15 min, drop only into a gap that fits, no drop on a block.
+- **Decided (2026-10-30):** snap to 15 min, auto-scroll, drop only into a gap that fits, no drop on a block.
 - **Done when:** artboard 2d matches. Tap and drag both schedule.
 
 ### 1c.3 Edit block
 - **Depends on:** 1b.1
 - **Read:** [screens/edit-block.md](screens/edit-block.md), [features/block-editing.md](features/block-editing.md)
 - **Build:** the editor with hero, duration chips, detail rows (Date and Starts with pickers), color, icon, checklist with add step, title edit, delete.
-- **Decisions:** live edit or draft, title and delete ([Editing](open-questions.md#editing)). **Default:** draft with Save and Close. Tap the title to edit it. A "Delete block" row at the bottom with a confirmation.
-- **Done when:** artboard 2h matches. Save commits and Close discards (or live edit if the user chose it).
+- **Decided (2026-10-30):** a large sheet with a draft, Save and Close. Tap the title to edit it. A "Delete block" row at the bottom with a confirmation. Repeat and Alert choices and the icon "More" grid are in [Block editing](features/block-editing.md#decisions).
+- **Done when:** artboard 2h matches. Save commits and Close discards.
 
 ### 1c.4 Plan my day
 - **Depends on:** 1c.2
 - **Read:** [screens/plan-my-day.md](screens/plan-my-day.md), [features/plan-my-day-suggestions.md](features/plan-my-day-suggestions.md)
-- **Build:** the suggestion sheet from the Plan button, with selection and accept.
-- **Decisions:** rule or AI ([Plan my day](open-questions.md#plan-my-day)). **Default:** the deterministic rule in the feature spec. No AI.
-- **Done when:** artboard 2q matches. Unit tests cover the proposal rule.
+- **Build:** an ADR for on-device AI (Apple Foundation Models) before code. The suggestion sheet from the Plan button, with selection and accept. The deterministic rule as the fallback when the model is not available.
+- **Decided (2026-10-30):** on-device AI with the deterministic rule as fallback. The rule proposes up to 3 Inbox items, oldest first. The Plan button hides when Suggestions is off.
+- **Done when:** artboard 2q matches. The ADR is accepted. Unit tests cover the fallback rule.
 
 ### 1c.5 Calendar
 - **Depends on:** 1b.1
 - **Read:** [screens/calendar.md](screens/calendar.md), [features/calendar-views-and-events.md](features/calendar-views-and-events.md)
 - **Build:** the pushed Calendar screen with Day, 3 days, Week, and Month views, now line, month agenda. Data from the store only (events come in 2.2).
-- **Decisions:** paging and block taps ([Calendar](open-questions.md#calendar)). **Default:** swipe pages by the view length. Tap a task block to open Edit block.
+- **Decided (2026-10-30):** swipe pages by the view length. Tap a task block to open Edit block. Tap an event to open a read-only detail. All-day events in a strip above the grid.
 - **Done when:** artboards 2o and 2p match.
 
 ### 1c.6 Focus
 - **Depends on:** 1b.1
 - **Read:** [screens/focus.md](screens/focus.md), [features/focus-and-live-activity.md](features/focus-and-live-activity.md)
 - **Build:** the Focus screen with ring, timer, +5, pause, done. A session model based on an end date. The Focus button and timer on Today use it.
-- **Decisions:** +5 and zero behavior ([Focus](open-questions.md#focus)). **Default:** +5 extends only the session. At zero, play feedback and show "Done" as the main action. Do not auto-complete.
+- **Decided (2026-10-30):** Focus is a full-screen cover. +5 extends only the session. At zero, play feedback, show "Done" as the main action, and count overrun. Do not auto-complete. Focus can start on any undone task. The "More" menu items are in [Focus and Live Activity](features/focus-and-live-activity.md#decisions).
 - **Done when:** artboard 2i matches. Unit tests cover pause, resume, +5, and progress.
 
 ---
@@ -190,14 +208,14 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Depends on:** 1c.6
 - **Read:** [architecture/overview.md](architecture/overview.md), [adr/README.md](adr/README.md)
 - **Build:** write ADR-0002 for the storage choice. Move the store to it. Add migration-safe model versioning. Remove the sample data from release builds.
-- **Decisions:** storage and sync ([Data and platform](open-questions.md#data-and-platform)). **Default:** SwiftData, local only. iCloud sync later.
+- **Decided (2026-10-30):** SwiftData, local only. iCloud sync after v1. Keep the model CloudKit-compatible.
 - **Done when:** all data survives an app relaunch. Unit tests use an in-memory container.
 
 ### 2.2 Calendar events
 - **Depends on:** 2.1
 - **Read:** [features/calendar-views-and-events.md](features/calendar-views-and-events.md), [screens/settings.md](screens/settings.md)
 - **Build:** ADR-0003 for EventKit. Read-only events on Today and Calendar. Permission request, denied state, calendar picker in Settings. Usage description string.
-- **Decisions:** permission flow ([Calendar](open-questions.md#calendar)). **Default:** ask when the user turns on Apple Calendar in Settings or on first open of Calendar.
+- **Decided (2026-10-30):** ask when the user turns on Apple Calendar in Settings or on first open of Calendar. All calendars on by default.
 - **Done when:** events from the simulator calendar show. A denied permission shows a clear state with a link to Settings.
 
 ### 2.3 Live Activity
@@ -210,7 +228,7 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Depends on:** 2.1
 - **Read:** [screens/settings.md](screens/settings.md), [features/block-editing.md](features/block-editing.md)
 - **Build:** local notifications for block alerts, haptics on key actions, the end-of-block sound. Repeat rules if the user decided them.
-- **Decisions:** Repeat and Alert options ([Editing](open-questions.md#editing)). **Default:** Alert choices None, At start, 5, 10, 15 min before. Repeat choices Never, Daily, Weekdays, Weekly.
+- **Decided (2026-10-30):** Alert choices None, At start, 5, 10, 15 min before. Repeat choices Never, Daily, Weekdays, Weekly. Local notifications per block. Ask for permission the first time a user sets an alert.
 - **Done when:** an alert fires in the simulator. The Haptics and Sound switches work.
 
 ---
@@ -234,7 +252,7 @@ Done. This file, the specs, the design reference, and the open questions.
 
 ### 3.4 Localization readiness
 - **Depends on:** 3.1
-- **Build:** all strings in a String Catalog. Locale-aware time and duration formats. English only is fine.
+- **Build:** all strings in a String Catalog. Locale-aware time and duration formats. English only for v1 (decided 2026-10-30). The app is iPhone portrait only for v1.
 - **Done when:** a pseudo-language run shows no hard-coded strings.
 
 ---
@@ -273,16 +291,19 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | --- | --- | --- | --- | --- | --- | --- |
 | 0.1 | Repository and Xcode project | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | Build and test compile pass. Tests not run: no iOS 26 runtime. |
 | 0.2 | Durable documentation | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | |
-| 1a.1 | Test environment | Not started | | | | |
+| 1a.1 | Test environment | In progress | Claude Code (Opus 5.5) | | | |
 | 1a.2 | Design tokens | Not started | | | | |
 | 1a.3 | Domain model and in-memory store | Not started | | | | |
 | 1a.4 | App shell and navigation | Not started | | | | |
 | 1a.5 | Shared components | Not started | | | | |
+| 1a.6 | Artboard PNG export | Not started | | | | Human gate |
 | 1b.1 | Today | Not started | | | | |
 | 1b.2 | Inbox | Not started | | | | |
 | 1b.3 | Habits | Not started | | | | |
 | 1b.4 | Projects | Not started | | | | |
 | 1b.5 | Settings | Not started | | | | |
+| 1b.6 | Project detail and smart lists | Not started | | | | |
+| 1b.7 | Habit management | Not started | | | | |
 | 1c.1 | Quick add | Not started | | | | |
 | 1c.2 | Inbox drawer | Not started | | | | |
 | 1c.3 | Edit block | Not started | | | | |

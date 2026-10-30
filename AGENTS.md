@@ -61,6 +61,7 @@ xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'platform=iOS Simul
 - The test command needs an iOS 26 or later simulator runtime. If none is installed, run `build-for-testing` and say that the tests did not run.
 - Write unit tests with Swift Testing (`import Testing`). Every rule in a feature spec that has no UI (parsing, slot search, streaks) gets a unit test.
 - For UI changes, compare the result with the design reference in light and dark appearance.
+- A screen checkpoint ends with the artboard comparison. Take simulator screenshots in dark and light appearance. Put each one next to its exported artboard PNG in `docs/design/artboards/`. Fix each difference, or record it as an intended difference in the screen spec.
 
 ## Documentation rules
 
@@ -68,6 +69,6 @@ xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'platform=iOS Simul
 - A new screen gets a spec in `docs/screens/`. A new feature gets a spec in `docs/features/`. Add each new spec to its folder `README.md`.
 - When code changes behavior, update the spec in the same change. Set its `Status:` line.
 - A significant technical decision gets an ADR. See [docs/adr/README.md](docs/adr/README.md).
-- In a spec, keep three kinds of statements apart: **Observed** (in the mockup), **Assumption** (an implementation choice), and **Unresolved** (a product decision that is still open).
+- In a spec, keep four kinds of statements apart: **Observed** (in the mockup), **Assumption** (an implementation choice), **Decided** (a product decision the user made, with its date), and **Unresolved** (a product decision that is still open).
 - Do not copy HTML, CSS, or JavaScript from the mockup into the app. Do not embed the mockup in a web view.
 - Keep each doc short and specific. Link to another doc. Do not repeat its content.

@@ -43,4 +43,7 @@ Sample text in 2g: "Call the dentist tomorrow 9am 15m" with Rose and phone.
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#capture).
+None.
+
+- **Decided (2026-10-30):** the Date and Time tools open a compact `DatePicker`. Duration opens a chip row. Repeat opens a `Menu`. Checklist opens an inline step field. The text and the chips stay in sync.
+- The parsing and pre-fill decisions are in [Quick add parsing](../features/quick-add-parsing.md#decisions).

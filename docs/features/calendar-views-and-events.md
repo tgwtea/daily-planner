@@ -26,12 +26,13 @@ Views:
 - Without access, Today shows no events. Settings shows the access state and a link to iOS Settings.
 - Add the EventKit integration with an ADR.
 
-## Unresolved
+## Decisions
 
-- Permission flow and the denied state. See [open-questions.md](../open-questions.md#calendar).
-- Which calendars are on by default.
-- Paging between weeks and months. Tapping a calendar block.
-- All-day events. The mockup has none.
+- **Decided (2026-10-30):** The app asks for calendar access only on opt-in: when the user turns on Apple Calendar in Settings, or on the first open of Calendar. If access is denied, an inline card explains it and has an "Open Settings" button.
+- **Decided (2026-10-30):** All calendars are on by default.
+- **Decided (2026-10-30):** A horizontal swipe pages by the view length (1 day, 3 days, 1 week, 1 month).
+- **Decided (2026-10-30):** A tap on a task block opens [Edit block](../screens/edit-block.md). A tap on an event opens a read-only detail.
+- **Decided (2026-10-30):** All-day events show in a strip above the time grid.
 
 ## Related
 

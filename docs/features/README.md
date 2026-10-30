@@ -30,6 +30,7 @@ Screens: <links>
 ## Purpose
 ## Observed
 ## Assumptions
+## Decisions
 ## Unresolved
 ## Edge cases
 ## Related

@@ -26,12 +26,13 @@ Run a countdown for the active block on screen, on the lock screen, and in the D
 - Live Activity needs a widget extension, ActivityKit, and App Intents. Add it with an ADR.
 - At zero, play the end sound if it is on, and post a local notification if the app is in the background.
 
-## Unresolved
+## Decisions
 
-- Does +5 extend the block on the timeline and push later blocks? See [open-questions.md](../open-questions.md#focus).
-- What happens at zero: auto-done, or a prompt?
-- Can you start Focus on a block that is not active?
-- What does "More" contain?
+- **Decided (2026-10-30):** +5 extends the focus session only. The block and later blocks on the timeline do not move.
+- **Decided (2026-10-30):** At zero, the app plays a haptic and the end sound. "Done" becomes the main action. The timer counts the overrun time. The block is not marked done automatically.
+- **Decided (2026-10-30):** The user can start Focus on any task that is not done, from its context menu. The session length is the block duration. The timeline does not move.
+- **Decided (2026-10-30):** The "More" menu holds: Edit block, Show or hide the Live Activity, End without done, Sound on or off.
+- **Decided (2026-10-30):** Dynamic Island: minimal shows the progress ring. Compact shows the icon and the remaining time. Expanded shows the title, the ring, the timer, and the Pause, +5, and Done buttons.
 
 ## Related
 

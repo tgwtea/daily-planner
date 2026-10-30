@@ -24,7 +24,7 @@ Hold tasks that have no time yet. You place each task into a band of today.
 
 - **Observed:** swipe a row left by 168 pt. Three 46 pt round buttons show: sunrise, sun, moon ("Place in Morning", "Place in Afternoon", "Place in Night").
 - **Observed:** tap a place button. The task moves to the first free slot in that band of today and leaves the Inbox.
-- **Observed:** if the band has no free slot, nothing happens. **Unresolved:** what feedback to show. See [open-questions.md](../open-questions.md#inbox).
+- **Observed:** if the band has no free slot, nothing happens. **Decided (2026-10-30):** an inline message "No free time in <Band>" and a warning haptic. See [Inbox scheduling](../features/inbox-scheduling.md#decisions).
 - In the mockup a tap on a row toggles the swipe. **Assumption:** use the native swipe gesture. A tap on a row opens nothing.
 
 ## States
@@ -41,6 +41,5 @@ Hold tasks that have no time yet. You place each task into a band of today.
 
 ## Open questions
 
-- Can you reorder rows with the grip? The grip icon suggests it. The mockup has no reorder.
-- Can you edit or delete an Inbox task? Not shown.
-- Where do tags ("Health", "Lisbon trip") come from? They match project names. See [open-questions.md](../open-questions.md#inbox).
+- **Decided (2026-10-30):** drag the grip to reorder. Tap a row to edit its title. A trailing swipe deletes. A leading swipe places the item in a band.
+- **Decided (2026-10-30):** a tag is a project. See [Inbox scheduling](../features/inbox-scheduling.md#decisions).

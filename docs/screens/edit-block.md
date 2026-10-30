@@ -21,6 +21,7 @@ Change one block's duration, time, color, icon, and checklist.
 ## Navigation
 
 - Opened by a tap on a task or routine pill on [Today](today.md). Events do not open it.
+- **Decided (2026-10-30):** Edit block opens as a large sheet.
 - Close and Save both return to Today.
 
 ## Interactions
@@ -42,7 +43,4 @@ Change one block's duration, time, color, icon, and checklist.
 
 ## Open questions
 
-- Edit in place or keep a draft until Save? See [open-questions.md](../open-questions.md#editing).
-- How do you edit the title, delete a block, or turn a task into a routine?
-- What values do Repeat and Alert support?
-- Only 12 icons are in the picker. Is there a full icon search?
+None. The draft, title, delete, Repeat, Alert, and icon decisions are in [Block editing](../features/block-editing.md#decisions). The routine rule is in [Block completion and routines](../features/block-completion-and-routines.md#decisions).

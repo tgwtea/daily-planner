@@ -43,6 +43,5 @@ Log daily habits and see streaks and history.
 
 ## Open questions
 
-- Which habit does the history card show, and can you change it? The mockup shows Water only.
-- How do you create, edit, or reorder habits? Not shown.
+- The history card, schedule, and management decisions are in [Habits](../features/habits.md#decisions).
 - See [open-questions.md](../open-questions.md#habits).

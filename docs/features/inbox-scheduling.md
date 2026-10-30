@@ -41,12 +41,15 @@ The Inbox pill on Today shows the Inbox count. It hides when the Inbox is empty.
 - Events count as busy time in the slot search. The mockup code treats all blocks as busy.
 - Drag snaps to 15 minutes.
 
+## Decisions
+
+- **Decided (2026-10-30):** If the band has no free slot, an inline message says "No free time in <Band>" and a warning haptic plays. The item stays in the Inbox.
+- **Decided (2026-10-30):** Drag snaps to 15 min. The timeline auto-scrolls near its edges. A drop is accepted only in a free gap that fits the task. A drop on a block or into a shorter gap is refused.
+- **Decided (2026-10-30):** An Inbox tag is a project. A tag links the item to that project.
+
 ## Unresolved
 
-- No free slot: what feedback? See [open-questions.md](../open-questions.md#inbox).
-- Can you schedule into another day than today?
-- Drag details: snap, auto-scroll, drop on a block, drop into a gap shorter than the task.
-- Does the tag map to a project?
+- Can you schedule into another day than today? See [open-questions.md](../open-questions.md#inbox).
 
 ## Edge cases
 

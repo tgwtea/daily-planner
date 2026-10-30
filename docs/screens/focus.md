@@ -21,6 +21,7 @@ Show a full-screen countdown for the active block, so you can work on one thing.
 - Opened by the "Focus" button on the active block on [Today](today.md).
 - Minimize returns to Today. Done marks the block done and returns to Today.
 - Tab bar is hidden.
+- **Decided (2026-10-30):** Focus opens as a full-screen cover. It also opens from the "Focus" context-menu action on any task that is not done.
 
 ## Interactions
 
@@ -37,4 +38,4 @@ Show a full-screen countdown for the active block, so you can work on one thing.
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#focus).
+None. See [Focus and Live Activity](../features/focus-and-live-activity.md#decisions). That spec lists the "More" menu items.

@@ -20,11 +20,14 @@ Hold tasks for a day that do not need a time.
 
 - An Anytime task belongs to one day. It has a title, an icon, a color, and a done flag. It has no start time.
 
+## Decisions
+
+- **Decided (2026-10-30):** Quick add text with a day word and no time ("pay bill tomorrow") becomes an Anytime task on that day. The Anytime "+" opens Quick add pre-filled for Anytime. See [Quick add parsing](quick-add-parsing.md#decisions).
+- **Decided (2026-10-30):** The "Anytime" smart list on Projects holds Anytime tasks with no date. See [Projects and areas](projects-and-areas.md#decisions).
+
 ## Unresolved
 
-- How does a new item become an Anytime item? Quick add sends items with no time to the Inbox. See [open-questions.md](../open-questions.md#capture).
-- What happens to an Anytime task that is not done at the end of the day?
-- How does this relate to the "Anytime" smart list on Projects (count 8)?
+- What happens to an Anytime task that is not done at the end of the day? See [open-questions.md](../open-questions.md#capture).
 
 ## Related
 

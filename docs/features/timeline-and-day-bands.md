@@ -38,11 +38,12 @@ Day navigation:
 - The now line updates once a minute.
 - Blocks that overlap in time show as separate rows in start order. The mockup has no overlaps on the sample day.
 
-## Unresolved
+## Decisions
 
-- Settings shows band starts of 6:00 AM, 12:00 PM, and 6:00 PM, and its footer says blocks move to the band their start time falls in. The code starts Morning at midnight. What happens to a block before 6:00 AM? See [open-questions.md](../open-questions.md#timeline).
-- Can a block cross midnight?
-- The empty-day ghost times (8:00, 1:00, 7:00) do not match the band starts. Are they fixed or computed?
+- **Decided (2026-10-30):** Bands start at the Settings values (default 6:00 AM, 12:00 PM, 6:00 PM). A block that starts before the Morning start goes in Morning.
+- **Decided (2026-10-30):** A block cannot cross midnight. It ends at 11:59 PM at the latest.
+- **Decided (2026-10-30):** Blocks can overlap. Overlapping blocks show in start-time order. Each overlapping row shows a small overlap hint.
+- **Decided (2026-10-30):** The empty-day ghost times are each band start plus 2 hours (8:00, 2:00, 8:00 with the defaults). This differs from the mockup (8:00, 1:00, 7:00).
 
 ## Edge cases
 

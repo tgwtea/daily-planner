@@ -36,12 +36,15 @@ Save rules:
 - "tonight" means today. The mockup does the same. It does not set a time.
 - A time with no am/pm ("at 7") is not a time. The mockup ignores it.
 
-## Unresolved
+## Decisions
 
-- Should no-time items go to Anytime when a day word is present ("pay bill tomorrow")? The mockup sends them to the Inbox and drops the day. See [open-questions.md](../open-questions.md#capture).
-- Which "+" button pre-fills a band or Anytime?
-- Weekday names, dates, 24-hour times, and other languages.
-- What do the Date, Time, Duration, Repeat, and Checklist tools open?
+- **Decided (2026-10-30):** Text with a day word and no time becomes an Anytime task on that day. This differs from the mockup, which sends it to the Inbox. Text with no day word and no time still goes to the Inbox.
+- **Decided (2026-10-30):** Pre-fill by "+" button:
+  - A band "+" pre-fills the next free time in that band.
+  - The Anytime "+" pre-fills Anytime.
+  - The header "+" and the tab bar "+" pre-fill nothing.
+- **Decided (2026-10-30):** The parser also reads weekday names ("mon", "friday": the next such day), dates in the device locale order ("nov 3", "3/11"), and 24-hour times ("14:30"). English only.
+- **Decided (2026-10-30):** The Date, Time, Duration, Repeat, and Checklist tools open inline native pickers. See [Quick add](../screens/quick-add.md#open-questions).
 
 ## Edge cases
 

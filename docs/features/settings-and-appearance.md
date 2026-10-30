@@ -28,10 +28,15 @@ Hold user preferences that change app behavior and the theme.
 - Theme maps to `preferredColorScheme`. Dark is the default.
 - Band starts are editable times in 15-minute steps.
 
+## Decisions
+
+- **Decided (2026-10-30):** Theme choices: Dark, Light, System. Dark is the default.
+- **Decided (2026-10-30):** "Show calendar events" off hides events on Today and on Calendar. It does not remove calendar access.
+- **Decided (2026-10-30):** "Scroll to now" off opens Today at the top of Morning.
+
 ## Unresolved
 
-- Theme choices: Dark and Light only, or also System? See [open-questions.md](../open-questions.md#settings).
-- Band start rules: can bands overlap or leave gaps?
+- Band start rules: can bands overlap or leave gaps? See [open-questions.md](../open-questions.md#settings).
 
 ## Related
 

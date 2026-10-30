@@ -75,6 +75,6 @@ Pill, check circle, band chip, round add button, habit ring, week day cell, now 
 
 ## Open questions
 
-- Band ranges and band start times. See [open-questions.md](../open-questions.md#timeline).
-- What does the header "+" add to: the band, Anytime, or the default? See [open-questions.md](../open-questions.md#capture).
-- Does the week strip page to other weeks? The mockup shows one fixed week.
+- **Decided (2026-10-30):** a horizontal swipe on the week strip pages one week. A "Today" action returns to the current day.
+- **Decided (2026-10-30):** the empty-day ghost times are each band start plus 2 hours. See [Timeline and day bands](../features/timeline-and-day-bands.md#decisions).
+- The band and "+" pre-fill decisions are in [Timeline and day bands](../features/timeline-and-day-bands.md#decisions) and [Quick add parsing](../features/quick-add-parsing.md#decisions).

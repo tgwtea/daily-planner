@@ -33,7 +33,7 @@ Show work outside today: smart lists and projects grouped by area.
 ## Navigation and interactions
 
 - **Observed:** rows look tappable (chevrons, buttons). The mockup gives them no action.
-- **Unresolved:** the destination of every row. See [open-questions.md](../open-questions.md#projects).
+- **Decided (2026-10-30):** a project row pushes a project detail screen: a progress ring header, notes, then items grouped as Scheduled, Anytime, and Done, and an add button. A smart list row pushes its list. A toolbar "+" menu has New Project and New Area. See [Projects and areas](../features/projects-and-areas.md#decisions).
 
 ## States
 
@@ -46,4 +46,4 @@ Show work outside today: smart lists and projects grouped by area.
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#projects).
+None. Checkpoint 1b.6 builds the detail screen and the smart lists.

@@ -23,10 +23,10 @@ Mark blocks done. Track steps inside a routine or a task checklist.
 - Completion is per day for a repeating block.
 - Use `.sensoryFeedback(.success)` on completion when Haptics is on.
 
-## Unresolved
+## Decisions
 
-- What makes a block a routine and not a task with a checklist? The editor has no switch. See [open-questions.md](../open-questions.md#editing).
-- Do done blocks move to a Logbook? The Projects tab has a Logbook list.
+- **Decided (2026-10-30):** A routine is a block with a Repeat rule other than Never. Its steps reset each day. A block with steps and no Repeat rule is a task with a checklist. The editor needs no separate switch.
+- **Decided (2026-10-30):** Done blocks show in the Logbook smart list, newest first. They also stay on their day. See [Projects and areas](projects-and-areas.md#decisions).
 
 ## Edge cases
 

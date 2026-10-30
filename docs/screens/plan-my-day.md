@@ -32,4 +32,4 @@ A glass sheet:
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#plan-my-day).
+None. See [Plan my day suggestions](../features/plan-my-day-suggestions.md#decisions).

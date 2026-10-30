@@ -25,7 +25,7 @@ A glass sheet, 440 pt high on a 956 pt screen (about the medium detent). The scr
 
 - **Observed:** tap a row. The task goes to the first free slot of today (Morning, then Afternoon, then Night) and leaves the Inbox.
 - **Observed (static demo only):** dragging. A free gap on the timeline turns into a drop target: a dashed 52 × 60 pt pill outline, a bold time label, and a tilted floating ghost "Call the dentist / Drop at 9:45 · 15 min". The dragged row fades to 35% in the drawer.
-- **Unresolved:** the real drag gesture. See [open-questions.md](../open-questions.md#inbox).
+- **Decided (2026-10-30):** drag snaps to 15 min and drops only into a free gap that fits. See [Inbox scheduling](../features/inbox-scheduling.md#decisions).
 
 ## Accessibility and iOS notes
 
@@ -34,4 +34,4 @@ A glass sheet, 440 pt high on a 956 pt screen (about the medium detent). The scr
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#inbox).
+See [open-questions.md](../open-questions.md#inbox) (other days).

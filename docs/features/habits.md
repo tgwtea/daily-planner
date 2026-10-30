@@ -25,12 +25,16 @@ Track small daily goals and keep streaks.
 - Heatmap shade is value / goal per day.
 - Streak and percent math is a pure function with unit tests.
 
+## Decisions
+
+- **Decided (2026-10-30):** Habit management (create, edit, archive, reorder) is roadmap checkpoint 1b.7, after 1b.3. It uses an editor sheet (name, icon, color, goal, weekdays), a swipe to archive, and drag to reorder. 1b.3 uses the sample habits.
+- **Decided (2026-10-30):** Each habit has a set of weekdays. A day that is not in the set does not break the streak.
+- **Decided (2026-10-30):** The history card combines all habits. A heatmap cell shows the share of scheduled habits done that day. A tap on a habit card filters the history card to that habit.
+- **Decided (2026-10-30):** No HealthKit input in v1. Logging is manual.
+
 ## Unresolved
 
-- Create, edit, archive, reorder habits. See [open-questions.md](../open-questions.md#habits).
-- Habits on some weekdays only ("Every morning" is a label, not a rule).
-- Is the reset-at-goal tap intended, or should a separate undo exist?
-- Is there HealthKit input for Water or Walk ("8,000 steps")?
+- Is the reset-at-goal tap intended, or should a separate undo exist? See [open-questions.md](../open-questions.md#habits).
 
 ## Related
 

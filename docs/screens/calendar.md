@@ -32,7 +32,7 @@ See blocks and events across more than one day.
 
 - Switch views with the segmented control.
 - **Observed:** blocks in grid views have no tap action.
-- **Unresolved:** swipe to the next or previous range. Tap a block to open it. See [open-questions.md](../open-questions.md#calendar).
+- **Decided (2026-10-30):** swipe pages by the view length. A tap on a task block opens Edit block. A tap on an event opens a read-only detail. See [Calendar views and events](../features/calendar-views-and-events.md#decisions).
 
 ## Accessibility and iOS notes
 
@@ -42,4 +42,4 @@ See blocks and events across more than one day.
 
 ## Open questions
 
-See [open-questions.md](../open-questions.md#calendar).
+None. See [Calendar views and events](../features/calendar-views-and-events.md#decisions).

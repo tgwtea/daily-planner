@@ -19,13 +19,17 @@ Organize tasks that are not on today into projects, areas, and smart lists.
 - Progress = done tasks / all tasks in the project.
 - Logbook lists done tasks and blocks.
 
-## Unresolved
+## Decisions
 
-All of the behavior beyond display is open. See [open-questions.md](../open-questions.md#projects):
-- Project detail screen and its task list.
-- What each smart list contains and how it relates to Today, Anytime, and the Inbox.
-- How to create areas and projects.
-- Whether Inbox tags are projects.
+- **Decided (2026-10-30):** Smart lists:
+  - Upcoming: blocks and Anytime tasks with a date after today, by date.
+  - Anytime: Anytime tasks with no date.
+  - Someday: Inbox items marked Someday.
+  - Logbook: done items, newest first.
+- **Decided (2026-10-30):** A project row pushes a project detail screen. See [Projects](../screens/projects.md#navigation-and-interactions).
+- **Decided (2026-10-30):** A toolbar "+" menu on Projects has New Project and New Area. Each opens a small sheet (name, color, and area for a project).
+- **Decided (2026-10-30):** An Inbox tag is a project.
+- Roadmap checkpoint 1b.6 builds the detail screen, the smart lists, and creation.
 
 ## Related
 

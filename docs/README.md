@@ -27,6 +27,7 @@ Specs mark each requirement with one of these labels:
 
 - **Observed**: the Plan My Day v2 mockup shows this.
 - **Assumption**: a reasonable implementation choice that the mockup does not show. Change it freely, and update the spec.
+- **Decided**: a product decision that the user made. It carries the date, for example "Decided (2026-10-30)".
 - **Unresolved**: a product decision that is open. It links to [open-questions.md](open-questions.md). Do not decide it in code without the user.
 
 ## Terms
@@ -53,4 +54,4 @@ These terms have one meaning in all docs and in code names.
 
 ## Naming
 
-The app name is **Luna**. The design project and its files use the older name "Plan My Day". Where mockup copy uses "Plan My Day" as the app name, use "Luna". The "Plan my day" suggestion sheet keeps its name. See [open-questions.md](open-questions.md#naming).
+The app name is **Luna**. The design project and its files use the older name "Plan My Day". Where mockup copy uses "Plan My Day" as the app name, use "Luna". The "Plan my day" suggestion sheet and the "Plan" button keep their names (decided 2026-10-30).

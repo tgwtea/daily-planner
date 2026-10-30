@@ -41,7 +41,7 @@ A Live Activity needs a widget extension target later. See [Focus and Live Activ
 | --- | --- | --- |
 | View | SwiftUI views | Renders state. Sends user intents. Has no business rules. |
 | Model and logic | `@Observable` models, value types, pure functions | Holds rules such as slot search and quick-add parsing. Unit tested. |
-| Persistence | Storage of blocks, habits, settings | Not chosen yet. See [open-questions.md](../open-questions.md#data-and-platform). Needs an ADR. |
+| Persistence | Storage of blocks, habits, settings | SwiftData, local only (decided 2026-10-30). ADR-0002 in roadmap 2.1 records it. Keep the model CloudKit-compatible for later iCloud sync. |
 | System services | EventKit, ActivityKit, notifications | Add each one only when a feature needs it. Wrap it in a small type. |
 
 ## Design tokens
