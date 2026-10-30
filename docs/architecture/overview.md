@@ -3,8 +3,10 @@
 ## What exists now
 
 - One iOS app target, `Luna`, with a `@main` app type and one placeholder view.
-- One unit test target, `LunaTests`, with one Swift Testing smoke test.
-- No models, no persistence, no networking, no packages.
+- Design tokens in `Luna/Shared/Design/`.
+- The domain model in `Luna/Shared/Model/`: value types, pure timeline rules, one `@Observable` `PlannerStore` (in memory), an `AppClock`, and DEBUG sample data.
+- One unit test target, `LunaTests`, with Swift Testing tests.
+- No persistence, no networking, no packages.
 
 The foundation decisions are in [ADR-0001](../adr/0001-native-swiftui-foundation.md).
 

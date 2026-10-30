@@ -1,6 +1,7 @@
 # Inbox scheduling
 
-Status: Planned
+Status: Partial (model and schedule intent only, no slot search, no UI)
+Code: `Luna/Shared/Model/InboxItem.swift`, `Luna/Shared/Model/PlannerStore.swift`
 Screens: [Inbox](../screens/inbox.md), [Inbox drawer](../screens/inbox-drawer.md), [Today](../screens/today.md)
 
 ## Purpose
@@ -40,6 +41,9 @@ The Inbox pill on Today shows the Inbox count. It hides when the Inbox is empty.
 - The slot search is a pure function with unit tests. Inputs: blocks, day, band, duration, now.
 - Events count as busy time in the slot search. The mockup code treats all blocks as busy.
 - Drag snaps to 15 minutes.
+- The tag is stored as `projectID`. The scheduled block keeps the same `projectID`.
+- The sample tags "Work" and "Personal" are area names, not projects. The sample data links "Draft Q4 self-review" to Q4 planning. "Order a new chalk bag" has no project.
+- The store cuts a scheduled duration to end at 11:59 PM. It refuses a start at 11:59 PM or later and keeps the item in the Inbox.
 
 ## Decisions
 

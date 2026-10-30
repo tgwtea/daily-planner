@@ -1,6 +1,7 @@
 # Block completion and routines
 
-Status: Planned
+Status: Partial (model and intents only, no UI)
+Code: `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/PlannerStore.swift`
 Screens: [Today](../screens/today.md), [Edit block](../screens/edit-block.md)
 
 ## Purpose
@@ -22,6 +23,8 @@ Mark blocks done. Track steps inside a routine or a task checklist.
 - A task with steps is not done automatically when all steps are done. Only routines use the all-steps rule.
 - Completion is per day for a repeating block.
 - Use `.sensoryFeedback(.success)` on completion when Haptics is on.
+- `Block.kind` is stored now. When Repeat support arrives (checkpoint 1c.3), the editor sets `routine` from the Repeat rule. The per-day step reset waits for Repeat support.
+- Icons are SF Symbol names stored as strings, because the "More" icon picker offers about 60 symbols.
 
 ## Decisions
 

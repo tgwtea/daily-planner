@@ -1,6 +1,7 @@
 # Habits
 
-Status: Planned
+Status: Partial (model and log intent only, no streak math, no UI)
+Code: `Luna/Shared/Model/Habit.swift`, `Luna/Shared/Model/PlannerStore.swift`
 Screens: [Today](../screens/today.md), [Habits](../screens/habits.md)
 
 ## Purpose
@@ -24,6 +25,8 @@ Track small daily goals and keep streaks.
 - "This month" is the done-day count divided by the elapsed days in the month.
 - Heatmap shade is value / goal per day.
 - Streak and percent math is a pure function with unit tests.
+- A habit stores its count per day in `history`, keyed by the start of the day. "Value today" is the history value of today.
+- The sample data builds 12 weeks of history that match the mockup week row. The mockup gives Read a streak of 4, but its week row (Wednesday done, Tuesday not done) gives a streak of 1. The computed streak (checkpoint 1b.3) will show 1. This is an intended difference.
 
 ## Decisions
 

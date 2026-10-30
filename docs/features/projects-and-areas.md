@@ -1,6 +1,7 @@
 # Projects and areas
 
-Status: Planned
+Status: Partial (model only, no progress math, no UI)
+Code: `Luna/Shared/Model/Area.swift`, `Luna/Shared/Model/Project.swift`
 Screens: [Projects](../screens/projects.md)
 
 ## Purpose
@@ -18,6 +19,7 @@ Organize tasks that are not on today into projects, areas, and smart lists.
 
 - Progress = done tasks / all tasks in the project.
 - Logbook lists done tasks and blocks.
+- A project stores its date line as `Timing`: no date, ongoing, a due date, or a date span. Progress and the open count come from linked items in checkpoint 1b.4.
 
 ## Decisions
 

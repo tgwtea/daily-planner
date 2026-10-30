@@ -1,6 +1,7 @@
 # Timeline and day bands
 
-Status: Planned
+Status: Partial (model and rules only, no UI)
+Code: `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/Band.swift`, `Luna/Shared/Model/Timeline.swift`, `Luna/Shared/Model/DayLimit.swift`, `Luna/Shared/Model/DurationFormat.swift`, `Luna/Shared/Model/AppClock.swift`
 Screens: [Today](../screens/today.md), [Settings](../screens/settings.md)
 
 ## Purpose
@@ -37,6 +38,11 @@ Day navigation:
 - Use the locale's 12- or 24-hour setting. The mockup uses 12-hour only.
 - The now line updates once a minute.
 - Blocks that overlap in time show as separate rows in start order. The mockup has no overlaps on the sample day.
+- `BandSchedule` holds the three band starts in minutes after midnight. `Timeline` holds the pure rules: band of a block, pill height, free gaps, and minute of day. `DurationFormat` holds the duration text.
+- A free gap shows only between two blocks. The first block of a band gets no gap before it. The mockup code does the same.
+- `DayLimit` enforces the midnight rule. When a new block would end after 11:59 PM, the store cuts its duration to end at 11:59 PM. A start at 11:59 PM or later is refused.
+- Code reads "now" from the `\.appClock` environment value only. Previews use a fixed clock at the sample time. The DEBUG launch argument `-LunaSampleData` starts a running clock at the sample time.
+- With the sample data and the mockup rule, Thursday has 2 of 9 tasks and routines done. The day footer in the artboard shows "5 of 11". The artboard is static.
 
 ## Decisions
 

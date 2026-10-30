@@ -6,7 +6,7 @@ This file is the single source of truth for every coding agent in this repositor
 
 Luna is a native iOS time-blocking day planner, built with SwiftUI. The visual and interaction reference is a Claude Design prototype named "Plan My Day v2". See [docs/design/design-reference.md](docs/design/design-reference.md).
 
-Current state: **foundation only.** The app target has one placeholder view. Design tokens exist in `Luna/Shared/Design/`. No screen or feature from the design exists in code yet. Every spec in `docs/` has the status `Planned` until code implements it.
+Current state: **foundation only.** The app target has one placeholder view. Design tokens exist in `Luna/Shared/Design/`. The domain model, the in-memory `PlannerStore`, and the sample data exist in `Luna/Shared/Model/`. No screen from the design exists in code yet. A spec has the status `Planned` until code implements it.
 
 ## Roadmap and checkpoints
 
