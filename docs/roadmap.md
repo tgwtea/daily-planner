@@ -294,7 +294,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.4 | App shell and navigation | Done | Claude Code (Opus 5.5) | 2026-10-30 | 598c32f | Custom glass tab bar (system bar hides 6th tab in More). 54 tests pass. Fixed main-actor color provider crash. No artboard comparison: 1a.6 pending. |
 | 1a.5 | Shared components | Done | Claude Code (Opus 5.5) | 2026-10-31 | e542f0f | 8 components + gallery (`-LunaComponentsGallery`). 61 tests pass. Checked in simulator, dark and light. No artboard comparison: 1a.6 pending. |
 | 1a.6 | Artboard PNG export | Deprecated | Claude Code (Opus 5.5) | 2026-10-31 | | User skipped the PNG export. Agents read artboards from the design project. |
-| 1b.1 | Today | In progress | Claude Code (Opus 5.5) | | | |
+| 1b.1 | Today | Done | Claude Code (Opus 5.5) | 2026-10-31 | 08702a0 | 81 tests pass. Checked in simulator, dark and light, against 2b/2c/2e/2f markup. Habit strip display only (1b.3). Inbox pill and Open Inbox select the Inbox tab until 1c.2. |
 | 1b.2 | Inbox | Not started | | | | |
 | 1b.3 | Habits | Not started | | | | |
 | 1b.4 | Projects | Not started | | | | |
