@@ -295,7 +295,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.2 | Design tokens | Done | Claude Code (Opus 5.5) | 2026-10-30 | 54628b1 | Colors in Swift code. Previews checked in the simulator in dark and light. |
 | 1a.3 | Domain model and in-memory store | Done | Claude Code (Opus 5.5) | 2026-10-30 | 73333d6 | 44 tests pass. Model and store only, no UI. Sample data via `-LunaSampleData` (DEBUG). |
 | 1a.4 | App shell and navigation | Done | Claude Code (Opus 5.5) | 2026-10-30 | 598c32f | Custom glass tab bar (system bar hides 6th tab in More). 54 tests pass. Fixed main-actor color provider crash. No artboard comparison: 1a.6 pending. |
-| 1a.5 | Shared components | In progress | Claude Code (Opus 5.5) | | | |
+| 1a.5 | Shared components | Done | Claude Code (Opus 5.5) | 2026-10-31 | e542f0f | 8 components + gallery (`-LunaComponentsGallery`). 61 tests pass. Checked in simulator, dark and light. No artboard comparison: 1a.6 pending. |
 | 1a.6 | Artboard PNG export | Not started | | | | Human gate |
 | 1b.1 | Today | Not started | | | | |
 | 1b.2 | Inbox | Not started | | | | |
