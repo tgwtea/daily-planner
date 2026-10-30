@@ -97,18 +97,15 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Build:** `Luna/Shared/Components/`: block pill, check circle, capsule chip button, round add button, colored icon tile, progress ring, grouped list container and row, large title header. Each with previews and accessibility labels.
 - **Done when:** previews match the pattern table. The press scale and Reduce Motion behavior work.
 
-### 1a.6 Artboard PNG export — Human gate
-- **Depends on:** 0.2
-- **Build (agent):** create `docs/design/artboards/` with a `README.md` that lists each artboard ID from the [design reference](design/design-reference.md) and its file name, for example `2b-today-dark.png`.
-- **Human:** export each artboard as a PNG in dark and light appearance from the design project. Put the files in `docs/design/artboards/`.
-- **Done when:** every listed artboard has a dark and a light PNG. Screen checkpoints compare against these files. See [AGENTS.md](../AGENTS.md#validation).
+### 1a.6 Artboard PNG export
+Deprecated (2026-10-31). The user decided to skip the PNG export. Agents compare screens with the artboards in the design project directly. See [AGENTS.md](../AGENTS.md#validation).
 
 ---
 
 ## Phase 1b: Main tabs
 
 ### 1b.1 Today
-- **Depends on:** 1a.5, 1a.6
+- **Depends on:** 1a.5
 - **Read:** [screens/today.md](screens/today.md), [features/timeline-and-day-bands.md](features/timeline-and-day-bands.md), [features/block-completion-and-routines.md](features/block-completion-and-routines.md), [features/anytime-tasks.md](features/anytime-tasks.md)
 - **Build:** header, week strip, Anytime section, three bands with collapse, block rows, routine rows, free gap rows, active block with now line and remaining time, day footer, empty-day state, Inbox pill (count only, no drawer yet). Scroll to now on open. The habit strip is a placeholder until 1b.3. The Plan and Calendar buttons do nothing yet.
 - **Decided (2026-10-30):** the header "+" opens Quick add empty. A band "+" pre-fills the next free time in that band. The Anytime "+" pre-fills Anytime. The week strip pages by week. Ghost times are band start plus 2 hours.
@@ -296,7 +293,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.3 | Domain model and in-memory store | Done | Claude Code (Opus 5.5) | 2026-10-30 | 73333d6 | 44 tests pass. Model and store only, no UI. Sample data via `-LunaSampleData` (DEBUG). |
 | 1a.4 | App shell and navigation | Done | Claude Code (Opus 5.5) | 2026-10-30 | 598c32f | Custom glass tab bar (system bar hides 6th tab in More). 54 tests pass. Fixed main-actor color provider crash. No artboard comparison: 1a.6 pending. |
 | 1a.5 | Shared components | Done | Claude Code (Opus 5.5) | 2026-10-31 | e542f0f | 8 components + gallery (`-LunaComponentsGallery`). 61 tests pass. Checked in simulator, dark and light. No artboard comparison: 1a.6 pending. |
-| 1a.6 | Artboard PNG export | Blocked | Claude Code (Opus 5.5) | 2026-10-31 | f89d687 | Human gate. Index in `docs/design/artboards/README.md`. Waiting on human PNG export (34 files). |
+| 1a.6 | Artboard PNG export | Deprecated | Claude Code (Opus 5.5) | 2026-10-31 | | User skipped the PNG export. Agents read artboards from the design project. |
 | 1b.1 | Today | Not started | | | | |
 | 1b.2 | Inbox | Not started | | | | |
 | 1b.3 | Habits | Not started | | | | |

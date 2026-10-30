@@ -61,7 +61,7 @@ xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'platform=iOS Simul
 - The test command needs an iOS 26 or later simulator runtime. If none is installed, run `build-for-testing` and say that the tests did not run.
 - Write unit tests with Swift Testing (`import Testing`). Every rule in a feature spec that has no UI (parsing, slot search, streaks) gets a unit test.
 - For UI changes, compare the result with the design reference in light and dark appearance.
-- A screen checkpoint ends with the artboard comparison. Take simulator screenshots in dark and light appearance. Put each one next to its exported artboard PNG in `docs/design/artboards/`. Fix each difference, or record it as an intended difference in the screen spec.
+- A screen checkpoint ends with the artboard comparison. Take simulator screenshots in dark and light appearance. Compare each one with its artboard in the design project. Read the artboard from the design source directly. The repository holds no exported artboard PNGs. Fix each difference, or record it as an intended difference in the screen spec.
 
 ## Documentation rules
 

@@ -24,7 +24,7 @@ The tab bar and the "+" button show on the five main tabs. They hide on Calendar
 
 **Implemented (1a.4):** `Luna/Features/AppShell/` (`RootView`, `LunaTabBar`, `AppRouter`, `AppRoute`, `AppTab`). `AppRouter.isTabBarHidden` controls the bar. Each tab and route is a placeholder until its checkpoint. Today and Projects show temporary buttons that open each destination. Checkpoints 1b.1 and 1b.4 remove them.
 
-**Assumption (1a.4):** the design reference gives only the bar height (64 pt). The tab icon is 20 pt, the bar has a 4 pt inner padding, the "+" circle sits 12 pt from the capsule, and the selected tab has a `glassItemHover` capsule. Artboard PNGs do not exist yet (1a.6), so no artboard comparison ran. Check these values in 3.3.
+**Assumption (1a.4):** the design reference gives only the bar height (64 pt). The tab icon is 20 pt, the bar has a 4 pt inner padding, the "+" circle sits 12 pt from the capsule, and the selected tab has a `glassItemHover` capsule. No artboard comparison ran in 1a.4. Check these values in 3.3.
 
 ## Index
 
