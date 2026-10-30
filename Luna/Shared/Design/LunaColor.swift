@@ -79,13 +79,14 @@ extension Color {
 
 private extension Color {
     /// A color that resolves per appearance. An unspecified appearance uses dark, the design default.
-    static func dynamic(
+    /// The provider is `nonisolated` because SwiftUI resolves colors on its background render thread.
+    nonisolated static func dynamic(
         dark: UIColor,
         light: UIColor,
         highContrastDark: UIColor? = nil,
         highContrastLight: UIColor? = nil
     ) -> Color {
-        Color(uiColor: UIColor { traits in
+        Color(uiColor: UIColor { @Sendable traits in
             let highContrast = traits.accessibilityContrast == .high
             if traits.userInterfaceStyle == .light {
                 return highContrast ? (highContrastLight ?? light) : light

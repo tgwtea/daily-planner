@@ -230,7 +230,7 @@ The candidates are assumptions. Check each one in the SF Symbols app.
 
 ## Native SwiftUI notes
 
-- Tab bar: use `TabView` with five `Tab`s. The design has a separate "+" button next to the tab bar. **Decided (2026-10-30):** use the system tab bar plus a custom glass "+" circle at the bottom trailing edge. See [screens/README.md](../screens/README.md#navigation-map).
+- Tab bar: use `TabView` with five `Tab`s and hide the system tab bar. **Decided (2026-10-30):** a custom floating tab bar draws the design: a glass capsule with five tabs and a separate primary "+" circle. A system bar with five tabs fills the iPhone width, so a "+" circle cannot sit next to it. See [screens/README.md](../screens/README.md#navigation-map).
 - Sheets: use `.sheet` with `presentationDetents`. The Inbox drawer is a medium detent (440 of 956 pt). Quick add sits above the system keyboard. The mockup draws a fake keyboard. Do not build it.
 - Lists with swipe actions: `List` with `.swipeActions(edge: .trailing)` matches the Inbox swipe.
 - Drag and drop: use `.draggable` and `.dropDestination` on timeline gaps.

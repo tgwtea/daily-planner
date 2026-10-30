@@ -88,7 +88,7 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Depends on:** 1a.3
 - **Read:** [screens/README.md](screens/README.md), [design-reference.md](design/design-reference.md#native-swiftui-notes)
 - **Build:** Root `TabView` with Today, Inbox, Projects, Habits, Settings (each an empty titled placeholder view). The floating "+" button next to the tab bar opens an empty Quick add sheet. A navigation route type for pushed screens (Calendar, project detail). Edit block is a large sheet. Focus is a full-screen cover. Theme from `@AppStorage`. Replace `ContentView`.
-- **Decided (2026-10-30):** the system iOS 26 tab bar plus a custom glass circle button at the bottom trailing edge.
+- **Decided (2026-10-30):** a custom floating tab bar (glass capsule with five tabs and a separate "+" circle) over a `TabView` with the system bar hidden. This replaces the first decision (system tab bar plus a "+" circle). See [screens/README.md](screens/README.md#navigation-map).
 - **Done when:** all five tabs switch. The "+" button opens and closes the sheet. The tab bar hides on pushed screens.
 
 ### 1a.5 Shared components
@@ -294,7 +294,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.1 | Test environment | Done | Claude Code (Opus 5.5) | 2026-10-30 | dd1691b | iOS 27.0 runtime, iPhone 17 simulator. Smoke test passes. |
 | 1a.2 | Design tokens | Done | Claude Code (Opus 5.5) | 2026-10-30 | 54628b1 | Colors in Swift code. Previews checked in the simulator in dark and light. |
 | 1a.3 | Domain model and in-memory store | Done | Claude Code (Opus 5.5) | 2026-10-30 | 73333d6 | 44 tests pass. Model and store only, no UI. Sample data via `-LunaSampleData` (DEBUG). |
-| 1a.4 | App shell and navigation | Not started | | | | |
+| 1a.4 | App shell and navigation | In progress | Claude Code (Opus 5.5) | | | |
 | 1a.5 | Shared components | Not started | | | | |
 | 1a.6 | Artboard PNG export | Not started | | | | Human gate |
 | 1b.1 | Today | Not started | | | | |

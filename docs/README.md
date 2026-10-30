@@ -54,6 +54,9 @@ These terms have one meaning in all docs and in code names.
 | Band schedule | The start minute of each band. Settings edits it. Default 6:00 AM, 12:00 PM, 6:00 PM. In code: `BandSchedule`. |
 | Store | The one `@Observable` object that holds all app data and its intents. In code: `PlannerStore`. |
 | Sample data | The mockup week (Thursday, October 29, 2026, 10:20 AM). DEBUG builds only: previews and the `-LunaSampleData` launch argument. |
+| App shell | The root view: the five tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
+| Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail). In code: `AppRoute`. |
+| Router | The `@Observable` navigation state: selected tab, one route path per tab, and the open sheet or cover. In code: `AppRouter`. |
 | Design token | A named design value in code (color role, text style, spacing, radius, shadow, motion). See `Luna/Shared/Design/`. |
 
 ## Naming

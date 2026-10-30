@@ -1,6 +1,6 @@
 # Settings and appearance
 
-Status: Planned
+Status: Partial
 Screens: [Settings](../screens/settings.md)
 
 ## Purpose
@@ -21,6 +21,11 @@ Hold user preferences that change app behavior and the theme.
 | End-of-block sound | Off | Not wired |
 | Plan suggestions | On | Not wired |
 | Theme | Dark | The canvas shows a Light variant |
+
+## Implementation
+
+- Theme: `Luna/Shared/Settings/AppTheme.swift`, applied in `LunaApp` with `preferredColorScheme`. Keys: `Luna/Shared/Settings/SettingsKey.swift`.
+- Missing: the Settings screen and every other setting (checkpoint 1b.5).
 
 ## Assumptions
 

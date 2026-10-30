@@ -3,6 +3,8 @@ import SwiftUI
 @main
 struct LunaApp: App {
     @State private var store: PlannerStore
+    @State private var router = AppRouter()
+    @AppStorage(SettingsKey.theme) private var theme = AppTheme.defaultValue
     private let clock: AppClock
 
     init() {
@@ -19,9 +21,11 @@ struct LunaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
                 .environment(store)
+                .environment(router)
                 .environment(\.appClock, clock)
+                .preferredColorScheme(theme.colorScheme)
         }
     }
 }
