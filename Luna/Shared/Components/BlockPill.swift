@@ -89,9 +89,8 @@ extension BlockPill.Appearance {
         }
         if block.isDone {
             self = .done(color)
-        } else if block.start <= now, now < block.end {
-            let progress = now.timeIntervalSince(block.start) / block.end.timeIntervalSince(block.start)
-            self = .active(color, progress: min(max(progress, 0), 1))
+        } else if Timeline.isActive(block, at: now) {
+            self = .active(color, progress: Timeline.progress(of: block, at: now))
         } else {
             self = .planned(color)
         }

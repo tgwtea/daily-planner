@@ -1,7 +1,7 @@
 # Anytime tasks
 
-Status: Partial (model and intent only, no UI)
-Code: `Luna/Shared/Model/AnytimeTask.swift`, `Luna/Shared/Model/PlannerStore.swift`
+Status: Partial (the "+" does not pre-fill Quick add yet: 1c.1)
+Code: `Luna/Shared/Model/AnytimeTask.swift`, `Luna/Shared/Model/PlannerStore.swift`, `Luna/Features/Today/AnytimeSection.swift`
 Screens: [Today](../screens/today.md)
 
 ## Purpose
@@ -21,6 +21,7 @@ Hold tasks for a day that do not need a time.
 
 - An Anytime task belongs to one day. It has a title, an icon, a color, and a done flag. It has no start time.
 - An Anytime task has an optional `projectID`, so a project can list it.
+- The section shows on every day with blocks, also with zero tasks, so that its "+" is always there. The mockup shows it with a zero count on other days.
 
 ## Decisions
 

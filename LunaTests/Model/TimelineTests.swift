@@ -58,4 +58,78 @@ import Testing
     @Test func minuteOfDayUsesCalendar() {
         #expect(Timeline.minuteOfDay(TestCalendar.date(2026, 10, 29, 10, 20), calendar: TestCalendar.utc) == 620)
     }
+
+    // MARK: Time states
+
+    private func at(_ minute: Int) -> Date { day.addingTimeInterval(TimeInterval(minute * 60)) }
+
+    @Test func sampleWriteMigrationPlanIsActive() {
+        let thursday = PlannerStore.sample().blocks(on: SampleData.now, calendar: SampleData.calendar)
+        let active = thursday.filter { Timeline.isActive($0, at: SampleData.now) }
+        #expect(active.map(\.title) == ["Write migration plan"])
+        let block = active[0]
+        #expect(abs(Timeline.progress(of: block, at: SampleData.now) - 50.0 / 90) < 0.0001)
+        #expect(Timeline.minutesLeft(of: block, at: SampleData.now) == 40)
+    }
+
+    @Test func startIsInclusiveAndEndIsExclusive() {
+        let block = block(600, 30)
+        #expect(!Timeline.isActive(block, at: at(599)))
+        #expect(Timeline.isActive(block, at: at(600)))
+        #expect(Timeline.isActive(block, at: at(629)))
+        #expect(!Timeline.isActive(block, at: at(630)))
+    }
+
+    @Test func doneBlockIsNotActive() {
+        var block = block(600, 30)
+        block.done = true
+        #expect(!Timeline.isActive(block, at: at(610)))
+    }
+
+    @Test func eventIsNotActive() {
+        let event = Block(kind: .event, title: "Standup", start: at(600), durationMinutes: 30, calendarName: "Work")
+        #expect(!Timeline.isActive(event, at: at(610)))
+    }
+
+    @Test func blockOnAnotherDayIsNotActive() {
+        #expect(!Timeline.isActive(block(600, 30), at: at(600 + 24 * 60)))
+    }
+
+    @Test func progressIsClamped() {
+        let block = block(600, 60)
+        #expect(Timeline.progress(of: block, at: at(500)) == 0)
+        #expect(Timeline.progress(of: block, at: at(615)) == 0.25)
+        #expect(Timeline.progress(of: block, at: at(700)) == 1)
+    }
+
+    @Test func minutesLeftRoundsUp() {
+        let block = block(600, 60)
+        #expect(Timeline.minutesLeft(of: block, at: at(615).addingTimeInterval(30)) == 45)
+        #expect(Timeline.minutesLeft(of: block, at: at(615)) == 45)
+        #expect(Timeline.minutesLeft(of: block, at: at(700)) == 0)
+    }
+
+    @Test func doneCountSkipsEvents() {
+        var done = block(600, 30)
+        done.done = true
+        let event = Block(kind: .event, title: "Sync", start: at(700), durationMinutes: 30)
+        let count = Timeline.doneCount([done, block(640, 30), event])
+        #expect(count.done == 1)
+        #expect(count.total == 2)
+    }
+
+    // MARK: Overlaps and ghost times
+
+    @Test func overlappingBlocksAreFound() {
+        let first = block(600, 60)
+        let inside = block(630, 15)
+        let touching = block(660, 30)
+        let later = block(800, 30)
+        #expect(Timeline.overlappingIDs([later, touching, inside, first]) == [first.id, inside.id])
+    }
+
+    @Test func ghostTimesAreBandStartPlusTwoHours() {
+        let minutes = Band.allCases.map { Timeline.ghostMinute(for: $0, schedule: .standard) }
+        #expect(minutes == [8 * 60, 14 * 60, 20 * 60])
+    }
 }

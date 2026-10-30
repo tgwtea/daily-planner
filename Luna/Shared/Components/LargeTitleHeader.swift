@@ -20,6 +20,9 @@ struct LargeTitleHeader<Trailing: View>: View {
                 if subtitlePosition == .above { subtitleText }
                 Text(title)
                     .lunaTextStyle(.largeTitle)
+                    // A long weekday ("Wednesday") next to trailing controls shrinks instead of wrapping.
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.7)
                     .foregroundStyle(Color.textPrimary)
                     .accessibilityAddTraits(.isHeader)
                 if subtitlePosition == .below { subtitleText }
@@ -37,6 +40,8 @@ struct LargeTitleHeader<Trailing: View>: View {
                 // 15 pt medium. `.subheadline` is 15 pt and scales with Dynamic Type.
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(Color.textSecondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
     }
 }

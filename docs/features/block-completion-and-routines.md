@@ -1,7 +1,7 @@
 # Block completion and routines
 
-Status: Partial (model and intents only, no UI)
-Code: `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/PlannerStore.swift`
+Status: Partial (no haptics yet: roadmap 2.4)
+Code: `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/PlannerStore.swift`, `Luna/Features/Today/BlockRow.swift`
 Screens: [Today](../screens/today.md), [Edit block](../screens/edit-block.md)
 
 ## Purpose

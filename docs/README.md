@@ -63,3 +63,6 @@ These terms have one meaning in all docs and in code names.
 ## Naming
 
 The app name is **Luna**. The design project and its files use the older name "Plan My Day". Where mockup copy uses "Plan My Day" as the app name, use "Luna". The "Plan my day" suggestion sheet and the "Plan" button keep their names (decided 2026-10-30).
+| Day plan | The Today rows of one day: a section per band with block and free gap rows. In code: `DayPlan`. |
+| Active block | The task or routine that runs now and is not done. It shows Focus, a timer, and the now line. |
+| Now line | The 2 pt line with the current time that crosses the active pill. In code: `NowLine`. |

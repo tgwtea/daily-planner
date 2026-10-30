@@ -62,7 +62,7 @@ struct RootView: View {
     private func tabRoot(_ tab: AppTab) -> some View {
         switch tab {
         case .today:
-            PlaceholderScreen(title: tab.title) { TodayShellActions() }
+            TodayScreen()
         case .projects:
             PlaceholderScreen(title: tab.title) { ProjectsShellActions() }
         default:

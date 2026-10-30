@@ -1,6 +1,7 @@
 # Today
 
-Status: Planned
+Status: Partial (no Plan sheet, Inbox drawer, habit logging, or Quick add pre-fill yet)
+Code: `Luna/Features/Today/` (`TodayScreen`, `DayPlan`, `BlockRow`, `BandSectionView`, `WeekStripView`, `HabitStripView`, `AnytimeSection`, `EmptyDayView`, `InboxPill`, `TimeText`), `Luna/Shared/Model/Week.swift`
 Artboards: 2a, 2b, 2c, 2e, 2f (and 2d, 2q as hosts for sheets)
 Features: [Timeline and day bands](../features/timeline-and-day-bands.md), [Block completion and routines](../features/block-completion-and-routines.md), [Anytime tasks](../features/anytime-tasks.md), [Habits](../features/habits.md), [Inbox scheduling](../features/inbox-scheduling.md), [Focus](../features/focus-and-live-activity.md)
 
@@ -72,6 +73,30 @@ Pill, check circle, band chip, round add button, habit ring, week day cell, now 
 - The pill color is decoration. State must also show in text (strike-through, "done", "40 min left").
 - Use `ScrollViewReader` or `scrollPosition` to scroll to now.
 - A long Dynamic Type size can make a title taller than its pill. The text column must grow. The pill keeps its height.
+
+## Implementation (1b.1)
+
+- **Decided (2026-10-31):** the habit strip shows display-only rings. Checkpoint 1b.3 adds logging.
+- **Decided (2026-10-31):** the Inbox pill and "Open Inbox" select the Inbox tab. Checkpoint 1c.2 changes both to open the drawer.
+- **Decided (2026-10-31):** the Calendar button pushes the Calendar placeholder route. Checkpoint 1c.5 fills the screen.
+- **Assumption:** the "Plan" chip has no action until 1c.4.
+- **Assumption:** every "+" opens Quick add empty. The band and Anytime pre-fill arrives with the Quick add fields in 1c.1.
+- **Assumption:** a compact "Today" chip shows in the header on any other day. It returns to the current day.
+- **Assumption:** the Anytime section shows on every day with blocks. Its list hides when it is empty.
+- **Assumption:** the timer capsule shows the time left in the active block. The Focus session (1c.6) replaces it.
+- **Assumption:** "Scroll to now on open" and "Show free time" read `@AppStorage` keys with the default on. Settings (1b.5) edits them.
+
+### Artboard comparison (2026-10-31)
+
+Checked in the iPhone 17 simulator (iOS 27.0), dark and light, against the markup of artboards 2b, 2c, 2e, and 2f. Layout, colors, rows, the now line, and the empty day match. Intended differences:
+
+| Item | Mockup | App | Why |
+| --- | --- | --- | --- |
+| Date line | "Thursday, October 29" | Locale order, for example "Thursday, 29 October" | Locale-aware dates (roadmap 3.4) |
+| Plan button | 36 pt, 14 pt text, `text-secondary` | `ChipButton` (34 pt, 15 pt, `text-primary`) | One shared chip. Check in 3.3. |
+| Pill icon | 22 pt | 20 pt | The design reference says 20 pt. Check in 3.3. |
+| Day footer | "5 of 11" | "2 of 9" on the sample day | The artboard is static. See [Timeline](../features/timeline-and-day-bands.md#assumptions). |
+| Long titles | One line | The title scales down to 70% beside the header buttons | Fits "Wednesday" next to "Today" and "Plan" |
 
 ## Open questions
 
