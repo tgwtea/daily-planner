@@ -13,9 +13,9 @@ Each row gives a path, whether it exists now, and its job.
 | `Luna/Resources/Assets.xcassets` | Yes | App icon slot (no image yet) and accent color. |
 | `Luna/Features/<Feature>/` | Planned | Views and logic for one feature. One folder per feature spec. |
 | `Luna/Shared/Model/` | Planned | Value types that two or more features use. |
-| `Luna/Shared/Design/` | Planned | Tokens from [design-reference.md](../design/design-reference.md). |
+| `Luna/Shared/Design/` | Yes | Tokens from [design-reference.md](../design/design-reference.md): `LunaColor`, `BlockColor`, `LunaTextStyle`, `LunaSpacing`, `LunaRadius`, `LunaShadow`, `LunaMotion`. `DesignTokensPreview` shows all tokens in Xcode previews only. |
 | `Luna/Shared/Components/` | Planned | Reusable views that two or more features use. |
-| `LunaTests/` | Yes | Unit tests. Mirror the `Luna/` folders as tests grow. |
+| `LunaTests/` | Yes | Unit tests. Mirror the `Luna/` folders as tests grow. `LunaTests/Design/` tests the tokens. |
 | `docs/architecture/` | Yes | This map and the [overview](overview.md). |
 | `docs/adr/` | Yes | [Decision records](../adr/README.md). |
 | `docs/design/` | Yes | [Design reference](../design/design-reference.md). |

@@ -57,6 +57,8 @@ From the Noir readme: "Typography creates hierarchy. Solid surfaces organize con
 
 Use semantic roles in code. Do not use raw palette values.
 
+In code: `Color` static properties in `Luna/Shared/Design/LunaColor.swift`. The property name is the role in camel case, for example `Color.surfacePrimary`. `action-primary-bg` / `-fg` are `actionPrimaryBackground` / `actionPrimaryForeground`. `glass-bg` is `glassBackground`. The Inbox drawer scrim is `drawerScrim`.
+
 | Role | Dark | Light | Use |
 | --- | --- | --- | --- |
 | `bg-canvas` | `#000000` | `#FFFFFF` | Screen background |
@@ -82,13 +84,17 @@ Use semantic roles in code. Do not use raw palette values.
 | `glass-border` | white 12% | black 8% | Glass outline |
 | `glass-item-hover` | white 10% | black 6% | Selected tab background |
 
-High contrast (from Noir): `text-secondary` becomes `#C7C7CC`, `text-tertiary` becomes `#98989D`, and borders and dividers get stronger. Map this to the Increase Contrast setting.
+High contrast (from Noir `tokens/colors.css`, dark only): `text-secondary` becomes `#C7C7CC`, `text-tertiary` becomes `#98989D`, `border-subtle` white 20%, `border-standard` white 32%, `divider-default` white 24%. The app maps this to the Increase Contrast setting.
+
+**Assumption (1a.2):** Noir has no light high-contrast values. The app uses `text-secondary` `#3D3D40`, `text-tertiary` `#6B6B70`, `border-subtle` black 18%, `border-standard` black 28%, `divider-default` black 20%.
 
 Status colors exist in Noir (`#FF6961`, `#FFB340`, `#32D74B`, `#64B5FF` in dark). The mockup does not use them.
 
 ### Block colors
 
-The mockup defines five block colors in oklch. The same values are used in both themes. The hex values are an sRGB conversion that I computed. They are not in the source.
+The mockup defines five block colors in oklch. The same values are used in both themes. The hex values are an sRGB conversion that I computed. They are not in the source. A second conversion in 1a.2 gave the same values.
+
+In code: `BlockColor` in `Luna/Shared/Design/BlockColor.swift`, with `displayName`, `color`, `doneColor`, and `BlockColor.ink`.
 
 | Name | oklch (source) | sRGB hex (computed) |
 | --- | --- | --- |
@@ -100,6 +106,7 @@ The mockup defines five block colors in oklch. The same values are used in both 
 
 - An icon or check mark on a block color uses ink `#151517` in both themes.
 - A done block uses its color mixed 38% with the canvas, in oklch. A done icon uses ink at 55% opacity.
+  - **Assumption (1a.2):** SwiftUI has no oklch mix. The app uses `Color.mix(with:by:in: .perceptual)`, the nearest native color space.
 - The habit heatmap uses Slate mixed 35–100% with the canvas.
 
 ## Typography
@@ -125,6 +132,8 @@ The font is the system font (SF Pro). Use tabular figures for every time, count,
 
 Noir defines a type scale (display 48/38, heading 30/24/20, body 17/16, label 15/14, caption 13/12). Map the rows above to Dynamic Type styles: 34 → `.largeTitle`, 20 → `.title3`, 17 → `.headline`/`.body`, 15 → `.subheadline`, 13 → `.footnote`, 12 → `.caption`. Fixed sizes such as the timers use `Font.system(size:weight:)` and scale with `@ScaledMetric`.
 
+In code: `View.lunaTextStyle(_:)` with one `LunaTextStyle` case per row above (`Luna/Shared/Design/LunaTextStyle.swift`). Each style scales with Dynamic Type relative to the mapped text style. Times, counts, and timers get tabular figures. **Assumption (1a.2):** for a range, the style uses the low value (sheet title 24, body 16, label 15). The Live Activity timer is 30.
+
 ## Spacing and size
 
 - 4 pt rhythm. Screen side margin 20 pt. Week strip margin 12 pt.
@@ -132,6 +141,8 @@ Noir defines a type scale (display 48/38, heading 30/24/20, body 17/16, label 15
 - Grouped list row padding: 10–14 pt vertical, 14–16 pt horizontal. Card padding: 20 pt.
 - Minimum hit target: 44 × 44 pt. Small visual controls (34 pt chips, 26 pt check circles) get a 44 pt hit area.
 - Timeline grid columns: 44 pt time label, 52 pt pill, flexible text, 44 pt check. Column gap 12 pt.
+
+In code: `LunaSpacing` (`Luna/Shared/Design/LunaSpacing.swift`). **Assumption (1a.2):** for a range, the token is a 4 pt step inside it: section gap 24, header gap 12, row padding 12 × 16.
 
 ## Shape
 
@@ -149,11 +160,14 @@ Noir defines a type scale (display 48/38, heading 30/24/20, body 17/16, label 15
 | Icon buttons, "+" button, check marks | Circle |
 | Timeline pill | 52 pt wide capsule (radius 26) |
 
+In code: `LunaRadius` (`Luna/Shared/Design/LunaRadius.swift`). Icon tiles use 12.
+
 ## Materials and elevation
 
 - Elevation comes from surface lightness first. Content cards have no border and no shadow.
 - Glass: `glass-bg` + 24 pt blur + 160% saturation + 1 pt border in `glass-border`. On iOS 26 use `.glassEffect()` or the system glass of `TabView` and `.sheet`. Compare the result with the mockup. Fall back to an opaque `glass-fallback` color (`#2C2C2E` dark, `#F9F9F9` light) under Reduce Transparency.
 - Shadows: floating controls `0 6 20` black 36% (14% light). Overlays and sheets `0 −18 48` black 44% (16% light). The drag ghost uses the overlay shadow and a −2.5° tilt.
+- In code: glass colors are in `LunaColor.swift`. Shadows are `View.lunaShadow(_:)` (`LunaShadow.swift`). The SwiftUI shadow radius is half the CSS blur.
 
 ## Motion
 
@@ -169,6 +183,7 @@ Noir defines a type scale (display 48/38, heading 30/24/20, body 17/16, label 15
 - Sheets enter with ease-out in 350 ms and exit with ease-in in 250 ms. Use the system sheet animation.
 - The focus ring moves linearly once a second.
 - No bounce loops, parallax, or decorative motion. Reduce Motion sets durations to zero.
+- In code: `LunaMotion` (`Luna/Shared/Design/LunaMotion.swift`). `LunaMotion.animation(_:reduceMotion:)` returns `nil` under Reduce Motion.
 
 ## Reusable patterns
 

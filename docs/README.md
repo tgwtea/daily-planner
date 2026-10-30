@@ -51,6 +51,7 @@ These terms have one meaning in all docs and in code names.
 | Habit | A repeated daily goal with a count, a goal, and a streak. |
 | Area | A group of projects, for example Work or Personal. |
 | Smart list | A fixed list on the Projects tab: Upcoming, Anytime, Someday, Logbook. |
+| Design token | A named design value in code (color role, text style, spacing, radius, shadow, motion). See `Luna/Shared/Design/`. |
 
 ## Naming
 
