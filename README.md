@@ -21,10 +21,22 @@ xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'generic/platform=i
 ```
 
 ```bash
-xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'platform=iOS Simulator,name=iPhone 17' test
+xcodebuild -project Luna.xcodeproj -scheme Luna -destination 'platform=iOS Simulator,name=iPhone 17,OS=27.0' test
 ```
 
-Replace `iPhone 17` with any installed simulator that runs iOS 26 or later.
+This is the exact test command for the development Mac (Xcode 27.0, iOS 27.0 simulator runtime 24A434). On another Mac, replace `iPhone 17` and `27.0` with any installed simulator that runs iOS 26 or later.
+
+To set up a new Mac:
+
+```bash
+xcodebuild -downloadPlatform iOS
+```
+
+```bash
+xcrun simctl create "iPhone 17" "com.apple.CoreSimulator.SimDeviceType.iPhone-17" com.apple.CoreSimulator.SimRuntime.iOS-27-0
+```
+
+The runtime download is about 8 GB.
 
 ## Repository layout
 
