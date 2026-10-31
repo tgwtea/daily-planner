@@ -17,16 +17,16 @@ import Testing
     @Test func toggleDoneFlipsTask() {
         let task = TestCalendar.task(start: day, minutes: 30)
         let store = PlannerStore(blocks: [task])
-        store.toggleDone(blockID: task.id)
+        store.toggleDone(blockID: task.id, now: day)
         #expect(store.blocks[0].isDone)
-        store.toggleDone(blockID: task.id)
+        store.toggleDone(blockID: task.id, now: day)
         #expect(!store.blocks[0].isDone)
     }
 
     @Test func toggleDoneOnPartialRoutineCompletesAllSteps() {
         let block = routine(stepsDone: [true, false, false])
         let store = PlannerStore(blocks: [block])
-        store.toggleDone(blockID: block.id)
+        store.toggleDone(blockID: block.id, now: day)
         #expect(store.blocks[0].steps.allSatisfy { $0.done })
         #expect(store.blocks[0].isDone)
     }
@@ -34,14 +34,14 @@ import Testing
     @Test func toggleDoneOnDoneRoutineClearsAllSteps() {
         let block = routine(stepsDone: [true, true])
         let store = PlannerStore(blocks: [block])
-        store.toggleDone(blockID: block.id)
+        store.toggleDone(blockID: block.id, now: day)
         #expect(store.blocks[0].steps.allSatisfy { !$0.done })
     }
 
     @Test func toggleStepFlipsOneStep() {
         let block = routine(stepsDone: [true, true, false])
         let store = PlannerStore(blocks: [block])
-        store.toggleStep(blockID: block.id, stepID: block.steps[2].id)
+        store.toggleStep(blockID: block.id, stepID: block.steps[2].id, now: day)
         #expect(store.blocks[0].isDone)
         #expect(store.blocks[0].done == false)
     }
@@ -49,7 +49,7 @@ import Testing
     @Test func eventCannotBeDone() {
         let event = Block(kind: .event, title: "Standup", start: day, durationMinutes: 15, calendarName: "Work")
         let store = PlannerStore(blocks: [event])
-        store.toggleDone(blockID: event.id)
+        store.toggleDone(blockID: event.id, now: day)
         #expect(store.blocks[0] == event)
         #expect(!store.blocks[0].isDone)
     }
@@ -57,7 +57,7 @@ import Testing
     @Test func toggleAnytimeTaskFlipsDone() {
         let task = AnytimeTask(title: "Reply to Maya", icon: "envelope", color: .slate, day: day)
         let store = PlannerStore(anytimeTasks: [task])
-        store.toggleAnytimeTask(id: task.id)
+        store.toggleAnytimeTask(id: task.id, now: day)
         #expect(store.anytimeTasks[0].done)
     }
 
@@ -170,5 +170,93 @@ import Testing
         let store = PlannerStore(inboxItems: ["A", "B", "C", "D"].map { inboxItem($0) })
         store.moveInboxItems(fromOffsets: source, toOffset: destination)
         #expect(store.inboxItems.map(\.title) == expected)
+    }
+
+    // MARK: Completion time
+
+    private let later = TestCalendar.date(2026, 10, 29, 14)
+
+    @Test func toggleDoneSetsAndClearsCompletedAt() {
+        let task = TestCalendar.task(start: day, minutes: 30)
+        let store = PlannerStore(blocks: [task])
+        store.toggleDone(blockID: task.id, now: later)
+        #expect(store.blocks[0].completedAt == later)
+        store.toggleDone(blockID: task.id, now: later)
+        #expect(store.blocks[0].completedAt == nil)
+    }
+
+    @Test func routineGetsCompletedAtFromToggleAndFromLastStep() {
+        let block = routine(stepsDone: [true, false])
+        let store = PlannerStore(blocks: [block])
+        store.toggleDone(blockID: block.id, now: later)
+        #expect(store.blocks[0].completedAt == later)
+        store.toggleStep(blockID: block.id, stepID: block.steps[1].id, now: later)
+        #expect(store.blocks[0].completedAt == nil)
+        store.toggleStep(blockID: block.id, stepID: block.steps[1].id, now: day)
+        #expect(store.blocks[0].completedAt == day)
+    }
+
+    @Test func stepOfOpenRoutineLeavesCompletedAtNil() {
+        let block = routine(stepsDone: [false, false])
+        let store = PlannerStore(blocks: [block])
+        store.toggleStep(blockID: block.id, stepID: block.steps[0].id, now: later)
+        #expect(store.blocks[0].completedAt == nil)
+    }
+
+    @Test func toggleAnytimeTaskSetsAndClearsCompletedAt() {
+        let task = AnytimeTask(title: "Reply to Maya", icon: "envelope", color: .slate)
+        let store = PlannerStore(anytimeTasks: [task])
+        store.toggleAnytimeTask(id: task.id, now: later)
+        #expect(store.anytimeTasks[0].completedAt == later)
+        store.toggleAnytimeTask(id: task.id, now: later)
+        #expect(store.anytimeTasks[0].completedAt == nil)
+    }
+
+    // MARK: Projects and areas
+
+    @Test func addProjectTrimsAndAppends() throws {
+        let areaID = UUID()
+        let store = PlannerStore()
+        let id = try #require(store.addProject(name: "  Garden ", color: .sage, areaID: areaID))
+        #expect(store.projects.count == 1)
+        #expect(store.projects[0].id == id)
+        #expect(store.projects[0].name == "Garden")
+        #expect(store.projects[0].color == .sage)
+        #expect(store.projects[0].areaID == areaID)
+        #expect(store.projects[0].timing == .noDate)
+    }
+
+    @Test func addProjectIgnoresEmptyName() {
+        let store = PlannerStore()
+        #expect(store.addProject(name: "   ", color: .rose, areaID: nil) == nil)
+        #expect(store.projects.isEmpty)
+    }
+
+    @Test func addAreaTrimsAndIgnoresEmptyName() throws {
+        let store = PlannerStore()
+        #expect(store.addArea(name: "", icon: "house") == nil)
+        let id = try #require(store.addArea(name: " Family ", icon: "heart"))
+        #expect(store.areas == [Area(id: id, name: "Family", icon: "heart")])
+    }
+
+    @Test func addAnytimeTaskUsesProjectColorAndNoDay() {
+        let project = Project(name: "Home", color: .plum)
+        let store = PlannerStore(projects: [project])
+        store.addAnytimeTask(title: " Fix the tap ", projectID: project.id)
+        store.addAnytimeTask(title: " ", projectID: project.id)
+        store.addAnytimeTask(title: "Unknown project", projectID: UUID())
+        #expect(store.anytimeTasks.count == 1)
+        #expect(store.anytimeTasks[0].title == "Fix the tap")
+        #expect(store.anytimeTasks[0].color == .plum)
+        #expect(store.anytimeTasks[0].day == nil)
+        #expect(store.anytimeTasks[0].projectID == project.id)
+        #expect(!store.anytimeTasks[0].done)
+    }
+
+    @Test func setNotesChangesProject() {
+        let project = Project(name: "Home", color: .plum)
+        let store = PlannerStore(projects: [project])
+        store.setNotes(projectID: project.id, notes: "Spring list")
+        #expect(store.projects[0].notes == "Spring list")
     }
 }

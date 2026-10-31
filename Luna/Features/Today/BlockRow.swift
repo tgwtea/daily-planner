@@ -10,6 +10,7 @@ struct BlockRow: View {
 
     @Environment(PlannerStore.self) private var store
     @Environment(AppRouter.self) private var router
+    @Environment(\.appClock) private var clock
 
     private var isActive: Bool { Timeline.isActive(block, at: now) }
     private var isEvent: Bool { block.kind == .event }
@@ -45,7 +46,7 @@ struct BlockRow: View {
 
             Group {
                 if !isEvent {
-                    CheckCircle(isOn: block.isDone, tint: color) { store.toggleDone(blockID: block.id) }
+                    CheckCircle(isOn: block.isDone, tint: color) { store.toggleDone(blockID: block.id, now: clock.now()) }
                 }
             }
             .frame(width: LunaSpacing.Timeline.checkColumn, height: pillHeight)
@@ -123,6 +124,7 @@ private struct RoutineSteps: View {
     var block: Block
 
     @Environment(PlannerStore.self) private var store
+    @Environment(\.appClock) private var clock
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -132,7 +134,7 @@ private struct RoutineSteps: View {
             ForEach(block.steps) { step in
                 HStack(spacing: 0) {
                     CheckCircle(isOn: step.done, tint: color, size: .small, label: step.title) {
-                        store.toggleStep(blockID: block.id, stepID: step.id)
+                        store.toggleStep(blockID: block.id, stepID: step.id, now: clock.now())
                     }
                     .padding(.leading, -13)
                     Text(step.title)

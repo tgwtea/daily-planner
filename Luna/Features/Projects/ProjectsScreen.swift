@@ -1,31 +1,43 @@
 import SwiftUI
 
-/// The Projects tab: smart lists, then projects grouped by area. Display only. See docs/screens/projects.md.
+/// The Projects tab: smart lists, then projects grouped by area. Each row pushes its list or project.
+/// The header "+" menu adds a project or an area. See docs/screens/projects.md.
 struct ProjectsScreen: View {
+    private enum NewSheet: Identifiable {
+        case project
+        case area
+
+        var id: Self { self }
+    }
+
     @Environment(PlannerStore.self) private var store
     @Environment(\.appClock) private var clock
     @Environment(\.calendar) private var calendar
+    @State private var newSheet: NewSheet?
 
     var body: some View {
         TimelineView(.everyMinute) { _ in
             let today = clock.now()
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
-                    LargeTitleHeader(title: "Projects")
+                    LargeTitleHeader(title: "Projects") { addMenu }
                         // The header keeps its own margin, as on Today.
                         .padding(.horizontal, -LunaSpacing.screenMargin)
                     GroupedList {
                         ForEach(SmartList.allCases) { list in
-                            GroupedRow(
-                                title: list.title,
-                                systemImage: list.systemImage,
-                                value: list.count(in: store, today: today, calendar: calendar).map(String.init),
-                                showsChevron: true
-                            )
+                            NavigationLink(value: AppRoute.smartList(list)) {
+                                GroupedRow(
+                                    title: list.title,
+                                    systemImage: list.systemImage,
+                                    value: list.count(in: store, today: today, calendar: calendar).map(String.init),
+                                    showsChevron: true
+                                )
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                     if store.projects.isEmpty {
-                        ProjectsEmptyView()
+                        ProjectsEmptyView { newSheet = .project }
                     } else {
                         ForEach(store.areas) { area in
                             let projects = store.projects(inArea: area.id)
@@ -47,6 +59,27 @@ struct ProjectsScreen: View {
         }
         .background(Color.bgCanvas)
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(item: $newSheet) { sheet in
+            switch sheet {
+            case .project: NewProjectSheet()
+            case .area: NewAreaSheet()
+            }
+        }
+    }
+
+    private var addMenu: some View {
+        Menu {
+            Button("New Project", systemImage: "folder.badge.plus") { newSheet = .project }
+            Button("New Area", systemImage: "square.grid.2x2") { newSheet = .area }
+        } label: {
+            Image(systemName: "plus")
+                .font(.system(size: 18, weight: .medium))
+                .foregroundStyle(Color.textPrimary)
+                .frame(width: LunaSpacing.minHitTarget, height: LunaSpacing.minHitTarget)
+                .lunaGlass(in: Circle())
+                .contentShape(Circle())
+        }
+        .accessibilityLabel("Add")
     }
 }
 

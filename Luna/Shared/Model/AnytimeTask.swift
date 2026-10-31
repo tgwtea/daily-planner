@@ -8,6 +8,8 @@ struct AnytimeTask: Identifiable, Hashable, Sendable {
     var icon: String
     var color: BlockColor
     var done = false
+    /// When the task became done. `nil` while it is open. Logbook sorts by it.
+    var completedAt: Date?
     /// The day of the task. `nil` puts it in the Anytime smart list.
     var day: Date?
     var projectID: UUID?

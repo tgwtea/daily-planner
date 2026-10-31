@@ -24,6 +24,8 @@ struct Block: Identifiable, Hashable, Sendable {
     var steps: [Step] = []
     /// The done flag of a task. A routine uses its steps instead.
     var done = false
+    /// When the block became done. `nil` while it is open. Logbook sorts by it.
+    var completedAt: Date?
     /// The calendar name of an event, for example "Work".
     var calendarName: String?
     var projectID: UUID?

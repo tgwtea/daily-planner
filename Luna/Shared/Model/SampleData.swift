@@ -23,10 +23,12 @@ enum SampleData {
     static func makeStore() -> PlannerStore {
         let work = Area(name: "Work", icon: "briefcase")
         let personal = Area(name: "Personal", icon: "house")
-        let syncEngine = Project(name: "Sync engine", color: .slate, areaID: work.id, timing: .due(day(2026, 11, 14)))
+        var syncEngine = Project(name: "Sync engine", color: .slate, areaID: work.id, timing: .due(day(2026, 11, 14)))
+        syncEngine.notes = "Offline-first sync for the iOS app. Ship the beta before the Nov 14 review."
         let q4Planning = Project(name: "Q4 planning", color: .sand, areaID: work.id, timing: .due(day(2026, 11, 6)))
         let hiringLoop = Project(name: "Hiring loop", color: .sage, areaID: work.id)
-        let lisbonTrip = Project(name: "Lisbon trip", color: .plum, areaID: personal.id, timing: .span(day(2026, 12, 18), day(2026, 12, 27)))
+        var lisbonTrip = Project(name: "Lisbon trip", color: .plum, areaID: personal.id, timing: .span(day(2026, 12, 18), day(2026, 12, 27)))
+        lisbonTrip.notes = "Apartment in Alfama. Day trip to Sintra."
         let home = Project(name: "Home", color: .sage, areaID: personal.id)
         let health = Project(name: "Health", color: .rose, areaID: personal.id, timing: .ongoing)
 
@@ -35,7 +37,7 @@ enum SampleData {
             anytimeTasks: [
                 AnytimeTask(title: "Pay electricity bill", icon: "receipt", color: .sand, day: today),
                 AnytimeTask(title: "Reply to Maya", icon: "envelope", color: .slate, day: today),
-                AnytimeTask(title: "Water the plants", icon: "leaf", color: .sage, done: true, day: today),
+                AnytimeTask(title: "Water the plants", icon: "leaf", color: .sage, done: true, completedAt: date(dayOffset: 3, minute: 8 * 60 + 10), day: today),
             ] + upcomingTasks(q4Planning: q4Planning, lisbonTrip: lisbonTrip, home: home)
                 + undatedTasks(syncEngine: syncEngine, hiringLoop: hiringLoop, home: home)
                 + doneProjectTasks([
@@ -88,10 +90,16 @@ enum SampleData {
     }
 
     /// Done Anytime tasks with no day. They give each project its done count and show nowhere on Today.
+    /// Each task is done at 5 PM, one day earlier than the task before it, from Wednesday back.
     private static func doneProjectTasks(_ groups: [(Project, [String])]) -> [AnytimeTask] {
-        groups.flatMap { project, titles in
-            titles.map { AnytimeTask(title: $0, icon: "checkmark", color: project.color, done: true, projectID: project.id) }
-        }
+        groups.flatMap { project, titles in titles.map { (project, $0) } }
+            .enumerated()
+            .map { index, pair in
+                AnytimeTask(
+                    title: pair.1, icon: "checkmark", color: pair.0.color, done: true,
+                    completedAt: date(dayOffset: 2 - index, minute: 17 * 60), projectID: pair.0.id
+                )
+            }
     }
 
     /// Inbox items set aside for later: the 14 items of the Someday smart list.
@@ -121,7 +129,9 @@ enum SampleData {
     ) -> Block {
         Block(
             kind: .task, title: title, start: date(dayOffset: dayOffset, minute: minute),
-            durationMinutes: duration, icon: icon, color: color, steps: steps, done: done, projectID: project?.id
+            durationMinutes: duration, icon: icon, color: color, steps: steps, done: done,
+            // A done block is done at its end.
+            completedAt: done ? date(dayOffset: dayOffset, minute: minute + duration) : nil, projectID: project?.id
         )
     }
 

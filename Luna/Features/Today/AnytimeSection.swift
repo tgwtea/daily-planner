@@ -7,6 +7,7 @@ struct AnytimeSection: View {
 
     @Environment(PlannerStore.self) private var store
     @Environment(AppRouter.self) private var router
+    @Environment(\.appClock) private var clock
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -41,7 +42,7 @@ struct AnytimeSection: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityLabel(task.done ? "\(task.title), done" : task.title)
             CheckCircle(isOn: task.done, tint: task.color.color) {
-                store.toggleAnytimeTask(id: task.id)
+                store.toggleAnytimeTask(id: task.id, now: clock.now())
             }
         }
         .padding(.vertical, 10)

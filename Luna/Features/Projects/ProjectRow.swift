@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// One project: a progress ring in the project color, the name, the date line, and the open count.
-/// See docs/screens/projects.md. Rows do not navigate until checkpoint 1b.6.
+/// See docs/screens/projects.md. The Projects tab wraps it in a link to project detail.
 struct ProjectRow: View {
     let project: Project
     let progress: ProjectProgress
@@ -31,6 +31,7 @@ struct ProjectRow: View {
         .padding(.vertical, 14)
         .padding(.horizontal, LunaSpacing.rowHorizontalPadding)
         .frame(minHeight: LunaSpacing.minHitTarget)
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(project.name)
         .accessibilityValue("\(meta), \(progress.percent) percent done, \(progress.open) open")

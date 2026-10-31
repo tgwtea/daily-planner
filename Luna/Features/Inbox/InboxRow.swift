@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// One Inbox task: icon tile, title, "15 min · Health", and a grip. See docs/screens/inbox.md.
-/// A leading swipe places the task in a band. The context menu has the same actions.
+/// A leading swipe places the task in a band. The context menu has the same actions and "Open <Project>".
 struct InboxRow: View {
     var item: InboxItem
     /// The name of the item's project, shown as its tag.
@@ -9,6 +9,8 @@ struct InboxRow: View {
     var onPlace: (Band) -> Void
     var onEdit: () -> Void
     var onDelete: () -> Void
+    /// Pushes the project of the tag. `nil` for an item with no project.
+    var onOpenProject: (() -> Void)? = nil
 
     var body: some View {
         HStack(spacing: 12) {
@@ -42,6 +44,11 @@ struct InboxRow: View {
         .accessibilityHint("Edit title")
         .accessibilityAddTraits(.isButton)
         .accessibilityAction { onEdit() }
+        .accessibilityActions {
+            if let onOpenProject, let tag {
+                Button(Self.openProjectLabel(tag), action: onOpenProject)
+            }
+        }
         .swipeActions(edge: .leading, allowsFullSwipe: false) {
             ForEach(Band.allCases) { band in
                 Button(Self.placeLabel(band), systemImage: band.systemImage) { onPlace(band) }
@@ -57,6 +64,9 @@ struct InboxRow: View {
                 Button(Self.placeLabel(band), systemImage: band.systemImage) { onPlace(band) }
             }
             Divider()
+            if let onOpenProject, let tag {
+                Button(Self.openProjectLabel(tag), systemImage: "folder", action: onOpenProject)
+            }
             Button("Edit title", systemImage: "pencil", action: onEdit)
             Button("Delete", systemImage: "trash", role: .destructive, action: onDelete)
         }
@@ -70,6 +80,10 @@ struct InboxRow: View {
 
     static func placeLabel(_ band: Band) -> String {
         "Place in \(band.displayName)"
+    }
+
+    static func openProjectLabel(_ tag: String) -> String {
+        "Open \(tag)"
     }
 }
 

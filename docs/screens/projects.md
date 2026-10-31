@@ -1,7 +1,7 @@
 # Projects
 
-Status: Partial (display only, rows do not navigate until 1b.6)
-Code: `Luna/Features/Projects/ProjectsScreen.swift`, `AreaSection.swift`, `ProjectRow.swift`, `ProjectsEmptyView.swift`
+Status: Implemented
+Code: `Luna/Features/Projects/ProjectsScreen.swift`, `AreaSection.swift`, `ProjectRow.swift`, `ProjectsEmptyView.swift`, `NewProjectSheet.swift`, `NewAreaSheet.swift`
 Artboards: 2l
 Features: [Projects and areas](../features/projects-and-areas.md)
 
@@ -33,16 +33,19 @@ Show work outside today: smart lists and projects grouped by area.
 
 ## Intended differences
 
+- **Assumption:** a 44 pt glass "+" button next to the title opens the New Project and New Area menu. The mockup has no button.
 - **Decided (2026-10-31):** progress, open counts, and smart list counts come from items, not fixed values. The mockup values for Sync engine (60%, 5 open), Lisbon trip (30%, 4 open), and Health (70%, 2 open) have no whole-number item counts. The app shows 58%, 33%, and 71%.
 
 ## Navigation and interactions
 
 - **Observed:** rows look tappable (chevrons, buttons). The mockup gives them no action.
 - **Decided (2026-10-30):** a project row pushes a project detail screen: a progress ring header, notes, then items grouped as Scheduled, Anytime, and Done, and an add button. A smart list row pushes its list. A toolbar "+" menu has New Project and New Area. See [Projects and areas](../features/projects-and-areas.md#decisions).
+- **Implemented (1b.6):** rows use `NavigationLink(value:)` with `AppRoute.project` and `AppRoute.smartList`. See [Project detail](project-detail.md) and [Smart list](smart-list.md).
+- **Assumption:** New Project is a medium sheet with a name field, the five block colors, and an area picker ("None" first). New Area is a medium sheet with a name field and eight SF Symbol icons. Save is off while the name is empty. A new project or area goes at the end.
 
 ## States
 
-- **Assumption:** with no projects, show the smart lists and an empty state that says how to add a project. The mockup has no empty state.
+- **Assumption:** with no projects, show the smart lists and an empty state with a "New Project" button. The mockup has no empty state.
 - **Assumption:** an area with no projects shows no section. Projects with no area go in a last section with no header.
 
 ## Accessibility and iOS notes
@@ -50,6 +53,10 @@ Show work outside today: smart lists and projects grouped by area.
 - Use `List` with `.insetGrouped` style restyled to Noir, or a custom grouped container.
 - The progress ring needs a text value for VoiceOver ("60 percent").
 
+## Artboard comparison (2026-10-31)
+
+Checked in the iPhone 17 simulator (iOS 27.0), dark and light, after 1b.6. The screen matches 2l, except the "+" button next to the title (intended: the decided toolbar menu).
+
 ## Open questions
 
-None. Checkpoint 1b.6 builds the detail screen and the smart lists.
+None.

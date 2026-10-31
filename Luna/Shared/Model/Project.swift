@@ -33,4 +33,6 @@ struct Project: Identifiable, Hashable, Sendable {
     var color: BlockColor
     var areaID: UUID?
     var timing: Timing = .noDate
+    /// Free text on the project detail screen.
+    var notes = ""
 }

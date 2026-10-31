@@ -30,7 +30,10 @@ struct InboxScreen: View {
                             tag: projectName(item.projectID),
                             onPlace: { place(item, in: $0) },
                             onEdit: { startEditing(item) },
-                            onDelete: { withRowAnimation { store.deleteInboxItem(id: item.id) } }
+                            onDelete: { withRowAnimation { store.deleteInboxItem(id: item.id) } },
+                            onOpenProject: projectName(item.projectID) == nil ? nil : {
+                                if let id = item.projectID { router.push(.project(id)) }
+                            }
                         )
                     }
                     .onMove { store.moveInboxItems(fromOffsets: $0, toOffset: $1) }

@@ -55,8 +55,8 @@ final class PlannerStore {
     // MARK: Intents
 
     /// Toggles a task. For a routine, sets every step to done, or every step to not done when all are done.
-    /// An event does not change.
-    func toggleDone(blockID: Block.ID) {
+    /// An event does not change. `now` becomes the completion time of a block that becomes done.
+    func toggleDone(blockID: Block.ID, now: Date) {
         guard let index = blocks.firstIndex(where: { $0.id == blockID }) else { return }
         var block = blocks[index]
         switch block.kind {
@@ -70,19 +70,23 @@ final class PlannerStore {
         default:
             block.done.toggle()
         }
+        block.completedAt = block.isDone ? now : nil
         blocks[index] = block
     }
 
-    func toggleStep(blockID: Block.ID, stepID: Step.ID) {
+    /// Toggles one step. A routine gets a completion time when its last step becomes done.
+    func toggleStep(blockID: Block.ID, stepID: Step.ID, now: Date) {
         guard let index = blocks.firstIndex(where: { $0.id == blockID }),
               let stepIndex = blocks[index].steps.firstIndex(where: { $0.id == stepID })
         else { return }
         blocks[index].steps[stepIndex].done.toggle()
+        blocks[index].completedAt = blocks[index].isDone ? now : nil
     }
 
-    func toggleAnytimeTask(id: AnytimeTask.ID) {
+    func toggleAnytimeTask(id: AnytimeTask.ID, now: Date) {
         guard let index = anytimeTasks.firstIndex(where: { $0.id == id }) else { return }
         anytimeTasks[index].done.toggle()
+        anytimeTasks[index].completedAt = anytimeTasks[index].done ? now : nil
     }
 
     /// Adds one to the habit count of the day. At the goal, the count goes back to zero.
@@ -138,9 +142,41 @@ final class PlannerStore {
 
     /// Sets the title of an Inbox item. An empty title does not change the item.
     func renameInboxItem(id: InboxItem.ID, title: String) {
-        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, let index = inboxItems.firstIndex(where: { $0.id == id }) else { return }
+        guard let trimmed = Self.trimmed(title), let index = inboxItems.firstIndex(where: { $0.id == id }) else { return }
         inboxItems[index].title = trimmed
+    }
+
+    /// Adds a project at the end of its area. An empty name adds nothing.
+    /// - Returns: the ID of the new project, or `nil` for an empty name.
+    @discardableResult
+    func addProject(name: String, color: BlockColor, areaID: Area.ID?) -> Project.ID? {
+        guard let name = Self.trimmed(name) else { return nil }
+        let project = Project(name: name, color: color, areaID: areaID)
+        projects.append(project)
+        return project.id
+    }
+
+    /// Adds an area at the end. An empty name adds nothing.
+    /// - Returns: the ID of the new area, or `nil` for an empty name.
+    @discardableResult
+    func addArea(name: String, icon: String) -> Area.ID? {
+        guard let name = Self.trimmed(name) else { return nil }
+        let area = Area(name: name, icon: icon)
+        areas.append(area)
+        return area.id
+    }
+
+    /// Adds an Anytime task with no day to a project, in the project color. An empty title adds nothing.
+    func addAnytimeTask(title: String, projectID: Project.ID) {
+        guard let title = Self.trimmed(title),
+              let project = projects.first(where: { $0.id == projectID })
+        else { return }
+        anytimeTasks.append(AnytimeTask(title: title, icon: "list.bullet", color: project.color, projectID: projectID))
+    }
+
+    func setNotes(projectID: Project.ID, notes: String) {
+        guard let index = projects.firstIndex(where: { $0.id == projectID }) else { return }
+        projects[index].notes = notes
     }
 
     func deleteInboxItem(id: InboxItem.ID) {
@@ -155,5 +191,11 @@ final class PlannerStore {
         }
         let insertIndex = destination - source.filter { $0 < destination }.count
         inboxItems.insert(contentsOf: moving, at: insertIndex)
+    }
+
+    /// The text without leading and trailing white space, or `nil` when nothing is left.
+    private static func trimmed(_ text: String) -> String? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 }

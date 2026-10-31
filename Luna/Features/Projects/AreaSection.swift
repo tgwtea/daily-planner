@@ -26,7 +26,10 @@ struct AreaSection: View {
             }
             GroupedList {
                 ForEach(projects) { project in
-                    ProjectRow(project: project, progress: ProjectProgress(projectID: project.id, in: store), calendar: calendar)
+                    NavigationLink(value: AppRoute.project(project.id)) {
+                        ProjectRow(project: project, progress: ProjectProgress(projectID: project.id, in: store), calendar: calendar)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

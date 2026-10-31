@@ -79,7 +79,6 @@ struct RootView: View {
 
 /// The destination of a pushed route.
 private struct RouteScreen: View {
-    @Environment(PlannerStore.self) private var store
     let route: AppRoute
 
     var body: some View {
@@ -87,8 +86,9 @@ private struct RouteScreen: View {
         case .calendar:
             PlaceholderScreen(title: "Calendar") { EmptyView() }
         case .project(let id):
-            let name = store.projects.first { $0.id == id }?.name ?? "Project"
-            PlaceholderScreen(title: name) { EmptyView() }
+            ProjectDetailScreen(projectID: id)
+        case .smartList(let list):
+            SmartListScreen(list: list)
         case .bandStart(let band):
             BandStartPicker(band: band)
         case .theme:

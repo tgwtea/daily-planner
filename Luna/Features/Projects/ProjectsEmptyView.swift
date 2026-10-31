@@ -1,7 +1,9 @@
 import SwiftUI
 
-/// The Projects tab with no projects. The mockup has none. Checkpoint 1b.6 adds the add action.
+/// The Projects tab with no projects. The mockup has none.
 struct ProjectsEmptyView: View {
+    var onNewProject: () -> Void
+
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: "folder")
@@ -14,17 +16,20 @@ struct ProjectsEmptyView: View {
             Text("Projects you add show here, grouped by area.")
                 .lunaTextStyle(.meta)
                 .foregroundStyle(Color.textSecondary)
+            ChipButton(title: "New Project", systemImage: "plus", action: onNewProject)
+                .fixedSize()
+                .padding(.top, 8)
         }
         .multilineTextAlignment(.center)
         .padding(.vertical, 40)
         .frame(maxWidth: .infinity)
         .background(Color.surfacePrimary, in: RoundedRectangle(cornerRadius: LunaRadius.card))
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 }
 
 #Preview("Dark") {
-    ProjectsEmptyView()
+    ProjectsEmptyView {}
         .padding(LunaSpacing.screenMargin)
         .frame(maxHeight: .infinity)
         .background(Color.bgCanvas)
@@ -32,7 +37,7 @@ struct ProjectsEmptyView: View {
 }
 
 #Preview("Light") {
-    ProjectsEmptyView()
+    ProjectsEmptyView {}
         .padding(LunaSpacing.screenMargin)
         .frame(maxHeight: .infinity)
         .background(Color.bgCanvas)

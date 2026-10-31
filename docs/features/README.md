@@ -14,7 +14,7 @@ The mockup encodes most rules in the `<script data-dc-script>` block of `Plan My
 | [Block editing](block-editing.md) | Edit block | Planned |
 | [Focus and Live Activity](focus-and-live-activity.md) | Today, Focus, Live Activity | Planned |
 | [Habits](habits.md) | Today, Habits | Partial |
-| [Projects and areas](projects-and-areas.md) | Projects | Partial |
+| [Projects and areas](projects-and-areas.md) | Projects, Project detail, Smart list | Implemented |
 | [Calendar views and events](calendar-views-and-events.md) | Calendar, Today, Settings | Planned |
 | [Plan my day suggestions](plan-my-day-suggestions.md) | Plan my day, Settings | Planned |
 | [Settings and appearance](settings-and-appearance.md) | Settings, all | Partial |

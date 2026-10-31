@@ -62,4 +62,54 @@ import Testing
     @Test func orderMatchesMockup() {
         #expect(SmartList.allCases.map(\.title) == ["Upcoming", "Anytime", "Someday", "Logbook"])
     }
+
+    // MARK: Items
+
+    private func items(_ list: SmartList, _ store: PlannerStore) -> [ListItem] {
+        list.items(in: store, today: today, calendar: calendar)
+    }
+
+    @Test func upcomingItemsAreInDateOrderWithoutEvents() {
+        let later = TestCalendar.task(start: TestCalendar.date(2026, 10, 31, 9), minutes: 30)
+        let sooner = TestCalendar.task(start: TestCalendar.date(2026, 10, 30, 15), minutes: 30)
+        let event = Block(kind: .event, title: "Standup", start: tomorrow, durationMinutes: 15)
+        let dated = task("Tomorrow", day: TestCalendar.date(2026, 10, 30))
+        let store = PlannerStore(blocks: [later, event, sooner], anytimeTasks: [dated])
+        #expect(items(.upcoming, store).map(\.id) == [dated.id, sooner.id, later.id])
+    }
+
+    @Test func anytimeItemsKeepStoreOrder() {
+        let first = task("First", day: nil)
+        let second = task("Second", day: nil)
+        let store = PlannerStore(anytimeTasks: [first, task("Dated", day: tomorrow), task("Done", day: nil, done: true), second])
+        #expect(items(.anytime, store).map(\.id) == [first.id, second.id])
+    }
+
+    @Test func somedayItemsAreSomedayItems() {
+        let item = InboxItem(title: "Learn to juggle", durationMinutes: 20, icon: "circle", color: .sand)
+        let store = PlannerStore(inboxItems: [InboxItem(title: "Inbox", durationMinutes: 5, icon: "circle", color: .sand)], somedayItems: [item])
+        #expect(items(.someday, store) == [.someday(item)])
+    }
+
+    @Test func logbookIsNewestFirstWithUndatedLast() {
+        var oldBlock = TestCalendar.task(start: yesterday, minutes: 30)
+        oldBlock.done = true
+        oldBlock.completedAt = yesterday
+        var undated = task("No time", day: nil, done: true)
+        undated.completedAt = nil
+        var newTask = task("New", day: nil, done: true)
+        newTask.completedAt = today
+        var event = Block(kind: .event, title: "Standup", start: yesterday, durationMinutes: 15)
+        event.completedAt = today
+        let open = task("Open", day: nil)
+        let store = PlannerStore(blocks: [oldBlock, event], anytimeTasks: [undated, open, newTask])
+        #expect(items(.logbook, store).map(\.id) == [newTask.id, oldBlock.id, undated.id])
+    }
+
+    @Test func countIsItemCount() {
+        let store = PlannerStore.sample()
+        for list in [SmartList.upcoming, .anytime, .someday] {
+            #expect(count(list, store) == items(list, store).count)
+        }
+    }
 }

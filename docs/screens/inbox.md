@@ -34,6 +34,7 @@ Hold tasks that have no time yet. You place each task into a band of today.
 - **Assumption:** the place buttons use the native iOS 26 round swipe buttons with the `swipeActionTint` color. The system draws the icon white, so light appearance uses a dark neutral, not white `surface-raised`.
 - **Assumption:** the message "No free time in <Band>" shows above the footnote for 2.5 s. VoiceOver announces it.
 - **Assumption:** the meta line shows the project name as the tag. An item with no project shows the duration only.
+- **Decided (2026-10-31):** an item with a project has "Open <Project>" in its context menu and as a VoiceOver action. It pushes [Project detail](project-detail.md) on the Inbox tab. The tag text is not a button.
 
 ## States
 

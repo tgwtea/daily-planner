@@ -54,4 +54,18 @@ import Testing
     @Test func tabsAreFiveInDesignOrder() {
         #expect(AppTab.allCases == [.today, .inbox, .projects, .habits, .settings])
     }
+
+    @Test func pushSmartListAndProjectHideTabBar() {
+        let router = AppRouter()
+        router.selectedTab = .projects
+        router.push(.smartList(.logbook))
+        #expect(router.paths[.projects] == [.smartList(.logbook)])
+        #expect(router.isTabBarHidden)
+        router.pop()
+        let id = UUID()
+        router.selectedTab = .inbox
+        router.push(.project(id))
+        #expect(router.paths[.inbox] == [.project(id)])
+        #expect(router.isTabBarHidden)
+    }
 }
