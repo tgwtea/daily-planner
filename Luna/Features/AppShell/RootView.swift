@@ -35,7 +35,7 @@ struct RootView: View {
             value: router.isTabBarHidden
         )
         .sheet(isPresented: $router.isQuickAddPresented) {
-            QuickAddSheet()
+            QuickAddSheet(prefill: router.quickAddPrefill)
         }
         .sheet(isPresented: Binding(
             get: { router.editingBlockID != nil },

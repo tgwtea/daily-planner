@@ -1,6 +1,6 @@
 # Today
 
-Status: Partial (no Plan sheet, Inbox drawer, or Quick add pre-fill yet)
+Status: Partial (no Plan sheet or Inbox drawer yet)
 Code: `Luna/Features/Today/` (`TodayScreen`, `DayPlan`, `BlockRow`, `BandSectionView`, `WeekStripView`, `HabitStripView`, `AnytimeSection`, `EmptyDayView`, `InboxPill`, `TimeText`), `Luna/Shared/Model/Week.swift`
 Artboards: 2a, 2b, 2c, 2e, 2f (and 2d, 2q as hosts for sheets)
 Features: [Timeline and day bands](../features/timeline-and-day-bands.md), [Block completion and routines](../features/block-completion-and-routines.md), [Anytime tasks](../features/anytime-tasks.md), [Habits](../features/habits.md), [Inbox scheduling](../features/inbox-scheduling.md), [Focus](../features/focus-and-live-activity.md)
@@ -80,7 +80,8 @@ Pill, check circle, band chip, round add button, habit ring, week day cell, now 
 - **Decided (2026-10-31):** the Inbox pill and "Open Inbox" select the Inbox tab. Checkpoint 1c.2 changes both to open the drawer.
 - **Decided (2026-10-31):** the Calendar button pushes the Calendar placeholder route. Checkpoint 1c.5 fills the screen.
 - **Assumption:** the "Plan" chip has no action until 1c.4.
-- **Assumption:** every "+" opens Quick add empty. The band and Anytime pre-fill arrives with the Quick add fields in 1c.1.
+- A band "+" pre-fills its next free time. The Anytime "+" pre-fills Anytime on the shown day. See [Quick add parsing](../features/quick-add-parsing.md#decisions).
+- **Assumption:** the shown day lives in the router (`AppRouter.todayDay`), so that Quick add can open Today on the day of a new block.
 - **Assumption:** a compact "Today" chip shows in the header on any other day. It returns to the current day.
 - **Assumption:** the Anytime section shows on every day with blocks. Its list hides when it is empty.
 - **Assumption:** the timer capsule shows the time left in the active block. The Focus session (1c.6) replaces it.

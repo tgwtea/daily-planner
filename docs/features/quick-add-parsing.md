@@ -1,11 +1,12 @@
 # Quick add parsing
 
-Status: Planned
+Status: Implemented
+Code: `Luna/Shared/Model/QuickAddParser.swift`, `QuickAddDraft.swift`, `RepeatRule.swift`, `BlockIcons.swift`, `PlannerStore.swift` (`addQuickAdd`), `Luna/Features/QuickAdd/QuickAddChip.swift`
 Screens: [Quick add](../screens/quick-add.md)
 
 ## Purpose
 
-Turn one line of plain text into a block or an Inbox task.
+Turn one line of plain text into a block, an Anytime task, or an Inbox task.
 
 ## Observed
 
@@ -31,10 +32,24 @@ Save rules:
 
 ## Assumptions
 
-- Implement the parser as a pure Swift type with unit tests for each example above.
-- Use `Calendar` and the user's time zone for "today" and "tomorrow".
+- The parser is a pure Swift type (`QuickAddParser`). `QuickAddDraft` holds the sheet state and the save rules. Unit tests cover every example and edge case: `LunaTests/QuickAdd/`.
+- `Calendar` and its time zone set "today" and "tomorrow". `calendar.locale` sets the order of a numeric date.
 - "tonight" means today. The mockup does the same. It does not set a time.
 - A time with no am/pm ("at 7") is not a time. The mockup ignores it.
+- An am/pm hour must be 1 to 12. "13pm" is not a time.
+- A 24-hour time needs a colon: `H:MM` or `HH:MM`, 0:00 to 23:59. "9:30" is 9:30 AM. An am/pm time wins over a 24-hour time.
+- When the text has more than one day token, the first one in the text counts.
+- A month-name date reads "nov 3", "Nov 3rd", "november 3", and "3 nov". A date that is already past this year goes to next year. A date that does not exist ("feb 30") stays in the title.
+- A zero duration ("0m") is no duration. The token still leaves the title.
+- The text is the one source of the day, time, and duration. A picker writes a token into the text ("tomorrow", "nov 6", "9:30am", "45m", "2h"). It replaces the token that is there, or adds the token at the end.
+- A token in the text wins over a pre-fill. A day token with a band pre-fill keeps the pre-fill time.
+- A band "+" on a full band pre-fills the band start.
+- A block that starts at 11:59 PM has no time left. It becomes an Anytime task on that day.
+- A no-time item does not open Today. Only a new block opens Today on its day.
+- The Inbox tag "Inbox" means no project (`projectID == nil`).
+- The last color and icon carry over in `@AppStorage` (`quickAddColor`, `quickAddIcon`). The first default is Rose and `phone`, as in the mockup.
+- The 12 icons are the mockup `ICONS` list mapped to SF Symbols (`BlockIcons`).
+- Repeat applies to a block only, like Checklist. The Repeat tool is disabled without a time.
 
 ## Decisions
 
@@ -45,11 +60,15 @@ Save rules:
   - The header "+" and the tab bar "+" pre-fill nothing.
 - **Decided (2026-10-30):** The parser also reads weekday names ("mon", "friday": the next such day), dates in the device locale order ("nov 3", "3/11"), and 24-hour times ("14:30"). English only.
 - **Decided (2026-10-30):** The Date, Time, Duration, Repeat, and Checklist tools open inline native pickers. See [Quick add](../screens/quick-add.md#open-questions).
+- **Decided (2026-10-31):** A weekday name is always 1 to 7 days ahead. On a Monday, "mon" is next Monday.
+- **Decided (2026-10-31):** Quick add sets a repeat rule on the block (`Block.repeatRule`). A rule other than Never makes the block a routine. The repeated display and the per-day reset wait for 1c.3.
+- **Decided (2026-10-31):** The Checklist tool works only when the item becomes a block. Inbox items and Anytime tasks have no steps.
 
 ## Edge cases
 
 - "Run 5k 30m": "5k" stays in the title.
-- Two durations ("1h 30m"): only the first match is used.
+- Two durations ("1h 30m"): only the first match is used. "30m" stays in the title.
+- A weekday inside a word ("Sunrise walk") is not a day.
 
 ## Related
 

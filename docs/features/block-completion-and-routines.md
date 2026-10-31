@@ -23,7 +23,7 @@ Mark blocks done. Track steps inside a routine or a task checklist.
 - A task with steps is not done automatically when all steps are done. Only routines use the all-steps rule.
 - Completion is per day for a repeating block.
 - Use `.sensoryFeedback(.success)` on completion when Haptics is on.
-- `Block.kind` is stored now. When Repeat support arrives (checkpoint 1c.3), the editor sets `routine` from the Repeat rule. The per-day step reset waits for Repeat support.
+- `Block.kind` and `Block.repeatRule` are stored now. Quick add sets both (1c.1). Checkpoint 1c.3 lets the editor change the rule. The per-day step reset waits for 1c.3.
 - Icons are SF Symbol names stored as strings, because the "More" icon picker offers about 60 symbols.
 
 ## Decisions

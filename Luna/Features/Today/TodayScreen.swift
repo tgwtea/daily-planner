@@ -11,8 +11,6 @@ struct TodayScreen: View {
     @AppStorage(SettingsKey.showFreeTime) private var showFreeTime = true
     @AppStorage(SettingsKey.planSuggestions) private var planSuggestions = true
 
-    /// `nil` follows the current day of the clock.
-    @State private var pickedDay: Date?
     @State private var collapsedBands: Set<Band> = []
     @State private var isAnytimeExpanded = true
     @State private var didScrollToNow = false
@@ -23,7 +21,7 @@ struct TodayScreen: View {
     var body: some View {
         TimelineView(.everyMinute) { _ in
             let now = clock.now()
-            let day = pickedDay ?? now
+            let day = router.todayDay ?? now
             let plan = DayPlan.make(
                 blocks: store.blocks(on: day, calendar: calendar),
                 schedule: schedule, calendar: calendar, showFreeTime: showFreeTime
@@ -88,10 +86,11 @@ struct TodayScreen: View {
 
     private func timeline(day: Date, now: Date, plan: DayPlan) -> some View {
         VStack(alignment: .leading, spacing: 22) {
-            AnytimeSection(tasks: store.anytimeTasks(on: day, calendar: calendar), isExpanded: $isAnytimeExpanded)
+            AnytimeSection(day: day, tasks: store.anytimeTasks(on: day, calendar: calendar), isExpanded: $isAnytimeExpanded)
             ForEach(plan.sections) { section in
                 BandSectionView(
                     section: section,
+                    day: day,
                     now: now,
                     overlappingIDs: plan.overlappingIDs,
                     isCollapsed: collapsedBinding(section.band)
@@ -114,7 +113,7 @@ struct TodayScreen: View {
         if !isToday {
             ChipButton(title: "Today", isCompact: true) {
                 withAnimation(LunaMotion.animation(.easeOut(duration: LunaMotion.fast), reduceMotion: reduceMotion)) {
-                    pickedDay = nil
+                    router.todayDay = nil
                 }
             }
             .fixedSize()
@@ -145,8 +144,8 @@ struct TodayScreen: View {
 
     private func dayBinding(now: Date) -> Binding<Date> {
         Binding(
-            get: { pickedDay ?? now },
-            set: { pickedDay = calendar.isDate($0, inSameDayAs: now) ? nil : $0 }
+            get: { router.todayDay ?? now },
+            set: { router.todayDay = calendar.isDate($0, inSameDayAs: now) ? nil : $0 }
         )
     }
 

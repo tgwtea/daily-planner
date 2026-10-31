@@ -184,6 +184,45 @@ final class PlannerStore {
         return start
     }
 
+    /// Where Quick add put a new item.
+    enum QuickAddResult: Equatable {
+        case block(Block.ID, start: Date)
+        case anytime(AnytimeTask.ID)
+        case inbox(InboxItem.ID)
+    }
+
+    /// Saves a Quick add draft. See docs/features/quick-add-parsing.md.
+    /// A block gets the repeat rule and the steps. A rule other than Never makes it a routine (decided 2026-10-30).
+    /// An Inbox item goes to the top. An empty title adds nothing.
+    /// - Returns: the new item, or `nil` for an empty title.
+    @discardableResult
+    func addQuickAdd(_ draft: QuickAddDraft, context: QuickAddContext) -> QuickAddResult? {
+        guard let title = Self.trimmed(draft.parsed(context).title) else { return nil }
+        switch draft.destination(context) {
+        case .block(let start, let duration):
+            let block = Block(
+                kind: draft.repeatRule == .never ? .task : .routine,
+                title: title,
+                start: start,
+                durationMinutes: duration,
+                icon: draft.icon,
+                color: draft.color,
+                steps: draft.cleanSteps.map { Step(title: $0) },
+                repeatRule: draft.repeatRule
+            )
+            blocks.append(block)
+            return .block(block.id, start: start)
+        case .anytime(let day):
+            let task = AnytimeTask(title: title, icon: draft.icon, color: draft.color, day: day)
+            anytimeTasks.append(task)
+            return .anytime(task.id)
+        case .inbox(let duration):
+            let item = InboxItem(title: title, durationMinutes: duration, icon: draft.icon, color: draft.color)
+            inboxItems.insert(item, at: 0)
+            return .inbox(item.id)
+        }
+    }
+
     /// Sets the title of an Inbox item. An empty title does not change the item.
     func renameInboxItem(id: InboxItem.ID, title: String) {
         guard let trimmed = Self.trimmed(title), let index = inboxItems.firstIndex(where: { $0.id == id }) else { return }

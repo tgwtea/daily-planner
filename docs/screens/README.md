@@ -47,7 +47,7 @@ The tab bar and the "+" button show on the four main tabs. They hide on Calendar
 | [Calendar](calendar.md) | Pushed screen | Planned |
 | [Edit block](edit-block.md) | Full screen | Planned |
 | [Focus](focus.md) | Full screen | Planned |
-| [Quick add](quick-add.md) | Sheet | Planned |
+| [Quick add](quick-add.md) | Sheet | Implemented |
 | [Inbox drawer](inbox-drawer.md) | Sheet | Planned |
 | [Plan my day](plan-my-day.md) | Sheet | Planned |
 | [Live Activity](live-activity.md) | System surface | Planned |

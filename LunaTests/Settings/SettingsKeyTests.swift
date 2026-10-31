@@ -7,7 +7,7 @@ import Testing
     }
 
     @Test func listHoldsEveryKey() {
-        #expect(SettingsKey.all.count == 11)
+        #expect(SettingsKey.all.count == 13)
         #expect(SettingsKey.all.contains(SettingsKey.planSuggestions))
     }
 }

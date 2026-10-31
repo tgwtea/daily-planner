@@ -4,12 +4,16 @@ import SwiftUI
 /// See docs/features/timeline-and-day-bands.md.
 struct BandSectionView: View {
     var section: DayPlan.BandSection
+    var day: Date
     var now: Date
     var overlappingIDs: Set<Block.ID>
     @Binding var isCollapsed: Bool
 
     @Environment(AppRouter.self) private var router
+    @Environment(PlannerStore.self) private var store
+    @Environment(\.calendar) private var calendar
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @BandScheduleStorage private var schedule
 
     private var isOpen: Bool { !isCollapsed && !section.blocks.isEmpty }
 
@@ -61,7 +65,13 @@ struct BandSectionView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
             }
-            RoundAddButton(label: "Add to \(section.band.displayName)") { router.openQuickAdd() }
+            RoundAddButton(label: "Add to \(section.band.displayName)") {
+                // The next free time in the band (decided 2026-10-30).
+                router.openQuickAdd(.band(
+                    section.band, day: day, blocks: store.blocks(on: day, calendar: calendar),
+                    now: now, schedule: schedule, calendar: calendar
+                ))
+            }
         }
     }
 
@@ -119,7 +129,7 @@ private struct BandSectionPreview: View {
             schedule: .standard, calendar: SampleData.calendar, showFreeTime: true
         )
         ScrollView {
-            BandSectionView(section: plan.sections[0], now: SampleData.now, overlappingIDs: [], isCollapsed: $collapsed)
+            BandSectionView(section: plan.sections[0], day: SampleData.now, now: SampleData.now, overlappingIDs: [], isCollapsed: $collapsed)
                 .padding(.horizontal, LunaSpacing.screenMargin)
         }
         .background(Color.bgCanvas)

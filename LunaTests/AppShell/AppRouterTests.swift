@@ -20,6 +20,26 @@ import Testing
         #expect(!router.isTabBarHidden)
     }
 
+    @Test func openQuickAddStoresPrefill() {
+        let router = AppRouter()
+        let day = TestCalendar.date(2026, 10, 30)
+        router.openQuickAdd(.anytime(day: day))
+        #expect(router.quickAddPrefill == .anytime(day: day))
+        router.openQuickAdd()
+        #expect(router.quickAddPrefill == QuickAddPrefill.none)
+    }
+
+    @Test func showTodaySelectsTabAndDay() {
+        let router = AppRouter()
+        router.selectedTab = .inbox
+        let now = TestCalendar.date(2026, 10, 29, 10, 20)
+        router.showToday(on: TestCalendar.date(2026, 10, 30, 9), now: now, calendar: TestCalendar.utc)
+        #expect(router.selectedTab == .today)
+        #expect(router.todayDay == TestCalendar.date(2026, 10, 30))
+        router.showToday(on: TestCalendar.date(2026, 10, 29, 15), now: now, calendar: TestCalendar.utc)
+        #expect(router.todayDay == nil)
+    }
+
     @Test func pushAndPopUseSelectedTabPath() {
         let router = AppRouter()
         router.push(.calendar)

@@ -10,7 +10,7 @@ The mockup encodes most rules in the `<script data-dc-script>` block of `Plan My
 | [Block completion and routines](block-completion-and-routines.md) | Today, Edit block | Partial |
 | [Anytime tasks](anytime-tasks.md) | Today | Partial |
 | [Inbox scheduling](inbox-scheduling.md) | Inbox, Inbox drawer, Today | Partial |
-| [Quick add parsing](quick-add-parsing.md) | Quick add | Planned |
+| [Quick add parsing](quick-add-parsing.md) | Quick add | Implemented |
 | [Block editing](block-editing.md) | Edit block | Planned |
 | [Focus and Live Activity](focus-and-live-activity.md) | Today, Focus, Live Activity | Planned |
 | [Habits](habits.md) | Today, Habits | Partial |

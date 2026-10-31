@@ -23,6 +23,12 @@ enum BlockColor: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// The next color in picker order. Plum goes back to Rose. The Quick add color chip uses it.
+    var next: BlockColor {
+        let all = Self.allCases
+        return all[(all.firstIndex(of: self)! + 1) % all.count]
+    }
+
     /// The sRGB conversion of the oklch source value. The same value is used in both themes.
     var color: Color {
         switch self {

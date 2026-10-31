@@ -29,6 +29,7 @@ struct Block: Identifiable, Hashable, Sendable {
     /// The calendar name of an event, for example "Work".
     var calendarName: String?
     var projectID: UUID?
+    var repeatRule: RepeatRule = .never
 
     var end: Date {
         start.addingTimeInterval(TimeInterval(durationMinutes * 60))

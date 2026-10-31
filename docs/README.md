@@ -47,6 +47,9 @@ These terms have one meaning in all docs and in code names.
 | Inbox | Tasks that have no day and no time yet. |
 | Slot search | The rule that finds the first free start for a task in a band. In code: `SlotSearch`. See [Inbox scheduling](features/inbox-scheduling.md). |
 | Step | One checklist item inside a block. |
+| Repeat rule | How a block repeats: Never, Daily, Weekdays, Weekly. A rule other than Never makes the block a routine. In code: `RepeatRule`, `Block.repeatRule`. |
+| Quick add | The sheet that turns one line of text into a block, an Anytime task, or an Inbox task. In code: `QuickAddParser`, `QuickAddDraft`, `QuickAddSheet`. |
+| Pre-fill | The day or time that a "+" button gives Quick add before the user types. A token in the text wins. In code: `QuickAddPrefill`. |
 | Block color | One of five muted colors: Rose, Slate, Sage, Sand, Plum. |
 | Focus session | A countdown timer that runs inside the active block. |
 | Habit | A repeated daily goal with a count, a goal, and a streak. |

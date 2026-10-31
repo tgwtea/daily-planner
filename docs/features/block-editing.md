@@ -27,7 +27,7 @@ Change a block's properties after you create it.
 
 - **Decided (2026-10-30):** Edit block keeps a draft. Save commits the draft. Close discards it. If the draft has changes, Close asks for confirmation.
 - **Decided (2026-10-30):** Tap the hero title to edit it inline. A red "Delete block" row at the bottom deletes the block after a confirmation. The Today row also has a context-menu Delete.
-- **Decided (2026-10-30):** Repeat choices: Never, Daily, Weekdays, Weekly. Alert choices: None, At start, 5, 10, and 15 min before.
+- **Decided (2026-10-30):** Repeat choices: Never, Daily, Weekdays, Weekly. `RepeatRule` holds them (1c.1); Quick add sets the rule. Alert choices: None, At start, 5, 10, and 15 min before.
 - **Decided (2026-10-30):** The icon picker shows the 12 design icons first. A "More" button opens a grid of about 60 curated SF Symbols with search.
 
 ## Unresolved

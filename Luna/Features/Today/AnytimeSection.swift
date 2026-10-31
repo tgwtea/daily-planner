@@ -2,6 +2,7 @@ import SwiftUI
 
 /// The Anytime chip, its "+" button, and the list of tasks with no time. See docs/features/anytime-tasks.md.
 struct AnytimeSection: View {
+    var day: Date
     var tasks: [AnytimeTask]
     @Binding var isExpanded: Bool
 
@@ -19,7 +20,7 @@ struct AnytimeSection: View {
                     }
                 }
                 Spacer()
-                RoundAddButton(label: "Add to Anytime") { router.openQuickAdd() }
+                RoundAddButton(label: "Add to Anytime") { router.openQuickAdd(.anytime(day: day)) }
             }
             if isExpanded && !tasks.isEmpty {
                 GroupedList {
@@ -64,7 +65,7 @@ private struct AnytimeSectionPreview: View {
     @State private var expanded = true
 
     var body: some View {
-        AnytimeSection(tasks: store.anytimeTasks(on: SampleData.now, calendar: SampleData.calendar), isExpanded: $expanded)
+        AnytimeSection(day: SampleData.now, tasks: store.anytimeTasks(on: SampleData.now, calendar: SampleData.calendar), isExpanded: $expanded)
             .padding(LunaSpacing.screenMargin)
             .frame(maxHeight: .infinity)
             .background(Color.bgCanvas)
