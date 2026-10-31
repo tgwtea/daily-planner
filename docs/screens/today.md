@@ -1,6 +1,6 @@
 # Today
 
-Status: Partial (no Plan sheet, Inbox drawer, habit logging, or Quick add pre-fill yet)
+Status: Partial (no Plan sheet, Inbox drawer, or Quick add pre-fill yet)
 Code: `Luna/Features/Today/` (`TodayScreen`, `DayPlan`, `BlockRow`, `BandSectionView`, `WeekStripView`, `HabitStripView`, `AnytimeSection`, `EmptyDayView`, `InboxPill`, `TimeText`), `Luna/Shared/Model/Week.swift`
 Artboards: 2a, 2b, 2c, 2e, 2f (and 2d, 2q as hosts for sheets)
 Features: [Timeline and day bands](../features/timeline-and-day-bands.md), [Block completion and routines](../features/block-completion-and-routines.md), [Anytime tasks](../features/anytime-tasks.md), [Habits](../features/habits.md), [Inbox scheduling](../features/inbox-scheduling.md), [Focus](../features/focus-and-live-activity.md)
@@ -76,7 +76,7 @@ Pill, check circle, band chip, round add button, habit ring, week day cell, now 
 
 ## Implementation (1b.1)
 
-- **Decided (2026-10-31):** the habit strip shows display-only rings. Checkpoint 1b.3 adds logging.
+- **Decided (2026-10-31):** a tap on a habit ring logs the day that Today shows. On a future day the rings do not log. See [Habits](../features/habits.md#decisions).
 - **Decided (2026-10-31):** the Inbox pill and "Open Inbox" select the Inbox tab. Checkpoint 1c.2 changes both to open the drawer.
 - **Decided (2026-10-31):** the Calendar button pushes the Calendar placeholder route. Checkpoint 1c.5 fills the screen.
 - **Assumption:** the "Plan" chip has no action until 1c.4.

@@ -60,8 +60,13 @@ struct TodayScreen: View {
             }
             .padding(.top, 18)
 
-            HabitStripView(habits: store.habits, day: day, calendar: calendar)
-                .padding(.top, 18)
+            HabitStripView(
+                habits: store.habits, day: day, calendar: calendar,
+                canLog: calendar.startOfDay(for: day) <= calendar.startOfDay(for: now)
+            ) { id in
+                store.logHabit(id: id, on: day, calendar: calendar)
+            }
+            .padding(.top, 18)
 
             Group {
                 if plan.isEmpty {

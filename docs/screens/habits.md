@@ -1,6 +1,7 @@
 # Habits
 
-Status: Planned
+Status: Implemented
+Code: `Luna/Features/Habits/` (`HabitsScreen`, `HabitHistoryCard`, `HabitCard`, `HabitsEmptyView`), `Luna/Shared/Model/HabitStats.swift`
 Artboards: 2m
 Features: [Habits](../features/habits.md)
 
@@ -31,15 +32,21 @@ Log daily habits and see streaks and history.
 
 - Tap the check circle: add one to the count. At the goal, the next tap resets to zero. The same rule applies to the ring on Today.
 - A streak of 0 shows in tertiary text.
+- **Decided (2026-10-30):** a tap on a habit card (outside the check circle) shows that habit in the history card. **Assumption:** a second tap shows all habits again. A 1.5 pt `border-strong` ring marks the selected card. The mockup has no selected card.
 
 ## States
 
-- **Assumption:** with no habits, show an empty state with an add action. The mockup has none.
+- **Assumption:** with no habits, a card says "No habits yet" / "Habits you track show here." The mockup has none. Checkpoint 1b.7 adds the add action.
 
 ## Accessibility and iOS notes
 
 - The heatmap needs a summary label (for example "Water, last 12 weeks, 86 percent this month"). Do not expose 84 cells to VoiceOver.
 - The check button label is "Log Water".
+
+## Intended differences from artboard 2m
+
+- The history card header is "All habits", not "Water". The card combines all habits (decided 2026-10-30). Its numbers come from the sample history, not the mockup's static 12, 86%, 31.
+- Read shows a streak of 1, not 4. See [Habits](../features/habits.md#assumptions).
 
 ## Open questions
 

@@ -109,7 +109,7 @@ In code: `BlockColor` in `Luna/Shared/Design/BlockColor.swift`, with `displayNam
 - An icon or check mark on a block color uses ink `#151517` in both themes.
 - A done block uses its color mixed 38% with the canvas, in oklch. A done icon uses ink at 55% opacity.
   - **Assumption (1a.2):** SwiftUI has no oklch mix. The app uses `Color.mix(with:by:in: .perceptual)`, the nearest native color space.
-- The habit heatmap uses Slate mixed 35–100% with the canvas.
+- The habit heatmap uses Slate mixed 35–100% with the canvas. A heatmap filtered to one habit uses that habit's color (1b.3).
 
 ## Typography
 
@@ -206,7 +206,7 @@ These patterns appear on two or more screens. Build each one as a shared view wh
 | Segmented control | Calendar | Day, 3 days, Week, Month |
 | Selected-day fill | Week strip, calendar, month | Circle filled with `text-primary`, number in `text-inverse` |
 
-In code (1a.5): `Luna/Shared/Components/`. `LargeTitleHeader`, `ChipButton` (34 pt, `isCompact` 30 pt), `RoundAddButton`, `CheckCircle` (`.small` 18, `.regular` 26, `.large` 30), `IconTile`, `GroupedList` with `GroupedRow`, `ProgressRing`, and `BlockPill` (the timeline pill). The tab bar is `LunaTabBar`. Glass is `View.lunaGlass(in:)` (`LunaGlass.swift`). The other patterns come with their screens.
+In code (1a.5): `Luna/Shared/Components/`. `LargeTitleHeader`, `ChipButton` (34 pt, `isCompact` 30 pt), `RoundAddButton`, `CheckCircle` (`.small` 18, `.regular` 26, `.large` 30, optional `count` for a multi-count habit), `IconTile`, `GroupedList` with `GroupedRow`, `ProgressRing`, and `BlockPill` (the timeline pill). The tab bar is `LunaTabBar`. Glass is `View.lunaGlass(in:)` (`LunaGlass.swift`). The other patterns come with their screens.
 
 Component values from the prototype (read 2026-10-31):
 

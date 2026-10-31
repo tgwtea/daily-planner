@@ -33,7 +33,7 @@ The tab bar and the "+" button show on the five main tabs. They hide on Calendar
 | [Today](today.md) | Tab | Partial |
 | [Inbox](inbox.md) | Tab | Implemented |
 | [Projects](projects.md) | Tab | Planned |
-| [Habits](habits.md) | Tab | Planned |
+| [Habits](habits.md) | Tab | Implemented |
 | [Settings](settings.md) | Tab | Planned |
 | [Calendar](calendar.md) | Pushed screen | Planned |
 | [Edit block](edit-block.md) | Full screen | Planned |

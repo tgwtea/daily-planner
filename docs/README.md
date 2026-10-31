@@ -50,6 +50,8 @@ These terms have one meaning in all docs and in code names.
 | Block color | One of five muted colors: Rose, Slate, Sage, Sand, Plum. |
 | Focus session | A countdown timer that runs inside the active block. |
 | Habit | A repeated daily goal with a count, a goal, and a streak. |
+| Habit streak | The count of done days in a row, up to today, or up to yesterday when today is not done. In code: `HabitStats`. |
+| Heatmap | The 12-week grid on the Habits history card. One cell is one day. Its shade shows the share done. |
 | Area | A group of projects, for example Work or Personal. |
 | Smart list | A fixed list on the Projects tab: Upcoming, Anytime, Someday, Logbook. |
 | Band schedule | The start minute of each band. Settings edits it. Default 6:00 AM, 12:00 PM, 6:00 PM. In code: `BandSchedule`. |
