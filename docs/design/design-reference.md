@@ -248,7 +248,7 @@ The candidates are assumptions. Check each one in the SF Symbols app.
 
 - Tab bar: use `TabView` with five `Tab`s and hide the system tab bar. **Decided (2026-10-30):** a custom floating tab bar draws the design: a glass capsule with five tabs and a separate primary "+" circle. A system bar with five tabs fills the iPhone width, so a "+" circle cannot sit next to it. See [screens/README.md](../screens/README.md#navigation-map).
 - Sheets: use `.sheet` with `presentationDetents`. The Inbox drawer is a medium detent (440 of 956 pt). Quick add sits above the system keyboard. The mockup draws a fake keyboard. Do not build it.
-- Lists with swipe actions: `List` with `.swipeActions(edge: .trailing)` matches the Inbox swipe.
+- Lists with swipe actions: `List` with `.swipeActions`. The Inbox places with a leading swipe and deletes with a trailing swipe (decided 2026-10-30). Native swipe buttons use `Color.swipeActionTint`: `surface-raised` in dark, a dark neutral in light, because the system draws the icon white.
 - Drag and drop: use `.draggable` and `.dropDestination` on timeline gaps.
 - Calendar events: EventKit, read-only.
 - Live Activity: ActivityKit and a widget extension.

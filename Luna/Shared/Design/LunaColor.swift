@@ -68,6 +68,12 @@ extension Color {
     static let glassFallback = dynamic(dark: .hex(0x2C2C2E), light: .hex(0xF9F9F9))
     static let glassBorder = dynamic(dark: .white(0.12), light: .black(0.08))
     static let glassItemHover = dynamic(dark: .white(0.10), light: .black(0.06))
+
+    // MARK: Swipe actions
+
+    /// The fill of a native swipe action button. Dark is `surface-raised`.
+    /// The system draws the icon white, so light uses a dark neutral instead of the white `surface-raised`.
+    static let swipeActionTint = dynamic(dark: .hex(0x434343), light: .hex(0x6B6B70))
 }
 
 extension Color {

@@ -1,7 +1,7 @@
 # Inbox scheduling
 
-Status: Partial (model and schedule intent only, no slot search, no UI)
-Code: `Luna/Shared/Model/InboxItem.swift`, `Luna/Shared/Model/PlannerStore.swift`
+Status: Partial (place in a band done; drawer tap and drag in 1c.2)
+Code: `Luna/Shared/Model/SlotSearch.swift`, `Luna/Shared/Model/InboxItem.swift`, `Luna/Shared/Model/PlannerStore.swift` (`placeInBand`, `schedule`, `renameInboxItem`, `deleteInboxItem`, `moveInboxItems`), `Luna/Features/Inbox/`
 Screens: [Inbox](../screens/inbox.md), [Inbox drawer](../screens/inbox-drawer.md), [Today](../screens/today.md)
 
 ## Purpose
@@ -38,7 +38,12 @@ The Inbox pill on Today shows the Inbox count. It hides when the Inbox is empty.
 
 ## Assumptions
 
-- The slot search is a pure function with unit tests. Inputs: blocks, day, band, duration, now.
+- The slot search is a pure function with unit tests: `SlotSearch.firstFreeSlot`. Inputs: blocks, day, band, duration, now, band schedule.
+- "Now rounded up" uses whole minutes. 10:20 becomes 10:30. 10:30 stays 10:30. The now rule applies only when the day is the day of now.
+- The 7:00 AM floor applies to every band, also when Settings moves the Morning start earlier.
+- Night ends at 11:59 PM in the slot search. A slot that ends after 11:59 PM does not fit. This matches the [day limit](timeline-and-day-bands.md#decisions).
+- A block that touches the slot (ends at its start, or starts at its end) does not overlap.
+- Place in a band uses today, the day of the app clock. It does not use the day that Today shows.
 - Events count as busy time in the slot search. The mockup code treats all blocks as busy.
 - Drag snaps to 15 minutes.
 - The tag is stored as `projectID`. The scheduled block keeps the same `projectID`.

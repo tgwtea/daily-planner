@@ -26,6 +26,8 @@ struct RootView: View {
             if !router.isTabBarHidden {
                 LunaTabBar()
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    // The tab bar stays at the bottom while the Inbox title alert shows the keyboard.
+                    .ignoresSafeArea(.keyboard)
             }
         }
         .animation(
@@ -63,6 +65,8 @@ struct RootView: View {
         switch tab {
         case .today:
             TodayScreen()
+        case .inbox:
+            InboxScreen()
         case .projects:
             PlaceholderScreen(title: tab.title) { ProjectsShellActions() }
         default:

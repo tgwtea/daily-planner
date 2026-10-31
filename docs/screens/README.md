@@ -31,7 +31,7 @@ The tab bar and the "+" button show on the five main tabs. They hide on Calendar
 | Screen | Kind | Status |
 | --- | --- | --- |
 | [Today](today.md) | Tab | Partial |
-| [Inbox](inbox.md) | Tab | Planned |
+| [Inbox](inbox.md) | Tab | Implemented |
 | [Projects](projects.md) | Tab | Planned |
 | [Habits](habits.md) | Tab | Planned |
 | [Settings](settings.md) | Tab | Planned |

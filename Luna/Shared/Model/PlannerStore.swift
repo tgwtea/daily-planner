@@ -105,4 +105,46 @@ final class PlannerStore {
         inboxItems.remove(at: index)
         return true
     }
+
+    /// Schedules an Inbox item at the first free slot in `band` of today (the day of `now`).
+    /// - Returns: the start of the new block, or `nil` when the band has no free slot. The item then stays in the Inbox.
+    @discardableResult
+    func placeInBand(
+        inboxItemID: InboxItem.ID,
+        band: Band,
+        now: Date,
+        schedule: BandSchedule,
+        calendar: Calendar
+    ) -> Date? {
+        guard let item = inboxItems.first(where: { $0.id == inboxItemID }),
+              let start = SlotSearch.firstFreeSlot(
+                  durationMinutes: item.durationMinutes, in: band, day: now,
+                  blocks: blocks(on: now, calendar: calendar), now: now,
+                  schedule: schedule, calendar: calendar
+              ),
+              self.schedule(inboxItemID: inboxItemID, at: start, calendar: calendar)
+        else { return nil }
+        return start
+    }
+
+    /// Sets the title of an Inbox item. An empty title does not change the item.
+    func renameInboxItem(id: InboxItem.ID, title: String) {
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty, let index = inboxItems.firstIndex(where: { $0.id == id }) else { return }
+        inboxItems[index].title = trimmed
+    }
+
+    func deleteInboxItem(id: InboxItem.ID) {
+        inboxItems.removeAll { $0.id == id }
+    }
+
+    /// Moves Inbox items with `List.onMove` semantics: `destination` is an offset in the list before the move.
+    func moveInboxItems(fromOffsets source: IndexSet, toOffset destination: Int) {
+        let moving = source.map { inboxItems[$0] }
+        for index in source.sorted(by: >) {
+            inboxItems.remove(at: index)
+        }
+        let insertIndex = destination - source.filter { $0 < destination }.count
+        inboxItems.insert(contentsOf: moving, at: insertIndex)
+    }
 }

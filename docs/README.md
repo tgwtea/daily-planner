@@ -45,6 +45,7 @@ These terms have one meaning in all docs and in code names.
 | Free gap | A row between two blocks that shows unplanned time. |
 | Anytime | Tasks for the selected day that have no time. |
 | Inbox | Tasks that have no day and no time yet. |
+| Slot search | The rule that finds the first free start for a task in a band. In code: `SlotSearch`. See [Inbox scheduling](features/inbox-scheduling.md). |
 | Step | One checklist item inside a block. |
 | Block color | One of five muted colors: Rose, Slate, Sage, Sand, Plum. |
 | Focus session | A countdown timer that runs inside the active block. |

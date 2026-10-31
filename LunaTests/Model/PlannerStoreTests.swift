@@ -114,4 +114,61 @@ import Testing
         let store = PlannerStore(blocks: [late, other, early])
         #expect(store.blocks(on: day, calendar: calendar).map(\.id) == [early.id, late.id])
     }
+
+    // MARK: Inbox
+
+    private func inboxItem(_ title: String, minutes: Int = 30) -> InboxItem {
+        InboxItem(title: title, durationMinutes: minutes, icon: "phone", color: .rose, projectID: UUID())
+    }
+
+    @Test func placeInBandSchedulesAtFirstFreeSlot() throws {
+        let item = inboxItem("Call the dentist")
+        let busy = TestCalendar.task(start: TestCalendar.date(2026, 10, 29, 10, 30), minutes: 30)
+        let store = PlannerStore(blocks: [busy], inboxItems: [item])
+        let now = TestCalendar.date(2026, 10, 29, 10, 20)
+        let start = store.placeInBand(inboxItemID: item.id, band: .morning, now: now, schedule: .standard, calendar: calendar)
+        #expect(start == TestCalendar.date(2026, 10, 29, 11))
+        #expect(store.inboxItems.isEmpty)
+        let block = try #require(store.blocks.first { $0.title == "Call the dentist" })
+        #expect(block.start == start)
+        #expect(block.projectID == item.projectID)
+    }
+
+    @Test func placeInBandWithNoFitKeepsItem() {
+        let item = inboxItem("Draft review", minutes: 60)
+        let store = PlannerStore(inboxItems: [item])
+        let now = TestCalendar.date(2026, 10, 29, 11, 20)
+        #expect(store.placeInBand(inboxItemID: item.id, band: .morning, now: now, schedule: .standard, calendar: calendar) == nil)
+        #expect(store.inboxItems == [item])
+        #expect(store.blocks.isEmpty)
+    }
+
+    @Test func renameInboxItemTrimsAndIgnoresEmpty() {
+        let item = inboxItem("Call")
+        let store = PlannerStore(inboxItems: [item])
+        store.renameInboxItem(id: item.id, title: "  Call the dentist ")
+        #expect(store.inboxItems[0].title == "Call the dentist")
+        store.renameInboxItem(id: item.id, title: "   ")
+        #expect(store.inboxItems[0].title == "Call the dentist")
+    }
+
+    @Test func deleteInboxItemRemovesIt() {
+        let first = inboxItem("A")
+        let second = inboxItem("B")
+        let store = PlannerStore(inboxItems: [first, second])
+        store.deleteInboxItem(id: first.id)
+        #expect(store.inboxItems == [second])
+    }
+
+    @Test(arguments: [
+        (IndexSet([0]), 3, ["B", "C", "A", "D"]),
+        (IndexSet([3]), 0, ["D", "A", "B", "C"]),
+        (IndexSet([0, 2]), 4, ["B", "D", "A", "C"]),
+        (IndexSet([1]), 1, ["A", "B", "C", "D"]),
+    ])
+    func moveInboxItemsMatchesListOnMove(source: IndexSet, destination: Int, expected: [String]) {
+        let store = PlannerStore(inboxItems: ["A", "B", "C", "D"].map { inboxItem($0) })
+        store.moveInboxItems(fromOffsets: source, toOffset: destination)
+        #expect(store.inboxItems.map(\.title) == expected)
+    }
 }
