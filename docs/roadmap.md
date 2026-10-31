@@ -295,7 +295,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.5 | Shared components | Done | Claude Code (Opus 5.5) | 2026-10-31 | e542f0f | 8 components + gallery (`-LunaComponentsGallery`). 61 tests pass. Checked in simulator, dark and light. No artboard comparison: 1a.6 pending. |
 | 1a.6 | Artboard PNG export | Deprecated | Claude Code (Opus 5.5) | 2026-10-31 | | User skipped the PNG export. Agents read artboards from the design project. |
 | 1b.1 | Today | Done | Claude Code (Opus 5.5) | 2026-10-31 | 08702a0 | 81 tests pass. Checked in simulator, dark and light, against 2b/2c/2e/2f markup. Habit strip display only (1b.3). Inbox pill and Open Inbox select the Inbox tab until 1c.2. |
-| 1b.2 | Inbox | Partial | Claude Code (Opus 5.5) | 2026-10-31 | ef35145 | All Build items and slot search tests done. Artboard 2k comparison not done: design project read fails (403). Drag to reorder not confirmed in the simulator. |
+| 1b.2 | Inbox | Done | Claude Code (Opus 5.5) | 2026-10-31 | e5a9145 | Checked in simulator, dark and light, against 2k markup. Drag to reorder not confirmed in the simulator; unit tests cover the move. |
 | 1b.3 | Habits | Not started | | | | |
 | 1b.4 | Projects | Not started | | | | |
 | 1b.5 | Settings | Not started | | | | |
