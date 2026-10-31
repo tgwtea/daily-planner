@@ -300,7 +300,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1b.4 | Projects | Done | Claude Code (Opus 5.5) | 2026-10-31 | ff2747b | Checked in simulator, dark and light, against 2l markup. Counts derived from items (decided 2026-10-31): Sync engine 58%, Lisbon trip 33%, Health 71%. Date line follows the device locale. Rows do not navigate (1b.6). |
 | 1b.5 | Settings | Done | Claude Code (Opus 5.5) | 2026-10-31 | 33e22df | Checked in simulator, dark and light, against 2n markup. Band starts: strict order, 1 h min, 15 min steps (decided 2026-10-31). Calendar events, Live Activity, Haptics, sound stored only (2.2–2.4). |
 | 1b.6 | Project detail and smart lists | Done | Claude Code (Opus 5.5) | 2026-10-31 | 873669c | Checked in simulator, dark and light. No artboard for detail or lists. Logbook sorts by `completedAt` (decided 2026-10-31). 178 tests pass. |
-| 1b.7 | Habit management | In progress | Claude Code (Opus 5.5) | | | |
+| 1b.7 | Habit management | Done | Claude Code (Opus 5.5) | 2026-10-31 | 07c351c | Checked in simulator, dark and light. No artboard for editor or archived list. Tap on a swipe button not confirmed in the simulator; full swipe works. 201 tests pass. |
 | 1c.1 | Quick add | Not started | | | | |
 | 1c.2 | Inbox drawer | Not started | | | | |
 | 1c.3 | Edit block | Not started | | | | |
