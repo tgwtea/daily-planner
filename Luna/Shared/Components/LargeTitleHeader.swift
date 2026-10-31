@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The 34 pt screen title with an optional 15 pt secondary line and trailing controls.
-/// Today, Inbox, Projects, Habits, and Settings use it.
+/// Today, Inbox, Projects, and Habits use it.
 /// See docs/design/design-reference.md#reusable-patterns.
 struct LargeTitleHeader<Trailing: View>: View {
     enum SubtitlePosition {

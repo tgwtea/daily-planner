@@ -51,8 +51,19 @@ import Testing
         #expect(!router.isTabBarHidden)
     }
 
-    @Test func tabsAreFiveInDesignOrder() {
-        #expect(AppTab.allCases == [.today, .inbox, .projects, .habits, .settings])
+    @Test func tabsAreFourWithoutSettings() {
+        #expect(AppTab.allCases == [.today, .inbox, .projects, .habits])
+    }
+
+    @Test func pushSettingsFromTodayHidesTabBar() {
+        let router = AppRouter()
+        router.push(.settings)
+        router.push(.theme)
+        #expect(router.paths[.today] == [.settings, .theme])
+        #expect(router.isTabBarHidden)
+        router.pop()
+        router.pop()
+        #expect(!router.isTabBarHidden)
     }
 
     @Test func pushSmartListAndProjectHideTabBar() {

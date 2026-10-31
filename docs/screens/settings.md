@@ -9,9 +9,11 @@ Features: [Settings and appearance](../features/settings-and-appearance.md)
 
 Change how the timeline, calendar, focus, and suggestions behave.
 
+**Decided (2026-10-31):** Settings is not a tab. The gear in the Today header pushes it. It uses the system navigation bar with a large "Settings" title and a back button. The tab bar hides on it. See [navigation map](README.md#navigation-map).
+
 ## Layout (top to bottom)
 
-Title "Settings" (34 pt bold), then grouped lists with headers and footers:
+Navigation bar with a large title "Settings", then grouped lists with headers and footers:
 
 | Group | Rows | Footer |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The floating tab bar: a glass capsule with the five tabs and a separate primary "+" circle.
+/// The floating tab bar: a glass capsule with the four tabs and a separate primary "+" circle.
 /// See docs/design/design-reference.md#reusable-patterns (Floating tab bar).
 struct LunaTabBar: View {
     @Environment(AppRouter.self) private var router

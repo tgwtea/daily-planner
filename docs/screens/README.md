@@ -9,20 +9,23 @@ Tab bar (glass) ─┬─ Today ──┬─ Calendar (push)
                  │          ├─ Edit block (tap a task pill)
                  │          ├─ Focus (Focus button on the active block)
                  │          ├─ Inbox drawer (sheet, from the Inbox pill)
-                 │          └─ Plan my day (sheet, from the Plan button)
+                 │          ├─ Plan my day (sheet, from the Plan button)
+                 │          └─ Settings (push, from the gear) ─┬─ Band start (push)
+                 │                                             └─ Theme (push)
                  ├─ Inbox
                  ├─ Projects ─┬─ Project detail (push)
                  │            └─ Smart list (push)
-                 ├─ Habits ───┬─ Habit editor (sheet)
-                 │            └─ Archived habits (push)
-                 └─ Settings
+                 └─ Habits ───┬─ Habit editor (sheet)
+                              └─ Archived habits (push)
 "+" button (next to the tab bar) ── Quick add (sheet, from every tab)
 Focus ── Live Activity (system lock screen and Dynamic Island)
 ```
 
 **Decided (2026-10-30):** a `TabView` for the five tabs with the system tab bar hidden, plus a custom floating tab bar (`LunaTabBar`): a glass capsule with the five tabs and a separate primary "+" circle. This replaces the first decision (system tab bar plus a "+" circle). On iPhone, the system bar with five tabs fills the width, and a sixth tab goes into a "More" tab. Edit block is a large sheet. Focus is a full-screen cover. A project row pushes a project detail screen.
 
-The tab bar and the "+" button show on the five main tabs. They hide on Calendar, Edit block, Focus, and while Quick add is open.
+**Decided (2026-10-31):** the tab bar has four tabs (Today, Inbox, Projects, Habits). Settings is a push from a gear icon button in the Today header. Reason: on a 375 pt iPhone, five tabs plus the "+" circle leave about 50 pt per tab, and "Projects" and "Settings" truncate at larger text sizes. Four tabs give about 63 pt each. This is an intended difference from the artboards, which show five tabs.
+
+The tab bar and the "+" button show on the four main tabs. They hide on Calendar, Settings, Edit block, Focus, and while Quick add is open.
 
 **Implemented (1a.4):** `Luna/Features/AppShell/` (`RootView`, `LunaTabBar`, `AppRouter`, `AppRoute`, `AppTab`). `AppRouter.isTabBarHidden` controls the bar. Each tab and route is a placeholder until its checkpoint. Today is built (1b.1). Projects pushes project detail and the smart lists (1b.6). Habits pushes the archived habits (1b.7). The Inbox context menu pushes project detail on the Inbox tab.
 

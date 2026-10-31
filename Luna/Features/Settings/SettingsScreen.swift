@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Pushed from the gear in the Today header. See docs/screens/settings.md.
 struct SettingsScreen: View {
     @Environment(AppRouter.self) private var router
     @Environment(\.calendar) private var calendar
@@ -17,9 +18,6 @@ struct SettingsScreen: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                LargeTitleHeader(title: "Settings")
-                    .padding(.horizontal, -LunaSpacing.screenMargin)
-
                 GroupedSection(header: "Day bands", footer: "Blocks move into the band their start time falls in.") {
                     ForEach(Band.allCases) { band in
                         Button { router.push(.bandStart(band)) } label: {
@@ -71,12 +69,12 @@ struct SettingsScreen: View {
             }
             .buttonStyle(.plain)
             .padding(.horizontal, LunaSpacing.screenMargin)
-            .padding(.top, 14)
-            .padding(.bottom, LunaTabBar.height + LunaSpacing.sectionGap)
+            .padding(.vertical, LunaSpacing.sectionHeaderGap)
         }
         .scrollIndicators(.hidden)
         .background(Color.bgCanvas)
-        .toolbar(.hidden, for: .navigationBar)
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.large)
     }
 
     private func toggleRow(_ title: String, isOn: Binding<Bool>) -> some View {

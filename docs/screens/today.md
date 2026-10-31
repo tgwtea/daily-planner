@@ -11,7 +11,7 @@ Show one day as a timeline. You see what is next, tick off blocks, and find free
 
 ## Layout (top to bottom)
 
-1. **Header.** Date line (15 pt medium, secondary), for example "Thursday, October 29". Below it, the title: "Today" for the current day, or the weekday name for another day (34 pt bold). Trailing: a "Plan" capsule (sparkles icon, 36 pt high) and a glass "Calendar" icon button (44 pt).
+1. **Header.** Date line (15 pt medium, secondary), for example "Thursday, October 29". Below it, the title: "Today" for the current day, or the weekday name for another day (34 pt bold). Trailing: a "Plan" capsule (sparkles icon, 36 pt high), a glass "Calendar" icon button (44 pt), and a glass "Settings" gear icon button (44 pt) that pushes Settings. **Decided (2026-10-31):** the gear is not in the artboards. It replaces the Settings tab. See [navigation map](README.md#navigation-map).
 2. **Week strip.** Seven columns, Monday to Sunday. Each column has a weekday letter (12 pt, tertiary), a day number in a 38 pt circle (17 pt semibold), and a 4 pt dot if the day has blocks. The selected day has a filled circle. Past days use tertiary text. Future days use secondary text.
 3. **Habit strip.** A row of habit rings that scrolls sideways. Each ring is 60 pt with a 3 pt progress stroke in the habit color and an icon. The label under it is the count ("5/8") for a multi-count habit, or the name. A done habit fills the circle with its color. The strip shows only the habits scheduled on the shown day (decided 2026-10-31). With none, the strip hides.
 4. **Anytime section.** A capsule chip "Anytime N" with a clock icon and a chevron. A round "+" button on the trailing side. Below it, a grouped list of Anytime rows. See [Anytime tasks](../features/anytime-tasks.md).

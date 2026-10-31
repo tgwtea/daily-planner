@@ -202,7 +202,7 @@ These patterns appear on two or more screens. Build each one as a shared view wh
 | Settings row | Settings, Projects, Edit block | Leading 32 pt icon box, title, trailing value, chevron or switch |
 | Progress ring | Habits strip, projects | Circular stroke in the item color on a `surface-tertiary` track |
 | Glass sheet | Quick add, drawer, Plan | Radius 36 top corners, grabber 36 × 5 pt |
-| Floating tab bar | Main tabs | Glass capsule, 64 pt high, 5 tabs, plus a separate 64 pt primary "+" circle |
+| Floating tab bar | Main tabs | Glass capsule, 64 pt high, 5 tabs, plus a separate 64 pt primary "+" circle. The app uses 4 tabs (decided 2026-10-31, see [Native SwiftUI notes](#native-swiftui-notes)) |
 | Segmented control | Calendar | Day, 3 days, Week, Month |
 | Selected-day fill | Week strip, calendar, month | Circle filled with `text-primary`, number in `text-inverse` |
 
@@ -248,7 +248,7 @@ The candidates are assumptions. Check each one in the SF Symbols app.
 
 ## Native SwiftUI notes
 
-- Tab bar: use `TabView` with five `Tab`s and hide the system tab bar. **Decided (2026-10-30):** a custom floating tab bar draws the design: a glass capsule with five tabs and a separate primary "+" circle. A system bar with five tabs fills the iPhone width, so a "+" circle cannot sit next to it. See [screens/README.md](../screens/README.md#navigation-map).
+- Tab bar: use `TabView` with four `Tab`s and hide the system tab bar. **Decided (2026-10-30):** a custom floating tab bar draws the design: a glass capsule with five tabs and a separate primary "+" circle. A system bar with five tabs fills the iPhone width, so a "+" circle cannot sit next to it. See [screens/README.md](../screens/README.md#navigation-map). **Decided (2026-10-31):** four tabs. Settings moves to a gear in the Today header. This is an intended difference from the design.
 - Sheets: use `.sheet` with `presentationDetents`. The Inbox drawer is a medium detent (440 of 956 pt). Quick add sits above the system keyboard. The mockup draws a fake keyboard. Do not build it.
 - Lists with swipe actions: `List` with `.swipeActions`. The Inbox places with a leading swipe and deletes with a trailing swipe (decided 2026-10-30). Native swipe buttons use `Color.swipeActionTint`: `surface-raised` in dark, a dark neutral in light, because the system draws the icon white.
 - Drag and drop: use `.draggable` and `.dropDestination` on timeline gaps.

@@ -132,6 +132,15 @@ struct TodayScreen: View {
             .lunaGlass(in: Circle())
             .contentShape(Circle())
             .buttonStyle(PressScaleButtonStyle(scale: LunaMotion.PressScale.iconButton))
+        // Settings left the tab bar (decided 2026-10-31). See docs/screens/README.md#navigation-map.
+        Button("Settings", systemImage: "gearshape") { router.push(.settings) }
+            .labelStyle(.iconOnly)
+            .font(.system(size: 18, weight: .medium))
+            .foregroundStyle(Color.textPrimary)
+            .frame(width: LunaSpacing.minHitTarget, height: LunaSpacing.minHitTarget)
+            .lunaGlass(in: Circle())
+            .contentShape(Circle())
+            .buttonStyle(PressScaleButtonStyle(scale: LunaMotion.PressScale.iconButton))
     }
 
     private func dayBinding(now: Date) -> Binding<Date> {

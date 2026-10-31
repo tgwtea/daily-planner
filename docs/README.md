@@ -65,7 +65,7 @@ These terms have one meaning in all docs and in code names.
 | Band schedule | The start minute of each band. Settings edits it. Default 6:00 AM, 12:00 PM, 6:00 PM. Each band is at least 1 hour long. In code: `BandSchedule`, stored by `BandScheduleStorage`. |
 | Store | The one `@Observable` object that holds all app data and its intents. In code: `PlannerStore`. |
 | Sample data | The mockup week (Thursday, October 29, 2026, 10:20 AM). DEBUG builds only: previews and the `-LunaSampleData` launch argument. |
-| App shell | The root view: the five tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
+| App shell | The root view: the four tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
 | Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail, smart list, band start, theme, archived habits). In code: `AppRoute`. |
 | Router | The `@Observable` navigation state: selected tab, one route path per tab, and the open sheet or cover. In code: `AppRouter`. |
 | Shared component | A reusable view that two or more screens use, built from design tokens. In code: `Luna/Shared/Components/`. `ComponentsGallery` shows all of them in DEBUG builds (previews and the `-LunaComponentsGallery` launch argument). |

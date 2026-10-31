@@ -1,10 +1,9 @@
-/// The five main tabs. See docs/screens/README.md#navigation-map.
+/// The four main tabs. Settings is a push from the Today header. See docs/screens/README.md#navigation-map.
 enum AppTab: Hashable, CaseIterable, Sendable {
     case today
     case inbox
     case projects
     case habits
-    case settings
 
     var title: String {
         switch self {
@@ -12,7 +11,6 @@ enum AppTab: Hashable, CaseIterable, Sendable {
         case .inbox: "Inbox"
         case .projects: "Projects"
         case .habits: "Habits"
-        case .settings: "Settings"
         }
     }
 
@@ -22,7 +20,6 @@ enum AppTab: Hashable, CaseIterable, Sendable {
         case .inbox: "tray"
         case .projects: "folder"
         case .habits: "repeat"
-        case .settings: "slider.horizontal.3"
         }
     }
 }

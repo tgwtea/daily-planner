@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// The app shell: five tabs, the custom tab bar with the "+" button, and the root sheets and cover.
-/// The system tab bar stays hidden. A 5-tab system bar fills the width, so the "+" circle cannot sit next to it.
+/// The app shell: four tabs, the custom tab bar with the "+" button, and the root sheets and cover.
+/// The system tab bar stays hidden, so the "+" circle can sit next to the custom bar.
 /// See docs/screens/README.md#navigation-map.
 struct RootView: View {
     @Environment(AppRouter.self) private var router
@@ -71,8 +71,6 @@ struct RootView: View {
             ProjectsScreen()
         case .habits:
             HabitsScreen()
-        case .settings:
-            SettingsScreen()
         }
     }
 }
@@ -95,6 +93,8 @@ private struct RouteScreen: View {
             ThemePicker()
         case .archivedHabits:
             ArchivedHabitsScreen()
+        case .settings:
+            SettingsScreen()
         }
     }
 }

@@ -89,6 +89,7 @@ Done. This file, the specs, the design reference, and the open questions.
 - **Read:** [screens/README.md](screens/README.md), [design-reference.md](design/design-reference.md#native-swiftui-notes)
 - **Build:** Root `TabView` with Today, Inbox, Projects, Habits, Settings (each an empty titled placeholder view). The floating "+" button next to the tab bar opens an empty Quick add sheet. A navigation route type for pushed screens (Calendar, project detail). Edit block is a large sheet. Focus is a full-screen cover. Theme from `@AppStorage`. Replace `ContentView`.
 - **Decided (2026-10-30):** a custom floating tab bar (glass capsule with five tabs and a separate "+" circle) over a `TabView` with the system bar hidden. This replaces the first decision (system tab bar plus a "+" circle). See [screens/README.md](screens/README.md#navigation-map).
+- **Decided (2026-10-31):** four tabs. Settings moved out of the tab bar to a gear in the Today header, because five tabs plus "+" are too tight on a 375 pt iPhone.
 - **Done when:** all five tabs switch. The "+" button opens and closes the sheet. The tab bar hides on pushed screens.
 
 ### 1a.5 Shared components
