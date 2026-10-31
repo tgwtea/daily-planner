@@ -3,7 +3,7 @@ import SwiftUI
 /// A small sheet to add an area: name and icon. See docs/features/projects-and-areas.md#decisions.
 struct NewAreaSheet: View {
     /// The SF Symbols that a user can give an area.
-    static let icons: [(symbol: String, name: String)] = [
+    static let icons: [IconChoiceGrid.Icon] = [
         ("briefcase", "Briefcase"), ("house", "House"), ("heart", "Heart"), ("book", "Book"),
         ("graduationcap", "School"), ("figure.run", "Sport"), ("paintpalette", "Art"), ("airplane", "Travel"),
     ]
@@ -25,26 +25,7 @@ struct NewAreaSheet: View {
                 }
                 .listRowBackground(Color.surfacePrimary)
                 Section("Icon") {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 8) {
-                        ForEach(Self.icons, id: \.symbol) { symbol, iconName in
-                            Button {
-                                icon = symbol
-                            } label: {
-                                Image(systemName: symbol)
-                                    .font(.system(size: 18, weight: .medium))
-                                    .foregroundStyle(symbol == icon ? Color.textInverse : Color.textPrimary)
-                                    .frame(maxWidth: .infinity, minHeight: LunaSpacing.minHitTarget)
-                                    .background(
-                                        symbol == icon ? Color.textPrimary : Color.surfaceTertiary,
-                                        in: RoundedRectangle(cornerRadius: LunaRadius.iconTile)
-                                    )
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(iconName)
-                            .accessibilityAddTraits(symbol == icon ? .isSelected : [])
-                        }
-                    }
-                    .padding(.vertical, 4)
+                    IconChoiceGrid(icons: Self.icons, selection: $icon)
                 }
                 .listRowBackground(Color.surfacePrimary)
             }

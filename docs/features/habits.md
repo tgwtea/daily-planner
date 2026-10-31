@@ -1,8 +1,8 @@
 # Habits
 
-Status: Partial (no weekday schedules or habit management until 1b.7)
-Code: `Luna/Shared/Model/Habit.swift`, `Luna/Shared/Model/HabitStats.swift`, `Luna/Shared/Model/PlannerStore.swift` (`logHabit`), `Luna/Features/Habits/`, `Luna/Features/Today/HabitStripView.swift`
-Screens: [Today](../screens/today.md), [Habits](../screens/habits.md)
+Status: Implemented
+Code: `Luna/Shared/Model/Habit.swift`, `Weekday.swift`, `HabitDraft.swift`, `HabitStats.swift`, `PlannerStore.swift` (`logHabit`, `addHabit`, `updateHabit`, `archiveHabit`, `restoreHabit`, `deleteArchivedHabit`, `moveHabits`), `Luna/Features/Habits/`, `Luna/Features/Today/HabitStripView.swift`
+Screens: [Today](../screens/today.md), [Habits](../screens/habits.md), [Habit editor](../screens/habit-editor.md), [Archived habits](../screens/archived-habits.md)
 
 ## Purpose
 
@@ -21,10 +21,14 @@ Track small daily goals and keep streaks.
 
 ## Assumptions
 
-- The streak counts consecutive done days up to and including today, or up to yesterday if today is not done yet.
-- "This month" is the done-day count divided by the elapsed days in the month.
-- Heatmap shade for one habit is value / goal per day. A cell with a share above 0 mixes the habit color with the canvas at 35–100%. A share of 0 and a future day use `surface-tertiary`. The columns are weeks, oldest first. Each column runs Monday to Sunday.
-- Until 1b.7, every habit is scheduled every day.
+- The streak counts consecutive done days up to and including today, or up to yesterday if today is not done yet. An off day is skipped. It does not break or extend the streak.
+- An off day is a day that is not in the weekday set of the habit. For all habits together, an off day is a day on which no habit is scheduled.
+- A log on an off day counts as a done day in the streak. Logging is not blocked on an off day.
+- "This month" is done scheduled habit-days divided by scheduled habit-days in the elapsed month. With no scheduled day it is 0%.
+- Heatmap shade for one habit is value / goal per day. An off day has a share of 0. A cell with a share above 0 mixes the habit color with the canvas at 35–100%. A share of 0 and a future day use `surface-tertiary`. The columns are weeks, oldest first. Each column runs Monday to Sunday.
+- A new habit is scheduled every day. A habit needs at least one weekday. The goal is 1 to 99.
+- An empty detail shows the schedule as the card subtitle, for example "Mon, Wed, Fri". In code: `Weekday.summary(of:)`.
+- Archive moves a habit to `PlannerStore.archivedHabits` with its history. Restore adds it at the end of the habit list.
 - Streak and percent math is a pure function with unit tests.
 - A habit stores its count per day in `history`, keyed by the start of the day. "Value today" is the history value of today.
 - The sample data builds 12 weeks of history that match the mockup week row. The mockup gives Read a streak of 4, but its week row (Wednesday done, Tuesday not done) gives a streak of 1. The computed streak shows 1. This is an intended difference.
@@ -37,6 +41,10 @@ Track small daily goals and keep streaks.
 - **Decided (2026-10-30):** No HealthKit input in v1. Logging is manual.
 - **Decided (2026-10-31):** For all habits together, a day is done only when every habit is done. The day streak and best streak count these days. "This month" is done habit-days divided by scheduled habit-days in the elapsed month.
 - **Decided (2026-10-31):** A tap on a Today habit ring logs the day that Today shows. On a future day the rings do not log.
+- **Decided (2026-10-31):** An "Archived" row at the bottom of the Habits tab pushes the archived list. A swipe there restores a habit, or deletes it and its history after a confirmation.
+- **Decided (2026-10-31):** The editor has an optional free-text detail. It is the card subtitle.
+- **Decided (2026-10-31):** A leading swipe edits a habit. A trailing swipe archives it. A long press shows a menu with Edit and Archive. A tap on the card still selects it for the history card.
+- **Decided (2026-10-31):** On an off day, the Today strip hides the habit. "N of M done today" counts only scheduled habits. The habit card week row marks off days.
 
 ## Unresolved
 

@@ -11,12 +11,14 @@ Log daily habits and see streaks and history.
 
 ## Layout (top to bottom)
 
-1. Title "Habits" (34 pt bold). Subtitle "Thursday · 1 of 5 done today".
+1. Title "Habits" (34 pt bold). Subtitle "Thursday · 1 of 5 done today". It counts only the habits scheduled today. **Assumption:** a 44 pt glass "+" button at the trailing side opens the [habit editor](habit-editor.md). The mockup has no "+" here.
 2. **History card** (`surface-primary`, radius 24, padding 20). Header "Water" with "Last 12 weeks". A heatmap of 12 columns × 7 rows (84 cells, 4 pt gap, radius 5). Three stats: "12 Day streak", "86% This month", "31 Best streak" (24 pt bold numbers, 13 pt labels).
 3. **Habit cards**, one per habit (radius 24, padding 16):
    - Row: 40 pt colored icon tile, name (17 pt semibold), subtitle ("5 of 8 · 8 glasses a day" or "Every morning"), a flame icon with the streak count, and a 30 pt check circle.
    - For a multi-count habit that is not done, the circle shows the count number. Otherwise it shows a check.
    - A week row: seven columns M–S, each a 24 pt dot. A done day is filled with the habit color. Today is outlined in `text-secondary` when not done. Future days are outlined in `surface-tertiary`.
+   - **Assumption:** an off day that is not done shows a 6 pt `surface-tertiary` dot instead of a ring.
+4. **Assumption:** an "Archived" grouped row with the count and a chevron, only when a habit is archived. It pushes [Archived habits](archived-habits.md).
 
 ## Sample data (Observed)
 
@@ -32,16 +34,20 @@ Log daily habits and see streaks and history.
 
 - Tap the check circle: add one to the count. At the goal, the next tap resets to zero. The same rule applies to the ring on Today.
 - A streak of 0 shows in tertiary text.
+- **Decided (2026-10-31):** swipe a card right for Edit. Swipe it left for Archive. A long press shows a menu with Edit and Archive.
+- Long-press a card and drag it to reorder the habits. The order is the order on Today.
+- **Assumption:** the screen is a plain `List` so that the native swipe, menu, and reorder work. Each card is a row with no row background and no separator.
 - **Decided (2026-10-30):** a tap on a habit card (outside the check circle) shows that habit in the history card. **Assumption:** a second tap shows all habits again. A 1.5 pt `border-strong` ring marks the selected card. The mockup has no selected card.
 
 ## States
 
-- **Assumption:** with no habits, a card says "No habits yet" / "Habits you track show here." The mockup has none. Checkpoint 1b.7 adds the add action.
+- **Assumption:** with no habits, a card says "No habits yet" / "Habits you track show here." with a "New Habit" button. The mockup has none.
 
 ## Accessibility and iOS notes
 
 - The heatmap needs a summary label (for example "Water, last 12 weeks, 86 percent this month"). Do not expose 84 cells to VoiceOver.
 - The check button label is "Log Water".
+- Each card has the accessibility actions "Edit" and "Archive". The week row value names the off days.
 
 ## Intended differences from artboard 2m
 

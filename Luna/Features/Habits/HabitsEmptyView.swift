@@ -1,7 +1,9 @@
 import SwiftUI
 
-/// The Habits tab with no habits. The mockup has none. Checkpoint 1b.7 adds the add action.
+/// The Habits tab with no habits. The mockup has none.
 struct HabitsEmptyView: View {
+    var onNewHabit: () -> Void
+
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: "repeat")
@@ -14,17 +16,20 @@ struct HabitsEmptyView: View {
             Text("Habits you track show here.")
                 .lunaTextStyle(.meta)
                 .foregroundStyle(Color.textSecondary)
+            ChipButton(title: "New Habit", systemImage: "plus", action: onNewHabit)
+                .fixedSize()
+                .padding(.top, 8)
         }
         .multilineTextAlignment(.center)
         .padding(.vertical, 40)
         .frame(maxWidth: .infinity)
         .background(Color.surfacePrimary, in: RoundedRectangle(cornerRadius: LunaRadius.card))
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 }
 
 #Preview("Dark") {
-    HabitsEmptyView()
+    HabitsEmptyView {}
         .padding(LunaSpacing.screenMargin)
         .frame(maxHeight: .infinity)
         .background(Color.bgCanvas)
@@ -32,7 +37,7 @@ struct HabitsEmptyView: View {
 }
 
 #Preview("Light") {
-    HabitsEmptyView()
+    HabitsEmptyView {}
         .padding(LunaSpacing.screenMargin)
         .frame(maxHeight: .infinity)
         .background(Color.bgCanvas)

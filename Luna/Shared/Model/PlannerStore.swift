@@ -10,7 +10,10 @@ final class PlannerStore {
     var inboxItems: [InboxItem]
     /// Inbox items that the user set aside for later. They do not show in the Inbox.
     var somedayItems: [InboxItem]
+    /// The habits that the Habits tab and Today show, in the user's order.
     var habits: [Habit]
+    /// Habits that the user archived. They keep their history and do not show on Habits or Today.
+    var archivedHabits: [Habit]
     var areas: [Area]
     var projects: [Project]
 
@@ -20,6 +23,7 @@ final class PlannerStore {
         inboxItems: [InboxItem] = [],
         somedayItems: [InboxItem] = [],
         habits: [Habit] = [],
+        archivedHabits: [Habit] = [],
         areas: [Area] = [],
         projects: [Project] = []
     ) {
@@ -28,6 +32,7 @@ final class PlannerStore {
         self.inboxItems = inboxItems
         self.somedayItems = somedayItems
         self.habits = habits
+        self.archivedHabits = archivedHabits
         self.areas = areas
         self.projects = projects
     }
@@ -95,6 +100,45 @@ final class PlannerStore {
         let key = calendar.startOfDay(for: day)
         let value = habits[index].history[key] ?? 0
         habits[index].history[key] = value >= habits[index].goal ? nil : value + 1
+    }
+
+    /// Adds a habit at the end. A draft that is not valid adds nothing.
+    /// - Returns: the ID of the new habit, or `nil` for a draft that is not valid.
+    @discardableResult
+    func addHabit(_ draft: HabitDraft) -> Habit.ID? {
+        guard draft.isValid else { return nil }
+        var habit = Habit(name: "", icon: draft.icon, color: draft.color, goal: draft.goal, subtitle: "")
+        draft.apply(to: &habit)
+        habits.append(habit)
+        return habit.id
+    }
+
+    /// Writes the draft into a habit. The history does not change. A draft that is not valid changes nothing.
+    func updateHabit(id: Habit.ID, draft: HabitDraft) {
+        guard draft.isValid, let index = habits.firstIndex(where: { $0.id == id }) else { return }
+        draft.apply(to: &habits[index])
+    }
+
+    /// Moves a habit to the archived list. The habit keeps its history.
+    func archiveHabit(id: Habit.ID) {
+        guard let index = habits.firstIndex(where: { $0.id == id }) else { return }
+        archivedHabits.append(habits.remove(at: index))
+    }
+
+    /// Moves an archived habit back to the end of the habit list.
+    func restoreHabit(id: Habit.ID) {
+        guard let index = archivedHabits.firstIndex(where: { $0.id == id }) else { return }
+        habits.append(archivedHabits.remove(at: index))
+    }
+
+    /// Deletes an archived habit and its history for good.
+    func deleteArchivedHabit(id: Habit.ID) {
+        archivedHabits.removeAll { $0.id == id }
+    }
+
+    /// Moves habits with `List.onMove` semantics.
+    func moveHabits(fromOffsets source: IndexSet, toOffset destination: Int) {
+        Self.move(&habits, fromOffsets: source, toOffset: destination)
     }
 
     /// Moves an Inbox item to a task block at `start`. The block keeps the item's project.
@@ -185,12 +229,17 @@ final class PlannerStore {
 
     /// Moves Inbox items with `List.onMove` semantics: `destination` is an offset in the list before the move.
     func moveInboxItems(fromOffsets source: IndexSet, toOffset destination: Int) {
-        let moving = source.map { inboxItems[$0] }
+        Self.move(&inboxItems, fromOffsets: source, toOffset: destination)
+    }
+
+    /// `List.onMove` semantics: `destination` is an offset in the list before the move.
+    private static func move<Element>(_ list: inout [Element], fromOffsets source: IndexSet, toOffset destination: Int) {
+        let moving = source.map { list[$0] }
         for index in source.sorted(by: >) {
-            inboxItems.remove(at: index)
+            list.remove(at: index)
         }
         let insertIndex = destination - source.filter { $0 < destination }.count
-        inboxItems.insert(contentsOf: moving, at: insertIndex)
+        list.insert(contentsOf: moving, at: insertIndex)
     }
 
     /// The text without leading and trailing white space, or `nil` when nothing is left.

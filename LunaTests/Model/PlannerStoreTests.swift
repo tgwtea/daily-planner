@@ -172,6 +172,77 @@ import Testing
         #expect(store.inboxItems.map(\.title) == expected)
     }
 
+    // MARK: Habit management
+
+    private func draft(_ name: String, goal: Int = 1, weekdays: Set<Weekday> = Set(Weekday.allCases)) -> HabitDraft {
+        var draft = HabitDraft()
+        draft.name = name
+        draft.goal = goal
+        draft.weekdays = weekdays
+        return draft
+    }
+
+    @Test func addHabitAppendsValidDraft() {
+        let store = PlannerStore()
+        let id = store.addHabit(draft("  Read  ", goal: 2, weekdays: [.monday]))
+        #expect(store.habits.map(\.id) == [id])
+        #expect(store.habits[0].name == "Read")
+        #expect(store.habits[0].goal == 2)
+        #expect(store.habits[0].weekdays == [.monday])
+    }
+
+    @Test func addHabitRejectsInvalidDraft() {
+        let store = PlannerStore()
+        #expect(store.addHabit(draft("   ")) == nil)
+        #expect(store.addHabit(draft("Read", weekdays: [])) == nil)
+        #expect(store.addHabit(draft("Read", goal: 0)) == nil)
+        #expect(store.habits.isEmpty)
+    }
+
+    @Test func updateHabitKeepsIDAndHistory() {
+        let habit = Habit(name: "Water", icon: "waterbottle", color: .slate, goal: 8, subtitle: "", history: [day: 3])
+        let store = PlannerStore(habits: [habit])
+        var edit = HabitDraft(habit: habit)
+        edit.name = "Tea"
+        edit.weekdays = [.saturday]
+        store.updateHabit(id: habit.id, draft: edit)
+        #expect(store.habits[0].id == habit.id)
+        #expect(store.habits[0].name == "Tea")
+        #expect(store.habits[0].weekdays == [.saturday])
+        #expect(store.habits[0].history == [day: 3])
+        edit.name = ""
+        store.updateHabit(id: habit.id, draft: edit)
+        #expect(store.habits[0].name == "Tea")
+    }
+
+    @Test func archiveRestoreAndDeleteHabit() {
+        let names = ["A", "B", "C"].map { Habit(name: $0, icon: "circle", color: .rose, goal: 1, subtitle: "", history: [day: 1]) }
+        let store = PlannerStore(habits: names)
+        store.archiveHabit(id: names[0].id)
+        #expect(store.habits.map(\.name) == ["B", "C"])
+        #expect(store.archivedHabits.map(\.name) == ["A"])
+        #expect(store.archivedHabits[0].history == [day: 1])
+        store.restoreHabit(id: names[0].id)
+        #expect(store.habits.map(\.name) == ["B", "C", "A"])
+        #expect(store.archivedHabits.isEmpty)
+        store.archiveHabit(id: names[1].id)
+        store.deleteArchivedHabit(id: names[1].id)
+        #expect(store.habits.map(\.name) == ["C", "A"])
+        #expect(store.archivedHabits.isEmpty)
+    }
+
+    @Test(arguments: [
+        (IndexSet([0]), 3, ["B", "C", "A", "D"]),
+        (IndexSet([3]), 0, ["D", "A", "B", "C"]),
+    ])
+    func moveHabitsMatchesListOnMove(source: IndexSet, destination: Int, expected: [String]) {
+        let store = PlannerStore(habits: ["A", "B", "C", "D"].map {
+            Habit(name: $0, icon: "circle", color: .rose, goal: 1, subtitle: "")
+        })
+        store.moveHabits(fromOffsets: source, toOffset: destination)
+        #expect(store.habits.map(\.name) == expected)
+    }
+
     // MARK: Completion time
 
     private let later = TestCalendar.date(2026, 10, 29, 14)

@@ -93,6 +93,8 @@ private struct RouteScreen: View {
             BandStartPicker(band: band)
         case .theme:
             ThemePicker()
+        case .archivedHabits:
+            ArchivedHabitsScreen()
         }
     }
 }

@@ -61,13 +61,17 @@ struct TodayScreen: View {
             }
             .padding(.top, 18)
 
-            HabitStripView(
-                habits: store.habits, day: day, calendar: calendar,
-                canLog: calendar.startOfDay(for: day) <= calendar.startOfDay(for: now)
-            ) { id in
-                store.logHabit(id: id, on: day, calendar: calendar)
+            // Only the habits scheduled on the shown day (decided 2026-10-31).
+            let dayHabits = HabitStats.scheduled(store.habits, on: day, calendar: calendar)
+            if !dayHabits.isEmpty {
+                HabitStripView(
+                    habits: dayHabits, day: day, calendar: calendar,
+                    canLog: calendar.startOfDay(for: day) <= calendar.startOfDay(for: now)
+                ) { id in
+                    store.logHabit(id: id, on: day, calendar: calendar)
+                }
+                .padding(.top, 18)
             }
-            .padding(.top, 18)
 
             Group {
                 if plan.isEmpty {

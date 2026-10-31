@@ -10,6 +10,8 @@ struct Habit: Identifiable, Hashable, Sendable {
     var goal: Int
     /// The card subtitle, for example "8 glasses a day".
     var subtitle: String
+    /// The days of the week that the habit is due. A day that is not in the set does not break the streak.
+    var weekdays: Set<Weekday> = Set(Weekday.allCases)
     /// The logged count per day. The key is the start of the day.
     var history: [Date: Int] = [:]
 
@@ -19,5 +21,9 @@ struct Habit: Identifiable, Hashable, Sendable {
 
     func isDone(on day: Date, calendar: Calendar) -> Bool {
         value(on: day, calendar: calendar) >= goal
+    }
+
+    func isScheduled(on day: Date, calendar: Calendar) -> Bool {
+        weekdays.contains(Weekday(of: day, calendar: calendar))
     }
 }

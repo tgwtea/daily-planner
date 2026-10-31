@@ -3,47 +3,65 @@ import Foundation
 /// Streak, month, and heatmap math for one habit or for all habits together. See docs/features/habits.md.
 ///
 /// Each function takes a list of habits. Pass one habit for its own numbers.
-/// A day is done for the list when every habit in it is done (decided 2026-10-31).
-/// Every habit is scheduled every day until checkpoint 1b.7 adds weekday sets.
+/// A day is done for the list when every habit that is scheduled that day is done (decided 2026-10-31).
+/// A day on which no habit is scheduled is an off day. It does not break a streak (decided 2026-10-30).
 enum HabitStats {
     /// The heatmap columns. Each column is one Monday-to-Sunday week.
     static let heatmapWeeks = 12
 
-    /// `true` when the list is not empty and every habit is done on `day`.
+    /// The habits of the list that are scheduled on `day`.
+    static func scheduled(_ habits: [Habit], on day: Date, calendar: Calendar) -> [Habit] {
+        habits.filter { $0.isScheduled(on: day, calendar: calendar) }
+    }
+
+    /// `true` when no habit of the list is scheduled on `day`. An off day does not break or extend a streak.
+    static func isOffDay(_ habits: [Habit], on day: Date, calendar: Calendar) -> Bool {
+        scheduled(habits, on: day, calendar: calendar).isEmpty
+    }
+
+    /// `true` when at least one habit is scheduled on `day` and every scheduled habit is done.
     static func isDone(_ habits: [Habit], on day: Date, calendar: Calendar) -> Bool {
-        !habits.isEmpty && habits.allSatisfy { $0.isDone(on: day, calendar: calendar) }
+        let due = scheduled(habits, on: day, calendar: calendar)
+        return !due.isEmpty && due.allSatisfy { $0.isDone(on: day, calendar: calendar) }
     }
 
-    /// The number of habits done on `day`.
+    /// The number of habits that are scheduled on `day` and done.
     static func doneCount(_ habits: [Habit], on day: Date, calendar: Calendar) -> Int {
-        habits.filter { $0.isDone(on: day, calendar: calendar) }.count
+        scheduled(habits, on: day, calendar: calendar).filter { $0.isDone(on: day, calendar: calendar) }.count
     }
 
-    /// Consecutive done days up to and including `today`.
+    /// Consecutive done days up to and including `today`. Off days are skipped.
     /// When today is not done yet, the count ends at yesterday.
     static func streak(_ habits: [Habit], today: Date, calendar: Calendar) -> Int {
-        var day = calendar.startOfDay(for: today)
-        if !isDone(habits, on: day, calendar: calendar) {
-            guard let yesterday = calendar.date(byAdding: .day, value: -1, to: day) else { return 0 }
-            day = yesterday
-        }
+        let end = calendar.startOfDay(for: today)
+        // The walk stops at the first logged day, so a list with no scheduled day still ends.
+        guard let first = habits.flatMap(\.history.keys).min() else { return 0 }
+        var day = end
         var count = 0
-        while isDone(habits, on: day, calendar: calendar) {
-            count += 1
+        while day >= first {
+            if isDone(habits, on: day, calendar: calendar) {
+                count += 1
+            } else if day != end && !isOffDay(habits, on: day, calendar: calendar) {
+                break
+            }
             guard let previous = calendar.date(byAdding: .day, value: -1, to: day) else { break }
             day = previous
         }
         return count
     }
 
-    /// The longest run of done days from the first logged day to `today`.
+    /// The longest run of done days from the first logged day to `today`. Off days are skipped.
     static func bestStreak(_ habits: [Habit], today: Date, calendar: Calendar) -> Int {
         let end = calendar.startOfDay(for: today)
         guard var day = habits.flatMap(\.history.keys).min(), day <= end else { return 0 }
         var best = 0
         var run = 0
         while day <= end {
-            run = isDone(habits, on: day, calendar: calendar) ? run + 1 : 0
+            if isDone(habits, on: day, calendar: calendar) {
+                run += 1
+            } else if !isOffDay(habits, on: day, calendar: calendar) {
+                run = 0
+            }
             best = max(best, run)
             guard let next = calendar.date(byAdding: .day, value: 1, to: day) else { break }
             day = next
@@ -52,29 +70,31 @@ enum HabitStats {
     }
 
     /// Done habit-days divided by scheduled habit-days, from the first day of the month to `today`, in percent.
-    /// For one habit this is done days divided by elapsed days.
+    /// For one habit this is done days divided by scheduled days. With no scheduled day it is 0.
     static func monthPercent(_ habits: [Habit], today: Date, calendar: Calendar) -> Int {
         let end = calendar.startOfDay(for: today)
-        guard !habits.isEmpty, var day = calendar.dateInterval(of: .month, for: end)?.start else { return 0 }
+        guard var day = calendar.dateInterval(of: .month, for: end)?.start else { return 0 }
         var done = 0
-        var scheduled = 0
+        var due = 0
         while day <= end {
             done += doneCount(habits, on: day, calendar: calendar)
-            scheduled += habits.count
+            due += scheduled(habits, on: day, calendar: calendar).count
             guard let next = calendar.date(byAdding: .day, value: 1, to: day) else { break }
             day = next
         }
-        return Int((Double(done) / Double(scheduled) * 100).rounded())
+        guard due > 0 else { return 0 }
+        return Int((Double(done) / Double(due) * 100).rounded())
     }
 
-    /// The heatmap share of one day, 0...1.
-    /// One habit gives its value / goal. More habits give the share of habits done.
+    /// The heatmap share of one day, 0...1. An off day gives 0.
+    /// One habit gives its value / goal. More habits give the share of scheduled habits done.
     static func share(_ habits: [Habit], on day: Date, calendar: Calendar) -> Double {
-        if habits.count == 1, let habit = habits.first {
+        let due = scheduled(habits, on: day, calendar: calendar)
+        if habits.count == 1, let habit = due.first {
             return min(1, Double(habit.value(on: day, calendar: calendar)) / Double(max(habit.goal, 1)))
         }
-        guard !habits.isEmpty else { return 0 }
-        return Double(doneCount(habits, on: day, calendar: calendar)) / Double(habits.count)
+        guard !due.isEmpty else { return 0 }
+        return Double(doneCount(habits, on: day, calendar: calendar)) / Double(due.count)
     }
 
     /// The 84 heatmap cells, one column per week, oldest week first. Each column runs Monday to Sunday.

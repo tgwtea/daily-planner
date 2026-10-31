@@ -71,14 +71,17 @@ struct HabitCard: View {
         .accessibilityAction(.default, onSelect)
     }
 
+    /// An empty detail shows the schedule instead, for example "Mon, Wed, Fri".
     private func subtitle(value: Int) -> String {
-        habit.goal > 1 ? "\(value) of \(habit.goal) · \(habit.subtitle)" : habit.subtitle
+        let detail = habit.subtitle.isEmpty ? Weekday.summary(of: habit.weekdays) : habit.subtitle
+        return habit.goal > 1 ? "\(value) of \(habit.goal) · \(detail)" : detail
     }
 
     private func weekRow(isDoneToday: Bool) -> some View {
         let days = Week.days(containing: today, calendar: calendar)
         let todayStart = calendar.startOfDay(for: today)
         let doneDays = days.filter { $0 <= todayStart && habit.isDone(on: $0, calendar: calendar) }
+        let offDays = days.filter { !habit.isScheduled(on: $0, calendar: calendar) }
         return HStack(spacing: 6) {
             ForEach(days, id: \.self) { day in
                 VStack(spacing: 6) {
@@ -86,26 +89,39 @@ struct HabitCard: View {
                     Text(day.formatted(.dateTime.weekday(.narrow)))
                         .font(.caption2.weight(.medium))
                         .foregroundStyle(Color.textTertiary)
-                    dot(isDone: doneDays.contains(day), isToday: day == todayStart)
+                    dot(isDone: doneDays.contains(day), isToday: day == todayStart, isOff: offDays.contains(day))
                 }
                 .frame(maxWidth: .infinity)
             }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("This week")
-        .accessibilityValue(doneDays.isEmpty
-            ? "No days done"
-            : "Done on " + doneDays.map { $0.formatted(.dateTime.weekday(.wide)) }.formatted(.list(type: .and)))
+        .accessibilityValue(weekValue(doneDays: doneDays, offDays: offDays))
     }
 
-    private func dot(isDone: Bool, isToday: Bool) -> some View {
-        Circle()
-            .fill(isDone ? habit.color.color : .clear)
-            .strokeBorder(
-                isDone ? Color.clear : (isToday ? Color.textSecondary : Color.surfaceTertiary),
-                lineWidth: 2
-            )
-            .frame(width: 24, height: 24)
+    private func weekValue(doneDays: [Date], offDays: [Date]) -> String {
+        let names = { (days: [Date]) in days.map { $0.formatted(.dateTime.weekday(.wide)) }.formatted(.list(type: .and)) }
+        let done = doneDays.isEmpty ? "No days done" : "Done on " + names(doneDays)
+        return offDays.isEmpty ? done : "\(done). Off on \(names(offDays))"
+    }
+
+    /// Assumption: an off day that is not done shows a small dot, not a ring. The mockup has no off day.
+    @ViewBuilder
+    private func dot(isDone: Bool, isToday: Bool, isOff: Bool) -> some View {
+        if isOff && !isDone {
+            Circle()
+                .fill(Color.surfaceTertiary)
+                .frame(width: 6, height: 6)
+                .frame(width: 24, height: 24)
+        } else {
+            Circle()
+                .fill(isDone ? habit.color.color : .clear)
+                .strokeBorder(
+                    isDone ? Color.clear : (isToday ? Color.textSecondary : Color.surfaceTertiary),
+                    lineWidth: 2
+                )
+                .frame(width: 24, height: 24)
+        }
     }
 }
 

@@ -51,6 +51,9 @@ These terms have one meaning in all docs and in code names.
 | Focus session | A countdown timer that runs inside the active block. |
 | Habit | A repeated daily goal with a count, a goal, and a streak. |
 | Habit streak | The count of done days in a row, up to today, or up to yesterday when today is not done. In code: `HabitStats`. |
+| Weekday schedule | The days of the week that a habit is due. In code: `Habit.weekdays`, `Weekday`. |
+| Off day | A day that is not in the weekday schedule of a habit. It does not break the streak. For all habits together, a day on which no habit is scheduled. |
+| Archived habit | A habit that the user archived. It keeps its history and does not show on Habits or Today. In code: `PlannerStore.archivedHabits`. |
 | Heatmap | The 12-week grid on the Habits history card. One cell is one day. Its shade shows the share done. |
 | Area | A group of projects, for example Work or Personal. |
 | Smart list | A fixed list on the Projects tab: Upcoming, Anytime, Someday, Logbook. In code: `SmartList`. |
@@ -63,7 +66,7 @@ These terms have one meaning in all docs and in code names.
 | Store | The one `@Observable` object that holds all app data and its intents. In code: `PlannerStore`. |
 | Sample data | The mockup week (Thursday, October 29, 2026, 10:20 AM). DEBUG builds only: previews and the `-LunaSampleData` launch argument. |
 | App shell | The root view: the five tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
-| Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail, smart list, band start, theme). In code: `AppRoute`. |
+| Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail, smart list, band start, theme, archived habits). In code: `AppRoute`. |
 | Router | The `@Observable` navigation state: selected tab, one route path per tab, and the open sheet or cover. In code: `AppRouter`. |
 | Shared component | A reusable view that two or more screens use, built from design tokens. In code: `Luna/Shared/Components/`. `ComponentsGallery` shows all of them in DEBUG builds (previews and the `-LunaComponentsGallery` launch argument). |
 | Design token | A named design value in code (color role, text style, spacing, radius, shadow, motion). See `Luna/Shared/Design/`. |

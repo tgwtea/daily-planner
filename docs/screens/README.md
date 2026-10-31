@@ -13,7 +13,8 @@ Tab bar (glass) ─┬─ Today ──┬─ Calendar (push)
                  ├─ Inbox
                  ├─ Projects ─┬─ Project detail (push)
                  │            └─ Smart list (push)
-                 ├─ Habits
+                 ├─ Habits ───┬─ Habit editor (sheet)
+                 │            └─ Archived habits (push)
                  └─ Settings
 "+" button (next to the tab bar) ── Quick add (sheet, from every tab)
 Focus ── Live Activity (system lock screen and Dynamic Island)
@@ -23,7 +24,7 @@ Focus ── Live Activity (system lock screen and Dynamic Island)
 
 The tab bar and the "+" button show on the five main tabs. They hide on Calendar, Edit block, Focus, and while Quick add is open.
 
-**Implemented (1a.4):** `Luna/Features/AppShell/` (`RootView`, `LunaTabBar`, `AppRouter`, `AppRoute`, `AppTab`). `AppRouter.isTabBarHidden` controls the bar. Each tab and route is a placeholder until its checkpoint. Today is built (1b.1). Projects pushes project detail and the smart lists (1b.6). The Inbox context menu pushes project detail on the Inbox tab.
+**Implemented (1a.4):** `Luna/Features/AppShell/` (`RootView`, `LunaTabBar`, `AppRouter`, `AppRoute`, `AppTab`). `AppRouter.isTabBarHidden` controls the bar. Each tab and route is a placeholder until its checkpoint. Today is built (1b.1). Projects pushes project detail and the smart lists (1b.6). Habits pushes the archived habits (1b.7). The Inbox context menu pushes project detail on the Inbox tab.
 
 **Assumption (1a.4):** the design reference gives only the bar height (64 pt). The tab icon is 20 pt, the bar has a 4 pt inner padding, the "+" circle sits 12 pt from the capsule, and the selected tab has a `glassItemHover` capsule. No artboard comparison ran in 1a.4. Check these values in 3.3.
 
@@ -37,6 +38,8 @@ The tab bar and the "+" button show on the five main tabs. They hide on Calendar
 | [Project detail](project-detail.md) | Pushed screen | Implemented |
 | [Smart list](smart-list.md) | Pushed screen | Implemented |
 | [Habits](habits.md) | Tab | Implemented |
+| [Habit editor](habit-editor.md) | Sheet | Implemented |
+| [Archived habits](archived-habits.md) | Pushed screen | Implemented |
 | [Settings](settings.md) | Tab | Partial |
 | [Calendar](calendar.md) | Pushed screen | Planned |
 | [Edit block](edit-block.md) | Full screen | Planned |

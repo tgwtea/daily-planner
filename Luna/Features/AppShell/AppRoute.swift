@@ -7,4 +7,5 @@ enum AppRoute: Hashable, Sendable {
     case smartList(SmartList)
     case bandStart(Band)
     case theme
+    case archivedHabits
 }
