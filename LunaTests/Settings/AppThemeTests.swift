@@ -16,4 +16,8 @@ import Testing
     @Test func rawValuesAreStable() {
         #expect(AppTheme.allCases.map(\.rawValue) == ["dark", "light", "system"])
     }
+
+    @Test func displayNamesMatchSettings() {
+        #expect(AppTheme.allCases.map(\.displayName) == ["Dark", "Light", "System"])
+    }
 }

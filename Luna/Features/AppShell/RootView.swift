@@ -71,8 +71,8 @@ struct RootView: View {
             ProjectsScreen()
         case .habits:
             HabitsScreen()
-        default:
-            PlaceholderScreen(title: tab.title) { EmptyView() }
+        case .settings:
+            SettingsScreen()
         }
     }
 }
@@ -89,6 +89,10 @@ private struct RouteScreen: View {
         case .project(let id):
             let name = store.projects.first { $0.id == id }?.name ?? "Project"
             PlaceholderScreen(title: name) { EmptyView() }
+        case .bandStart(let band):
+            BandStartPicker(band: band)
+        case .theme:
+            ThemePicker()
         }
     }
 }

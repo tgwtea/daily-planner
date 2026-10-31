@@ -22,6 +22,3 @@ Priority: **P1** blocks the first related implementation. **P2** can wait for a 
 
 - **P2.** A tap at the goal resets the count to zero. Is this intended, or does a separate undo exist? See [Habits](features/habits.md).
 
-## Settings
-
-- **P2.** Can band starts overlap or leave gaps? Which order rules apply to the three pickers? See [Settings and appearance](features/settings-and-appearance.md).

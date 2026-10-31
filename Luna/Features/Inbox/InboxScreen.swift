@@ -16,7 +16,7 @@ struct InboxScreen: View {
     @State private var draftTitle = ""
 
     /// Settings edits the band starts in 1b.5.
-    private let schedule = BandSchedule.standard
+    @BandScheduleStorage private var schedule
 
     var body: some View {
         List {

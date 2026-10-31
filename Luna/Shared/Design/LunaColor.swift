@@ -58,6 +58,13 @@ extension Color {
     /// The lighter scrim behind the Inbox drawer.
     static let drawerScrim = Color(uiColor: .black(0.18))
 
+    // MARK: Switch
+
+    static let switchTrackOff = dynamic(dark: .hex(0x3A3A3C), light: .hex(0xD6D6D9))
+    static let switchTrackOn = dynamic(dark: .hex(0xFFFFFF), light: .hex(0x000000))
+    static let switchThumbOff = dynamic(dark: .hex(0xFFFFFF), light: .hex(0xFFFFFF))
+    static let switchThumbOn = dynamic(dark: .hex(0x000000), light: .hex(0xFFFFFF))
+
     // MARK: Glass
 
     static let glassBackground = dynamic(

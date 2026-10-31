@@ -9,6 +9,7 @@ struct TodayScreen: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage(SettingsKey.scrollToNow) private var scrollToNow = true
     @AppStorage(SettingsKey.showFreeTime) private var showFreeTime = true
+    @AppStorage(SettingsKey.planSuggestions) private var planSuggestions = true
 
     /// `nil` follows the current day of the clock.
     @State private var pickedDay: Date?
@@ -17,7 +18,7 @@ struct TodayScreen: View {
     @State private var didScrollToNow = false
 
     /// Settings edits the band starts in 1b.5.
-    private let schedule = BandSchedule.standard
+    @BandScheduleStorage private var schedule
 
     var body: some View {
         TimelineView(.everyMinute) { _ in
@@ -115,8 +116,10 @@ struct TodayScreen: View {
             .fixedSize()
         }
         // The Plan sheet comes in 1c.4.
-        ChipButton(title: "Plan", systemImage: "sparkles") {}
-            .fixedSize()
+        if planSuggestions {
+            ChipButton(title: "Plan", systemImage: "sparkles") {}
+                .fixedSize()
+        }
         Button("Calendar", systemImage: "calendar") { router.push(.calendar) }
             .labelStyle(.iconOnly)
             .font(.system(size: 18, weight: .medium))

@@ -1,6 +1,7 @@
 # Settings
 
-Status: Planned
+Status: Partial (the Calendars row has no destination until 2.2)
+Code: `Luna/Features/Settings/SettingsScreen.swift`, `BandStartPicker.swift`, `ThemePicker.swift`, `BandStartText.swift`
 Artboards: 2n
 Features: [Settings and appearance](../features/settings-and-appearance.md)
 
@@ -27,12 +28,20 @@ The values in brackets are the mockup defaults.
 
 - **Observed:** the switches toggle. "Show free time" off hides the free gap rows on Today.
 - **Observed:** rows with a chevron have no destination in the mockup.
-- **Assumption:** band rows open a time picker. Calendars opens a calendar picker. Theme opens a choice list.
+- **Decided (2026-10-31):** each band row pushes a list of start times in 15-minute steps, with a checkmark. A tap saves and goes back.
+- **Assumption:** Theme pushes a choice list (Dark, Light, System) that works the same way.
+- **Assumption:** the Calendars row shows the mockup values and has no destination until checkpoint 2.2 adds the calendar picker.
 
 ## Accessibility and iOS notes
 
 - Use `Form` or `List` with `Toggle` and `NavigationLink`. Restyle to Noir.
 - Store settings with `@AppStorage` until a persistence ADR says otherwise. **Assumption.**
+- **Assumption:** switches use `LunaSwitchStyle`, a `ToggleStyle` on the native `Toggle`. The system switch keeps a white thumb, so it cannot show the dark "on" state (white track, black thumb).
+
+## Intended differences
+
+- Switch rows are about 56 pt tall. The 44 pt hit target of the switch sets the height.
+- The icon box uses `surfaceTertiary` from `GroupedRow` (1a.5), not the Noir `surface-icon-container`.
 
 ## Open questions
 

@@ -208,6 +208,8 @@ These patterns appear on two or more screens. Build each one as a shared view wh
 
 In code (1a.5): `Luna/Shared/Components/`. `LargeTitleHeader`, `ChipButton` (34 pt, `isCompact` 30 pt), `RoundAddButton`, `CheckCircle` (`.small` 18, `.regular` 26, `.large` 30, optional `count` for a multi-count habit), `IconTile`, `GroupedList` with `GroupedRow`, `ProgressRing`, and `BlockPill` (the timeline pill). The tab bar is `LunaTabBar`. Glass is `View.lunaGlass(in:)` (`LunaGlass.swift`). The other patterns come with their screens.
 
+Added in 1b.5: `GroupedSection` (small header, grouped list, optional footer) and `LunaSwitchStyle` (the Noir 51 × 31 pt switch). Switch colors (`switch-track-off`, `switch-track-on`, `switch-thumb-off`, `switch-thumb-on`): dark `#3A3A3C`, `#FFFFFF`, `#FFFFFF`, `#000000`; light `#D6D6D9`, `#000000`, `#FFFFFF`, `#FFFFFF`.
+
 Component values from the prototype (read 2026-10-31):
 
 - Pill: fill rules in [Today](../screens/today.md#states). Done wins over active. The active fill is a hard stop at the progress point. Icon 20 pt. A routine pill shows its icon at the top.

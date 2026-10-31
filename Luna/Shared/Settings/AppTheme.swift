@@ -10,6 +10,14 @@ enum AppTheme: String, CaseIterable, Sendable {
     static let defaultValue = AppTheme.dark
 
     /// The value for `preferredColorScheme`. `nil` follows the system.
+    var displayName: String {
+        switch self {
+        case .dark: "Dark"
+        case .light: "Light"
+        case .system: "System"
+        }
+    }
+
     var colorScheme: ColorScheme? {
         switch self {
         case .dark: .dark

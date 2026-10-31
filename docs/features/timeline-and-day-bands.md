@@ -1,7 +1,7 @@
 # Timeline and day bands
 
-Status: Partial (Settings does not edit the band starts yet)
-Code: `Luna/Features/Today/DayPlan.swift`, `Luna/Shared/Model/Week.swift`, `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/Band.swift`, `Luna/Shared/Model/Timeline.swift`, `Luna/Shared/Model/DayLimit.swift`, `Luna/Shared/Model/DurationFormat.swift`, `Luna/Shared/Model/AppClock.swift`
+Status: Implemented
+Code: `Luna/Features/Today/DayPlan.swift`, `Luna/Shared/Model/Week.swift`, `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/Band.swift`, `Luna/Shared/Model/Timeline.swift`, `Luna/Shared/Model/DayLimit.swift`, `Luna/Shared/Model/DurationFormat.swift`, `Luna/Shared/Model/AppClock.swift`, `Luna/Shared/Settings/BandScheduleStorage.swift`
 Screens: [Today](../screens/today.md), [Settings](../screens/settings.md)
 
 ## Purpose

@@ -4,6 +4,7 @@ import SwiftUI
 /// Put it in a `GroupedList`. See docs/design/design-reference.md#reusable-patterns.
 struct GroupedRow<Accessory: View>: View {
     var title: String
+    var subtitle: String?
     var systemImage: String?
     var value: String?
     /// Shows a chevron after the value. Use it for a row that pushes or opens something.
@@ -22,9 +23,16 @@ struct GroupedRow<Accessory: View>: View {
                     .background(Color.surfaceTertiary, in: RoundedRectangle(cornerRadius: LunaRadius.iconBox))
                     .accessibilityHidden(true)
             }
-            Text(title)
-                .lunaTextStyle(.body)
-                .foregroundStyle(Color.textPrimary)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .lunaTextStyle(.body)
+                    .foregroundStyle(Color.textPrimary)
+                if let subtitle {
+                    Text(subtitle)
+                        .lunaTextStyle(.meta)
+                        .foregroundStyle(Color.textSecondary)
+                }
+            }
             Spacer(minLength: 8)
             if let value {
                 Text(value)
@@ -48,8 +56,13 @@ struct GroupedRow<Accessory: View>: View {
 }
 
 extension GroupedRow where Accessory == EmptyView {
-    init(title: String, systemImage: String? = nil, value: String? = nil, showsChevron: Bool = false) {
-        self.init(title: title, systemImage: systemImage, value: value, showsChevron: showsChevron) { EmptyView() }
+    init(
+        title: String, subtitle: String? = nil, systemImage: String? = nil,
+        value: String? = nil, showsChevron: Bool = false
+    ) {
+        self.init(title: title, subtitle: subtitle, systemImage: systemImage, value: value, showsChevron: showsChevron) {
+            EmptyView()
+        }
     }
 }
 
@@ -72,7 +85,7 @@ struct GroupedRowPreview: View {
             GroupedRow(title: "Show free time", systemImage: "clock") {
                 Toggle("Show free time", isOn: $showFreeTime).labelsHidden()
             }
-            GroupedRow(title: "Calendars", systemImage: "calendar", value: "All", showsChevron: true)
+            GroupedRow(title: "Calendars", subtitle: "Work, Personal", systemImage: "calendar", value: "All", showsChevron: true)
         }
         .padding(LunaSpacing.screenMargin)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

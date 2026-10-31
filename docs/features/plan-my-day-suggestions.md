@@ -25,7 +25,7 @@ Propose times for Inbox tasks in today's free time. The user confirms each one.
 
 - **Decided (2026-10-30):** Suggestions come from on-device AI (Apple Foundation Models). Checkpoint 1c.4 writes an ADR for it before code. When the model is not available, the deterministic rule below is the fallback.
 - **Decided (2026-10-30):** The rule proposes up to 3 Inbox items, oldest first. Each item goes into the first free gap that fits it.
-- **Decided (2026-10-30):** When Suggestions is off in Settings, Today hides the Plan button.
+- **Decided (2026-10-30):** When Suggestions is off in Settings, Today hides the Plan button. Implemented in 1b.5 (`TodayScreen`).
 - **Decided (2026-10-30):** The sheet and the button keep the names "Plan my day" and "Plan".
 
 ## Related

@@ -1,6 +1,6 @@
 # Settings and appearance
 
-Status: Partial
+Status: Partial (Show calendar events, Live Activity, Haptics, and End-of-block sound are stored only)
 Screens: [Settings](../screens/settings.md)
 
 ## Purpose
@@ -24,24 +24,23 @@ Hold user preferences that change app behavior and the theme.
 
 ## Implementation
 
-- Theme: `Luna/Shared/Settings/AppTheme.swift`, applied in `LunaApp` with `preferredColorScheme`. Keys: `Luna/Shared/Settings/SettingsKey.swift`.
-- Missing: the Settings screen and every other setting (checkpoint 1b.5).
+- Screen: `Luna/Features/Settings/`. See [Settings](../screens/settings.md).
+- Keys: `Luna/Shared/Settings/SettingsKey.swift`. Theme: `AppTheme`, applied in `LunaApp` with `preferredColorScheme`.
+- Band starts: `BandScheduleStorage` (`Luna/Shared/Settings/`) reads and writes the three starts. Today and Inbox read it, so a change moves blocks at once. `BandSchedule.allowedStarts(for:)` and `setStart(_:for:)` hold the order rule.
+- Wired now: Theme, Show free time, Scroll to now, band starts, Suggestions (hides the Plan button on Today).
+- Stored only: Show calendar events (2.2), Live Activity (2.3), Haptics and End-of-block sound (2.4).
 
 ## Assumptions
 
 - Store these with `@AppStorage` until a persistence ADR. Keep keys in one place.
 - Theme maps to `preferredColorScheme`. Dark is the default.
-- Band starts are editable times in 15-minute steps.
 
 ## Decisions
 
 - **Decided (2026-10-30):** Theme choices: Dark, Light, System. Dark is the default.
 - **Decided (2026-10-30):** "Show calendar events" off hides events on Today and on Calendar. It does not remove calendar access.
 - **Decided (2026-10-30):** "Scroll to now" off opens Today at the top of Morning.
-
-## Unresolved
-
-- Band start rules: can bands overlap or leave gaps? See [open-questions.md](../open-questions.md#settings).
+- **Decided (2026-10-31):** band starts keep the order Morning < Afternoon < Night. Each start is at least 1 hour after the one before it. Night starts at 11:00 PM at the latest. Steps are 15 minutes. Gaps cannot occur, because each band ends where the next one starts.
 
 ## Related
 
