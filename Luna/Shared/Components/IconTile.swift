@@ -13,6 +13,8 @@ struct IconTile: View {
     /// 36 pt in rows. 40 pt in larger cells.
     var size: CGFloat = 36
     var shape: Shape = .roundedSquare
+    /// The corner radius of a rounded square. Inbox rows use 14 pt.
+    var cornerRadius: CGFloat = LunaRadius.iconTile
 
     var body: some View {
         Image(systemName: systemImage)
@@ -25,7 +27,7 @@ struct IconTile: View {
 
     private var tileShape: AnyShape {
         switch shape {
-        case .roundedSquare: AnyShape(RoundedRectangle(cornerRadius: LunaRadius.iconTile))
+        case .roundedSquare: AnyShape(RoundedRectangle(cornerRadius: cornerRadius))
         case .circle: AnyShape(Circle())
         }
     }

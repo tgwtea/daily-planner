@@ -1,6 +1,6 @@
 # Inbox
 
-Status: Implemented (artboard 2k comparison pending)
+Status: Implemented
 Code: `Luna/Features/Inbox/` (`InboxScreen`, `InboxRow`, `InboxEmptyView`)
 Artboards: 2k
 Features: [Inbox scheduling](../features/inbox-scheduling.md), [Quick add](../features/quick-add-parsing.md)
@@ -48,15 +48,21 @@ Hold tasks that have no time yet. You place each task into a band of today.
 - Swipe actions are not discoverable. The context menu has the same actions. VoiceOver lists the swipe actions as custom actions. The row is a button with the hint "Edit title".
 - The row uses a tap gesture, not a `Button`. A `List` row with a button fires it when a swipe ends without opening the actions.
 
-## Artboard comparison
+## Artboard comparison (2026-10-31)
 
-Not done. The design project read failed on 2026-10-31 (403, no design authorization). Checked in the iPhone 17 simulator (iOS 27.0), dark and light, against this spec only. Expected intended differences against 2k:
+Checked in the iPhone 17 simulator (iOS 27.0), dark and light, against the markup of artboard 2k (row 2 swiped open). Header, add button, gaps (20 pt), rows, full-width dividers, footnote, and empty state match. Intended differences:
 
 | Item | Mockup | App | Why |
 | --- | --- | --- | --- |
 | Swipe direction | Swipe left | Swipe right for place, swipe left for Delete | Decided 2026-10-30 |
+| Place buttons in light | White `surface-raised`, dark icon | Dark neutral, white icon | The system draws swipe icons white |
 | "Draft Q4 self-review" tag | "Work" | "Q4 planning" | A tag is a project. "Work" is an area. |
 | "Order a new chalk bag" tag | "Personal" | No tag | The sample item has no project. |
+| Subtitle | 15 pt regular, 4 pt below the title | 15 pt medium, 2 pt below | Shared `LargeTitleHeader`. Check in 3.3. |
+| Tile icon | 18 pt | 20 pt (half the tile) | Shared `IconTile`. Check in 3.3. |
+| Grip | Lucide `grip-vertical` | SF `line.3.horizontal` | The iOS reorder symbol |
+| Card corner | 20 pt | The `List` inset-grouped radius | Native `List` for swipe and reorder |
+| Dividers | Full width | Full width at the leading edge, 16 pt short at the trailing edge | Native `List` separator |
 
 ## Open questions
 

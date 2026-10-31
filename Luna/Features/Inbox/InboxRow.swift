@@ -12,14 +12,15 @@ struct InboxRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            IconTile(systemImage: item.icon, color: item.color, size: 40)
-            VStack(alignment: .leading, spacing: 2) {
+            IconTile(systemImage: item.icon, color: item.color, size: 40, cornerRadius: 14)
+            VStack(alignment: .leading, spacing: 3) {
                 Text(item.title)
                     .lunaTextStyle(.rowTitle)
                     .foregroundStyle(Color.textPrimary)
                     .lineLimit(1)
                 Text(meta)
                     .lunaTextStyle(.meta)
+                    .monospacedDigit()
                     .foregroundStyle(Color.textSecondary)
                     .lineLimit(1)
             }
@@ -31,6 +32,8 @@ struct InboxRow: View {
         }
         .padding(.vertical, LunaSpacing.rowVerticalPadding)
         .frame(minHeight: 64)
+        // The divider spans the full card width, as in the mockup.
+        .alignmentGuide(.listRowSeparatorLeading) { _ in -14 }
         .contentShape(Rectangle())
         // A tap gesture, not a `Button`: a List cell with a button fires it when a swipe ends without opening the actions.
         .onTapGesture(perform: onEdit)

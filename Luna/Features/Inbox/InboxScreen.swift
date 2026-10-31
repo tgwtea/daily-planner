@@ -70,16 +70,18 @@ struct InboxScreen: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: Self.sectionSpacing) {
             LargeTitleHeader(title: "Inbox", subtitle: subtitle, subtitlePosition: .below)
             Button { router.openQuickAdd() } label: {
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     Image(systemName: "plus")
-                        .font(.system(size: 17, weight: .medium))
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(Color.iconSecondary)
+                    // 17 pt regular.
                     Text("Add to Inbox")
-                        .lunaTextStyle(.body)
+                        .font(.body)
+                        .foregroundStyle(Color.textTertiary)
                 }
-                .foregroundStyle(Color.textTertiary)
                 .padding(.horizontal, 18)
                 .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
                 .background(Color.surfacePrimary, in: Capsule())
@@ -91,10 +93,13 @@ struct InboxScreen: View {
         // The list margin already insets the row. The header keeps its own margin, as on Today.
         .padding(.horizontal, -LunaSpacing.screenMargin)
         .padding(.top, 14)
-        .padding(.bottom, LunaSpacing.sectionHeaderGap)
+        .padding(.bottom, Self.sectionSpacing)
         .textCase(nil)
         .listRowInsets(EdgeInsets())
     }
+
+    /// The mockup's gap between the header, the add button, the list card, and the footnote.
+    private static let sectionSpacing: CGFloat = 20
 
     private var footer: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -104,14 +109,13 @@ struct InboxScreen: View {
                     .foregroundStyle(Color.textPrimary)
                     .transition(.opacity)
             }
-            if !store.inboxItems.isEmpty {
-                Text("Swipe right to place a task in Morning, Afternoon or Night. On Today, drag it from the Inbox drawer to an exact time.")
-                    .lunaTextStyle(.meta)
-                    .foregroundStyle(Color.textTertiary)
-            }
+            Text("Swipe right to place a task in Morning, Afternoon or Night. On Today, drag it from the Inbox drawer to an exact time.")
+                .lunaTextStyle(.meta)
+                .foregroundStyle(Color.textTertiary)
         }
         .textCase(nil)
-        .padding(.top, 6)
+        .padding(.top, 12)
+        .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4))
     }
 
     private var subtitle: String {
