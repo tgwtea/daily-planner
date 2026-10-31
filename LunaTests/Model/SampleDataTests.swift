@@ -50,6 +50,23 @@ import Testing
         #expect(values == [5, 1, 0, 0, 0])
     }
 
+    @Test func projectProgressMatchesMockup() {
+        let values = store.projects.map { project in
+            let progress = ProjectProgress(projectID: project.id, in: store)
+            return "\(project.name) \(progress.percent) \(progress.open)"
+        }
+        // Sync engine shows 58%, Lisbon trip 33%, Health 71%: the mockup values have no whole-number item counts.
+        #expect(values == [
+            "Sync engine 58 5", "Q4 planning 25 3", "Hiring loop 80 2",
+            "Lisbon trip 33 4", "Home 50 6", "Health 71 2",
+        ])
+    }
+
+    @Test func smartListCountsMatchMockup() {
+        let counts = SmartList.allCases.map { $0.count(in: store, today: today, calendar: calendar) }
+        #expect(counts == [12, 8, 14, nil])
+    }
+
     @Test func everySampleBlockFitsItsDay() {
         #expect(store.blocks.allSatisfy { $0.fitsDay(calendar: calendar) })
     }

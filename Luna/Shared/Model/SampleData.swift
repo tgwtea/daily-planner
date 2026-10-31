@@ -31,12 +31,21 @@ enum SampleData {
         let health = Project(name: "Health", color: .rose, areaID: personal.id, timing: .ongoing)
 
         return PlannerStore(
-            blocks: blocks,
+            blocks: blocks(syncEngine: syncEngine, lisbonTrip: lisbonTrip, home: home, health: health),
             anytimeTasks: [
                 AnytimeTask(title: "Pay electricity bill", icon: "receipt", color: .sand, day: today),
                 AnytimeTask(title: "Reply to Maya", icon: "envelope", color: .slate, day: today),
                 AnytimeTask(title: "Water the plants", icon: "leaf", color: .sage, done: true, day: today),
-            ],
+            ] + upcomingTasks(q4Planning: q4Planning, lisbonTrip: lisbonTrip, home: home)
+                + undatedTasks(syncEngine: syncEngine, hiringLoop: hiringLoop, home: home)
+                + doneProjectTasks([
+                    (syncEngine, ["Pick the sync protocol", "Map the data model", "Spike conflict merge", "Set up the test server", "Write the schema", "Review the API draft"]),
+                    (q4Planning, ["List Q3 results"]),
+                    (hiringLoop, ["Write the job post", "Screen resumes", "Book phone screens", "Brief the panel", "Run screen 1", "Run screen 2", "Run screen 3", "Send take-home tasks"]),
+                    (lisbonTrip, ["Pick the dates", "Book the apartment"]),
+                    (home, ["Clean the oven", "Hang the shelves", "Sort the garage", "Fix the door hinge", "Paint the fence", "Order curtains"]),
+                    (health, ["Book a checkup", "Get blood work", "Buy running shoes", "Renew gym plan"]),
+                ]),
             inboxItems: [
                 InboxItem(title: "Call the dentist", durationMinutes: 15, icon: "phone", color: .rose, projectID: health.id),
                 InboxItem(title: "Draft Q4 self-review", durationMinutes: 60, icon: "doc.text", color: .slate, projectID: q4Planning.id),
@@ -44,10 +53,60 @@ enum SampleData {
                 InboxItem(title: "Order a new chalk bag", durationMinutes: 10, icon: "bag", color: .sand),
                 InboxItem(title: "Renew passport", durationMinutes: 20, icon: "person.text.rectangle", color: .sage, projectID: lisbonTrip.id),
             ],
+            somedayItems: somedayItems,
             habits: habits,
             areas: [work, personal],
             projects: [syncEngine, q4Planning, hiringLoop, lisbonTrip, home, health]
         )
+    }
+
+    /// Open Anytime tasks on days after today. With the open future blocks, Upcoming shows 12.
+    private static func upcomingTasks(q4Planning: Project, lisbonTrip: Project, home: Project) -> [AnytimeTask] {
+        [
+            AnytimeTask(title: "Collect team goals", icon: "target", color: .sand, day: date(dayOffset: 4, minute: 0), projectID: q4Planning.id),
+            AnytimeTask(title: "Return library books", icon: "books.vertical", color: .sand, day: date(dayOffset: 4, minute: 0)),
+            AnytimeTask(title: "Clean the gutters", icon: "house", color: .sage, day: date(dayOffset: 5, minute: 0), projectID: home.id),
+            AnytimeTask(title: "Buy a travel adapter", icon: "powerplug", color: .plum, day: date(dayOffset: 6, minute: 0), projectID: lisbonTrip.id),
+            AnytimeTask(title: "Call Mom", icon: "phone", color: .rose, day: date(dayOffset: 6, minute: 0)),
+            AnytimeTask(title: "Book the Q4 review room", icon: "calendar", color: .sand, day: date(dayOffset: 7, minute: 0), projectID: q4Planning.id),
+            AnytimeTask(title: "Call the plumber", icon: "wrench.and.screwdriver", color: .sage, day: date(dayOffset: 7, minute: 0), projectID: home.id),
+        ]
+    }
+
+    /// Open Anytime tasks with no day: the 8 items of the Anytime smart list.
+    private static func undatedTasks(syncEngine: Project, hiringLoop: Project, home: Project) -> [AnytimeTask] {
+        [
+            AnytimeTask(title: "Profile the sync queue", icon: "gauge.with.needle", color: .slate, projectID: syncEngine.id),
+            AnytimeTask(title: "Write conflict tests", icon: "checklist", color: .slate, projectID: syncEngine.id),
+            AnytimeTask(title: "Write the interview rubric", icon: "list.clipboard", color: .sage, projectID: hiringLoop.id),
+            AnytimeTask(title: "Schedule the panel debrief", icon: "person.3", color: .sage, projectID: hiringLoop.id),
+            AnytimeTask(title: "Fix the leaky tap", icon: "drop", color: .sage, projectID: home.id),
+            AnytimeTask(title: "Replace the hallway bulb", icon: "lightbulb", color: .sage, projectID: home.id),
+            AnytimeTask(title: "Learn a new recipe", icon: "frying.pan", color: .sand),
+            AnytimeTask(title: "Back up photos", icon: "photo.on.rectangle", color: .slate),
+        ]
+    }
+
+    /// Done Anytime tasks with no day. They give each project its done count and show nowhere on Today.
+    private static func doneProjectTasks(_ groups: [(Project, [String])]) -> [AnytimeTask] {
+        groups.flatMap { project, titles in
+            titles.map { AnytimeTask(title: $0, icon: "checkmark", color: project.color, done: true, projectID: project.id) }
+        }
+    }
+
+    /// Inbox items set aside for later: the 14 items of the Someday smart list.
+    private static var somedayItems: [InboxItem] {
+        [
+            ("Learn Portuguese basics", 30, "character.book.closed"), ("Try a pottery class", 120, "paintpalette"),
+            ("Build a bird house", 90, "bird"), ("Read Dune again", 60, "book"),
+            ("Plan a camping weekend", 45, "tent"), ("Start a herb garden", 60, "leaf"),
+            ("Learn to juggle", 20, "circle.grid.cross"), ("Visit the coast", 240, "water.waves"),
+            ("Frame old photos", 45, "photo"), ("Write a short story", 60, "pencil"),
+            ("Bake sourdough", 180, "birthday.cake"), ("Learn chess openings", 30, "checkerboard.rectangle"),
+            ("Sell the old bike", 30, "bicycle"), ("Make a family tree", 90, "tree"),
+        ].map { title, minutes, icon in
+            InboxItem(title: title, durationMinutes: minutes, icon: icon, color: .sand)
+        }
     }
 
     private static var today: Date { date(dayOffset: 3, minute: 0) }
@@ -58,11 +117,11 @@ enum SampleData {
 
     private static func task(
         _ dayOffset: Int, _ title: String, _ minute: Int, _ duration: Int,
-        _ icon: String, _ color: BlockColor, done: Bool = false, steps: [Step] = []
+        _ icon: String, _ color: BlockColor, done: Bool = false, steps: [Step] = [], project: Project? = nil
     ) -> Block {
         Block(
             kind: .task, title: title, start: date(dayOffset: dayOffset, minute: minute),
-            durationMinutes: duration, icon: icon, color: color, steps: steps, done: done
+            durationMinutes: duration, icon: icon, color: color, steps: steps, done: done, projectID: project?.id
         )
     }
 
@@ -73,7 +132,7 @@ enum SampleData {
         )
     }
 
-    private static var blocks: [Block] {
+    private static func blocks(syncEngine: Project, lisbonTrip: Project, home: Project, health: Project) -> [Block] {
         var routine = task(3, "Morning routine", 435, 45, "sunrise", .rose, steps: [
             Step(title: "Stretch", done: true),
             Step(title: "Shower", done: true),
@@ -91,26 +150,26 @@ enum SampleData {
                 Step(title: "Outline the phases", done: true),
                 Step(title: "Rollback plan"),
                 Step(title: "Share with Alex"),
-            ]),
+            ], project: syncEngine),
             event(3, "Design review", 660, 60, "Work"),
             task(3, "Lunch with Priya", 750, 60, "fork.knife", .sand),
-            task(3, "Review pull requests", 870, 45, "arrow.triangle.pull", .slate),
+            task(3, "Review pull requests", 870, 45, "arrow.triangle.pull", .slate, project: syncEngine),
             event(3, "1:1 with Alex", 930, 30, "Work"),
-            task(3, "Groceries", 990, 30, "basket", .sage),
-            task(3, "Gym", 1110, 75, "dumbbell", .rose),
+            task(3, "Groceries", 990, 30, "basket", .sage, project: home),
+            task(3, "Gym", 1110, 75, "dumbbell", .rose, project: health),
             event(3, "Dinner with Sam", 1230, 90, "Personal"),
             task(3, "Wind down", 1350, 30, "moon", .plum),
             // Friday
             event(4, "Standup", 540, 15, "Work"),
-            task(4, "Write docs", 600, 120, "doc.text", .slate),
+            task(4, "Write docs", 600, 120, "doc.text", .slate, project: syncEngine),
             task(4, "Lunch", 750, 45, "fork.knife", .sand),
             task(4, "Climbing", 1110, 90, "mountain.2", .rose),
             // Saturday
-            task(5, "Farmers market", 600, 60, "carrot", .sage),
-            task(5, "Plan Lisbon trip", 840, 60, "airplane", .plum),
+            task(5, "Farmers market", 600, 60, "carrot", .sage, project: home),
+            task(5, "Plan Lisbon trip", 840, 60, "airplane", .plum, project: lisbonTrip),
             // Monday to Wednesday
-            task(0, "Deep work", 570, 120, "laptopcomputer", .slate, done: true),
-            task(1, "Run", 420, 45, "figure.walk", .rose, done: true),
+            task(0, "Deep work", 570, 120, "laptopcomputer", .slate, done: true, project: syncEngine),
+            task(1, "Run", 420, 45, "figure.walk", .rose, done: true, project: health),
             task(2, "Reading", 1320, 30, "book", .sand, done: true),
         ]
     }

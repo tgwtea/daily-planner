@@ -14,6 +14,7 @@ Each row gives a path, whether it exists now, and its job.
 | `Luna/Features/<Feature>/` | Yes | Views and logic for one feature. One folder per feature spec. |
 | `Luna/Features/AppShell/` | Yes | `RootView`, `LunaTabBar`, `AppRouter`, `AppRoute`, `AppTab`, and `PlaceholderScreen`. |
 | `Luna/Features/Habits/` | Yes | The Habits tab: `HabitsScreen`, `HabitHistoryCard`, `HabitCard`, `HabitsEmptyView`. |
+| `Luna/Features/Projects/` | Yes | The Projects tab: `ProjectsScreen`, `AreaSection`, `ProjectRow`, `ProjectsEmptyView`. |
 | `Luna/Features/QuickAdd/`, `EditBlock/`, `Focus/` | Yes | Empty placeholder sheet and cover until 1c.1, 1c.3, 1c.6. |
 | `Luna/Shared/Settings/` | Yes | `AppTheme` and `SettingsKey` (the `@AppStorage` keys). |
 | `Luna/Shared/Model/` | Yes | Value types (`Block`, `Step`, `Band`, `AnytimeTask`, `InboxItem`, `Habit`, `Area`, `Project`), pure rules (`Timeline`, `DayLimit`, `DurationFormat`, `SlotSearch`, `HabitStats`), `PlannerStore`, `AppClock`, and DEBUG-only `SampleData`. |

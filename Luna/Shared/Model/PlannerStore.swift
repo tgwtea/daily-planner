@@ -8,6 +8,8 @@ final class PlannerStore {
     var blocks: [Block]
     var anytimeTasks: [AnytimeTask]
     var inboxItems: [InboxItem]
+    /// Inbox items that the user set aside for later. They do not show in the Inbox.
+    var somedayItems: [InboxItem]
     var habits: [Habit]
     var areas: [Area]
     var projects: [Project]
@@ -16,6 +18,7 @@ final class PlannerStore {
         blocks: [Block] = [],
         anytimeTasks: [AnytimeTask] = [],
         inboxItems: [InboxItem] = [],
+        somedayItems: [InboxItem] = [],
         habits: [Habit] = [],
         areas: [Area] = [],
         projects: [Project] = []
@@ -23,6 +26,7 @@ final class PlannerStore {
         self.blocks = blocks
         self.anytimeTasks = anytimeTasks
         self.inboxItems = inboxItems
+        self.somedayItems = somedayItems
         self.habits = habits
         self.areas = areas
         self.projects = projects
@@ -41,6 +45,11 @@ final class PlannerStore {
         anytimeTasks.filter { task in
             task.day.map { calendar.isDate($0, inSameDayAs: day) } ?? false
         }
+    }
+
+    /// The projects of one area in store order. `nil` gives the projects with no area.
+    func projects(inArea areaID: Area.ID?) -> [Project] {
+        projects.filter { $0.areaID == areaID }
     }
 
     // MARK: Intents

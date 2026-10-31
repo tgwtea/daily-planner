@@ -1,7 +1,7 @@
 # Projects and areas
 
-Status: Partial (model only, no progress math, no UI)
-Code: `Luna/Shared/Model/Area.swift`, `Luna/Shared/Model/Project.swift`
+Status: Partial (counts and display only; smart list contents, detail, and creation come in 1b.6)
+Code: `Luna/Shared/Model/Area.swift`, `Project.swift` (timing text), `ProjectProgress.swift`, `SmartList.swift`
 Screens: [Projects](../screens/projects.md)
 
 ## Purpose
@@ -19,10 +19,14 @@ Organize tasks that are not on today into projects, areas, and smart lists.
 
 - Progress = done tasks / all tasks in the project.
 - Logbook lists done tasks and blocks.
-- A project stores its date line as `Timing`: no date, ongoing, a due date, or a date span. Progress and the open count come from linked items in checkpoint 1b.4.
+- A project stores its date line as `Timing`: no date, ongoing, a due date, or a date span. The date line uses the device locale: "Due Nov 14" and "Dec 18 – 27" in en_US, "Due 14 Nov" and "18 – 27 Dec" in en_GB.
+- Project items are task and routine blocks, Anytime tasks, Inbox items, and Someday items with the project's ID. Events do not count. Inbox and Someday items are always open.
+- Smart list counts include open items only. Upcoming does not count events (they come from the calendar in 2.2).
+- Someday items are a separate store array (`somedayItems`), not a flag on Inbox items. The Inbox tab and its offset-based reorder stay unchanged.
 
 ## Decisions
 
+- **Decided (2026-10-31):** progress, open counts, and smart list counts come from items. See [Projects](../screens/projects.md#intended-differences).
 - **Decided (2026-10-30):** Smart lists:
   - Upcoming: blocks and Anytime tasks with a date after today, by date.
   - Anytime: Anytime tasks with no date.

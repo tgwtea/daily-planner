@@ -1,6 +1,7 @@
 # Projects
 
-Status: Planned
+Status: Partial (display only, rows do not navigate until 1b.6)
+Code: `Luna/Features/Projects/ProjectsScreen.swift`, `AreaSection.swift`, `ProjectRow.swift`, `ProjectsEmptyView.swift`
 Artboards: 2l
 Features: [Projects and areas](../features/projects-and-areas.md)
 
@@ -30,6 +31,10 @@ Show work outside today: smart lists and projects grouped by area.
 | Personal | Home | Sage | 50% | No date | 6 |
 | Personal | Health | Rose | 70% | Ongoing | 2 |
 
+## Intended differences
+
+- **Decided (2026-10-31):** progress, open counts, and smart list counts come from items, not fixed values. The mockup values for Sync engine (60%, 5 open), Lisbon trip (30%, 4 open), and Health (70%, 2 open) have no whole-number item counts. The app shows 58%, 33%, and 71%.
+
 ## Navigation and interactions
 
 - **Observed:** rows look tappable (chevrons, buttons). The mockup gives them no action.
@@ -38,6 +43,7 @@ Show work outside today: smart lists and projects grouped by area.
 ## States
 
 - **Assumption:** with no projects, show the smart lists and an empty state that says how to add a project. The mockup has no empty state.
+- **Assumption:** an area with no projects shows no section. Projects with no area go in a last section with no header.
 
 ## Accessibility and iOS notes
 

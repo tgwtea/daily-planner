@@ -68,7 +68,7 @@ struct RootView: View {
         case .inbox:
             InboxScreen()
         case .projects:
-            PlaceholderScreen(title: tab.title) { ProjectsShellActions() }
+            ProjectsScreen()
         case .habits:
             HabitsScreen()
         default:

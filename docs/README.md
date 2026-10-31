@@ -53,7 +53,9 @@ These terms have one meaning in all docs and in code names.
 | Habit streak | The count of done days in a row, up to today, or up to yesterday when today is not done. In code: `HabitStats`. |
 | Heatmap | The 12-week grid on the Habits history card. One cell is one day. Its shade shows the share done. |
 | Area | A group of projects, for example Work or Personal. |
-| Smart list | A fixed list on the Projects tab: Upcoming, Anytime, Someday, Logbook. |
+| Smart list | A fixed list on the Projects tab: Upcoming, Anytime, Someday, Logbook. In code: `SmartList`. |
+| Someday item | An Inbox item that the user set aside for later. It does not show in the Inbox. In code: `PlannerStore.somedayItems`. |
+| Project progress | The done and open item counts of one project. In code: `ProjectProgress`. |
 | Band schedule | The start minute of each band. Settings edits it. Default 6:00 AM, 12:00 PM, 6:00 PM. In code: `BandSchedule`. |
 | Store | The one `@Observable` object that holds all app data and its intents. In code: `PlannerStore`. |
 | Sample data | The mockup week (Thursday, October 29, 2026, 10:20 AM). DEBUG builds only: previews and the `-LunaSampleData` launch argument. |

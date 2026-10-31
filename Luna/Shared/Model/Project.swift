@@ -8,6 +8,24 @@ struct Project: Identifiable, Hashable, Sendable {
         case ongoing
         case due(Date)
         case span(Date, Date)
+
+        /// The meta line text in the locale of `calendar`, for example "Due Nov 14".
+        /// A span uses the locale's interval format: "Dec 18 – 27" in en_US, "18 – 27 Dec" in en_GB.
+        func text(calendar: Calendar) -> String {
+            let locale = calendar.locale ?? .autoupdatingCurrent
+            switch self {
+            case .noDate:
+                return "No date"
+            case .ongoing:
+                return "Ongoing"
+            case .due(let date):
+                let style = Date.FormatStyle(locale: locale, calendar: calendar, timeZone: calendar.timeZone)
+                return "Due \(style.month(.abbreviated).day().format(date))"
+            case .span(let start, let end):
+                let style = Date.IntervalFormatStyle(locale: locale, calendar: calendar, timeZone: calendar.timeZone)
+                return (start..<max(start, end)).formatted(style.month(.abbreviated).day())
+            }
+        }
     }
 
     var id = UUID()
