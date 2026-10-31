@@ -296,7 +296,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1a.6 | Artboard PNG export | Deprecated | Claude Code (Opus 5.5) | 2026-10-31 | | User skipped the PNG export. Agents read artboards from the design project. |
 | 1b.1 | Today | Done | Claude Code (Opus 5.5) | 2026-10-31 | 08702a0 | 81 tests pass. Checked in simulator, dark and light, against 2b/2c/2e/2f markup. Habit strip display only (1b.3). Inbox pill and Open Inbox select the Inbox tab until 1c.2. |
 | 1b.2 | Inbox | Done | Claude Code (Opus 5.5) | 2026-10-31 | e5a9145 | Checked in simulator, dark and light, against 2k markup. Drag to reorder not confirmed in the simulator; unit tests cover the move. |
-| 1b.3 | Habits | In progress | Claude Code (Opus 5.5) | | | |
+| 1b.3 | Habits | Done | Claude Code (Opus 5.5) | 2026-10-31 | f93327a | Checked in simulator, dark and light, against 2m markup. History card combines all habits ("All habits"). Strip logs the shown day. |
 | 1b.4 | Projects | Not started | | | | |
 | 1b.5 | Settings | Not started | | | | |
 | 1b.6 | Project detail and smart lists | Not started | | | | |
