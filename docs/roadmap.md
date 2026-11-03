@@ -392,7 +392,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | --- | --- | --- | --- | --- | --- | --- |
 | 0.1 | Repository and Xcode project | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | Build and test compile pass. Tests not run: no iOS 26 runtime. |
 | 0.2 | Durable documentation | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | |
-| 0.3 | v3 re-baseline | Done | Claude Code (Opus 5.5) | 2026-11-03 | | Docs only. v3 is the source of truth. |
+| 0.3 | v3 re-baseline | Done | Claude Code (Opus 5.5) | 2026-11-03 | ae9b902 | Docs only. v3 is the source of truth. |
 | 1a.1 | Test environment | Done | Claude Code (Opus 5.5) | 2026-10-30 | dd1691b | iOS 27.0 runtime, iPhone 17 simulator. Smoke test passes. |
 | 1a.2 | Design tokens | Done | Claude Code (Opus 5.5) | 2026-10-30 | 54628b1 | Colors in Swift code. Previews checked in the simulator in dark and light. |
 | 1a.3 | Domain model and in-memory store | Done | Claude Code (Opus 5.5) | 2026-10-30 | 73333d6 | 44 tests pass. Model and store only, no UI. Sample data via `-LunaSampleData` (DEBUG). |
