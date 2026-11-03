@@ -104,14 +104,14 @@ import Testing
         #expect(draft.parsed(context).title == "Gym")
     }
 
-    @Test func setDayWritesWordsAndDates() {
+    @Test func setDayWritesExactDates() {
         var draft = draft("Gym tomorrow")
         draft.setDay(at(29, 0), context)
-        #expect(draft.text == "Gym today")
+        #expect(draft.text == "Gym 2026-10-29")
         draft.setDay(at(30, 0), context)
-        #expect(draft.text == "Gym tomorrow")
+        #expect(draft.text == "Gym 2026-10-30")
         draft.setDay(TestCalendar.date(2026, 11, 6), context)
-        #expect(draft.text == "Gym nov 6")
+        #expect(draft.text == "Gym 2026-11-06")
         #expect(draft.day(context) == TestCalendar.date(2026, 11, 6))
     }
 

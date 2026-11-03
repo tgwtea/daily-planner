@@ -3,7 +3,15 @@ import Foundation
 /// Reads a day, a time, and a duration out of one line of English text. See docs/features/quick-add-parsing.md.
 /// The first match of each kind counts. The parser removes it from the title. A later match stays in the title.
 enum QuickAddParser {
+    enum Issue: String, Equatable, Sendable {
+        case duration = "Enter a smaller duration."
+        case time = "Enter a valid time. Minutes must be 00 to 59."
+        case date = "Enter a valid date."
+        case nonexistentTime = "This time does not exist on this date. Choose another time."
+    }
+
     struct Result: Equatable {
+        var issues: [Issue] = []
         /// The text without the matched tokens, with spaces collapsed.
         var title: String
         /// The start of the parsed day.
@@ -25,23 +33,53 @@ enum QuickAddParser {
 
         if let match = firstMatch(duration, in: text) {
             result.durationRange = match.range
-            let value = Int(match.groups[0] ?? "") ?? 0
-            let minutes = match.groups[1]?.lowercased().hasPrefix("h") == true ? value * 60 : value
-            result.durationMinutes = minutes > 0 ? minutes : nil
+            if let value = Int(match.groups[0] ?? "") {
+                let multiplier = match.groups[1]?.lowercased().hasPrefix("h") == true ? 60 : 1
+                let (minutes, overflow) = value.multipliedReportingOverflow(by: multiplier)
+                if overflow { result.issues.append(.duration) }
+                else { result.durationMinutes = minutes > 0 ? minutes : nil }
+            } else {
+                result.issues.append(.duration)
+            }
         }
 
-        if let (range, minute) = time(in: text) {
-            result.timeRange = range
-            result.minute = minute
+        if let match = firstMatch(amPMTime, in: text) {
+            result.timeRange = match.range
+            if let hour = Int(match.groups[0] ?? ""), (1...12).contains(hour),
+               let minute = Int(match.groups[1] ?? "0"), (0...59).contains(minute) {
+                let isPM = match.groups[2]?.lowercased() == "pm"
+                result.minute = (hour % 12 + (isPM ? 12 : 0)) * 60 + minute
+            } else { result.issues.append(.time) }
+        } else if let match = firstMatch(twentyFourHourTime, in: text) {
+            result.timeRange = match.range
+            if let hour = Int(match.groups[0] ?? ""), (0...23).contains(hour),
+               let minute = Int(match.groups[1] ?? ""), (0...59).contains(minute) {
+                result.minute = hour * 60 + minute
+            } else { result.issues.append(.time) }
         }
 
-        if let (range, day) = day(in: text, today: today, calendar: calendar) {
+        // Exact picker dates take precedence over all partial date patterns.
+        if let match = firstMatch(exactDate, in: text) {
+            result.dayRange = match.range
+            let gregorian = DayKey.gregorian(calendar)
+            let parts = DateComponents(year: Int(match.groups[0] ?? ""), month: Int(match.groups[1] ?? ""), day: Int(match.groups[2] ?? ""))
+            if let year = parts.year, year > 0, let date = gregorian.date(from: parts),
+               gregorian.component(.year, from: date) == year,
+               gregorian.component(.month, from: date) == parts.month,
+               gregorian.component(.day, from: date) == parts.day {
+                result.day = date
+            } else { result.issues.append(.date) }
+        } else if let (range, day) = day(in: text, today: today, calendar: calendar) {
             result.dayRange = range
             result.day = day
         }
 
         var rest = text
-        let ranges = [result.durationRange, result.timeRange, result.dayRange].compactMap { $0 }
+        let ranges = [
+            result.issues.contains(.duration) ? nil : result.durationRange,
+            result.issues.contains(.time) ? nil : result.timeRange,
+            result.issues.contains(.date) ? nil : result.dayRange
+        ].compactMap { $0 }
         var removedFrom = text.endIndex
         for range in ranges.sorted(by: { $0.lowerBound > $1.lowerBound }) where range.upperBound <= removedFrom {
             rest.replaceSubrange(range, with: " ")
@@ -49,23 +87,6 @@ enum QuickAddParser {
         }
         result.title = rest.split(whereSeparator: \.isWhitespace).joined(separator: " ")
         return result
-    }
-
-    // MARK: Time
-
-    /// An am/pm time wins over a 24-hour time. A bare number ("at 7") is not a time.
-    private static func time(in text: String) -> (Range<String.Index>, Int)? {
-        if let match = firstMatch(amPMTime, in: text),
-           let hour = Int(match.groups[0] ?? ""), (1...12).contains(hour) {
-            let minute = Int(match.groups[1] ?? "") ?? 0
-            let isPM = match.groups[2]?.lowercased() == "pm"
-            return (match.range, (hour % 12 + (isPM ? 12 : 0)) * 60 + minute)
-        }
-        if let match = firstMatch(twentyFourHourTime, in: text),
-           let hour = Int(match.groups[0] ?? ""), let minute = Int(match.groups[1] ?? "") {
-            return (match.range, hour * 60 + minute)
-        }
-        return nil
     }
 
     // MARK: Day
@@ -90,13 +111,13 @@ enum QuickAddParser {
 
         if let match = firstMatch(monthDay, in: text),
            let month = month(named: match.groups[0] ?? ""), let dayNumber = Int(match.groups[1] ?? ""),
-           let day = date(month: month, day: dayNumber, onOrAfter: today, calendar: calendar) {
+           let day = date(month: month, day: dayNumber, onOrAfter: today, calendar: DayKey.gregorian(calendar)) {
             candidates.append((match.range, day))
         }
 
         if let match = firstMatch(dayMonth, in: text),
            let dayNumber = Int(match.groups[0] ?? ""), let month = month(named: match.groups[1] ?? ""),
-           let day = date(month: month, day: dayNumber, onOrAfter: today, calendar: calendar) {
+           let day = date(month: month, day: dayNumber, onOrAfter: today, calendar: DayKey.gregorian(calendar)) {
             candidates.append((match.range, day))
         }
 
@@ -128,7 +149,7 @@ enum QuickAddParser {
             guard let date = calendar.date(from: parts),
                   calendar.component(.month, from: date) == month,
                   calendar.component(.day, from: date) == day
-            else { return nil }
+            else { continue }
             if date >= today { return date }
         }
         return nil
@@ -158,8 +179,9 @@ enum QuickAddParser {
         "(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\\.?"
 
     private static let duration = regex("\\b(\\d+)\\s?(m|min|mins|h|hr|hrs)\\b")
-    private static let amPMTime = regex("\\b(\\d{1,2})(?::(\\d{2}))?\\s?(am|pm)\\b")
-    private static let twentyFourHourTime = regex("\\b([01]?\\d|2[0-3]):([0-5]\\d)\\b")
+    private static let amPMTime = regex("(?<![\\w:])(\\d+)(?::(\\d+))?\\s?(am|pm)\\b")
+    private static let twentyFourHourTime = regex("(?<![\\w:])(\\d+):(\\d+)(?![\\w:])")
+    private static let exactDate = regex("(?<![\\w-])(\\d{4})-(\\d{2})-(\\d{2})(?![\\w-])")
     private static let dayWord = regex("\\b(today|tonight|tomorrow|tmrw)\\b")
     private static let weekdayName = regex(
         "\\b(mon(?:day)?|tue(?:s(?:day)?)?|wed(?:nesday)?|thu(?:r(?:s(?:day)?)?)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)\\b"

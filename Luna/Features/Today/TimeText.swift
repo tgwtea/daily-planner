@@ -14,8 +14,12 @@ enum TimeText {
 
     /// "8:00" for a minute after midnight on `day`.
     static func time(minute: Int, on day: Date, calendar: Calendar) -> String {
-        let date = calendar.date(byAdding: .minute, value: minute, to: calendar.startOfDay(for: day)) ?? day
-        return time(date)
+        guard let date = LocalTime.date(minute: minute, on: day, calendar: calendar) else { return "—" }
+        var style = Date.FormatStyle().hour(.defaultDigits(amPM: .omitted)).minute(.twoDigits)
+        style.calendar = calendar
+        style.timeZone = calendar.timeZone
+        style.locale = calendar.locale ?? .current
+        return date.formatted(style)
     }
 
     /// "Thursday, October 29".

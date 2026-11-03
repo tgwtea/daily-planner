@@ -13,10 +13,10 @@ struct Habit: Identifiable, Hashable, Sendable {
     /// The days of the week that the habit is due. A day that is not in the set does not break the streak.
     var weekdays: Set<Weekday> = Set(Weekday.allCases)
     /// The logged count per day. The key is the start of the day.
-    var history: [Date: Int] = [:]
+    var history: [DayKey: Int] = [:]
 
     func value(on day: Date, calendar: Calendar) -> Int {
-        history[calendar.startOfDay(for: day)] ?? 0
+        history[DayKey(day, calendar: calendar)] ?? 0
     }
 
     func isDone(on day: Date, calendar: Calendar) -> Bool {

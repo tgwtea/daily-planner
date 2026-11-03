@@ -21,7 +21,7 @@ enum QuickAddPrefill: Hashable, Sendable {
             return .time(start)
         }
         let dayStart = calendar.startOfDay(for: day)
-        return .time(calendar.date(byAdding: .minute, value: schedule.start(of: band), to: dayStart) ?? dayStart)
+        return .time(LocalTime.boundary(minute: schedule.start(of: band), on: dayStart, calendar: calendar) ?? dayStart)
     }
 }
 
@@ -44,6 +44,7 @@ struct QuickAddDraft {
         case block(start: Date, durationMinutes: Int)
         case anytime(day: Date)
         case inbox(durationMinutes: Int)
+        case invalid([QuickAddParser.Issue])
 
         var isBlock: Bool {
             if case .block = self { return true }
@@ -88,12 +89,15 @@ struct QuickAddDraft {
     func destination(_ context: QuickAddContext) -> Destination {
         let calendar = context.calendar
         let parsed = parsed(context)
+        guard parsed.issues.isEmpty else { return .invalid(parsed.issues) }
         let duration = parsed.durationMinutes ?? Self.defaultDuration
         let day = day(context)
         if let minute = minute(context) {
             let dayStart = day ?? calendar.startOfDay(for: context.now)
-            if let start = calendar.date(byAdding: .minute, value: minute, to: dayStart),
-               let clamped = DayLimit.clampedDuration(duration, start: start, calendar: calendar) {
+            guard let start = LocalTime.date(minute: minute, on: dayStart, calendar: calendar) else {
+                return .invalid([.nonexistentTime])
+            }
+            if let clamped = DayLimit.clampedDuration(duration, start: start, calendar: calendar) {
                 return .block(start: start, durationMinutes: clamped)
             }
             // An 11:59 PM start leaves no time for a block. The item becomes an Anytime task on that day.
@@ -110,21 +114,14 @@ struct QuickAddDraft {
 
     // MARK: Picker edits
 
-    /// Writes the day as a token: "today", "tomorrow", or "nov 6".
+    /// Writes the exact local date, including its Gregorian year.
     mutating func setDay(_ date: Date, _ context: QuickAddContext) {
-        let calendar = context.calendar
-        let today = calendar.startOfDay(for: context.now)
-        let day = calendar.startOfDay(for: date)
-        let token: String
-        if day == today {
-            token = "today"
-        } else if day == calendar.date(byAdding: .day, value: 1, to: today) {
-            token = "tomorrow"
-        } else {
-            let parts = calendar.dateComponents([.month, .day], from: day)
-            token = "\(Self.monthTokens[(parts.month ?? 1) - 1]) \(parts.day ?? 1)"
-        }
-        write(token, over: parsed(context).dayRange)
+        write(DayKey(date, calendar: context.calendar).token, over: parsed(context).dayRange)
+    }
+
+    func issues(_ context: QuickAddContext) -> [QuickAddParser.Issue] {
+        if case .invalid(let issues) = destination(context) { return issues }
+        return []
     }
 
     /// Writes the time as an am/pm token, for example "9:30am".
@@ -150,5 +147,4 @@ struct QuickAddDraft {
         }
     }
 
-    private static let monthTokens = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
 }

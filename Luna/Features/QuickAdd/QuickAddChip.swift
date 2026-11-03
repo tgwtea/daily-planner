@@ -39,7 +39,7 @@ extension QuickAddDraft {
             ))
         } else if case .anytime = destination {
             chips.append(QuickAddChip(kind: .destination, title: "Anytime", systemImage: "clock", accessibilityLabel: "Anytime"))
-        } else {
+        } else if case .inbox = destination {
             chips.append(QuickAddChip(kind: .destination, title: "Inbox", systemImage: "tray", accessibilityLabel: "Inbox"))
         }
 
@@ -76,7 +76,11 @@ extension QuickAddDraft {
         if let tomorrow = calendar.date(byAdding: .day, value: 1, to: today), calendar.isDate(day, inSameDayAs: tomorrow) {
             return "Tomorrow"
         }
-        return day.formatted(style(Date.FormatStyle().weekday(.abbreviated).month(.abbreviated).day(), calendar))
+        var format = Date.FormatStyle().weekday(.abbreviated).month(.abbreviated).day()
+        if calendar.component(.year, from: day) != calendar.component(.year, from: today) {
+            format = format.year()
+        }
+        return day.formatted(style(format, calendar))
     }
 
     /// The style in the calendar, time zone, and locale of `calendar`.

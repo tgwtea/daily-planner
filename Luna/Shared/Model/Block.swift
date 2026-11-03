@@ -32,7 +32,7 @@ struct Block: Identifiable, Hashable, Sendable {
     var repeatRule: RepeatRule = .never
 
     var end: Date {
-        start.addingTimeInterval(TimeInterval(durationMinutes * 60))
+        start.addingTimeInterval(TimeInterval(durationMinutes) * 60)
     }
 
     /// A routine with zero steps counts as a task.

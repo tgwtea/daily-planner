@@ -97,7 +97,7 @@ final class PlannerStore {
     /// Adds one to the habit count of the day. At the goal, the count goes back to zero.
     func logHabit(id: Habit.ID, on day: Date, calendar: Calendar) {
         guard let index = habits.firstIndex(where: { $0.id == id }) else { return }
-        let key = calendar.startOfDay(for: day)
+        let key = DayKey(day, calendar: calendar)
         let value = habits[index].history[key] ?? 0
         habits[index].history[key] = value >= habits[index].goal ? nil : value + 1
     }
@@ -199,6 +199,8 @@ final class PlannerStore {
     func addQuickAdd(_ draft: QuickAddDraft, context: QuickAddContext) -> QuickAddResult? {
         guard let title = Self.trimmed(draft.parsed(context).title) else { return nil }
         switch draft.destination(context) {
+        case .invalid:
+            return nil
         case .block(let start, let duration):
             let block = Block(
                 kind: draft.repeatRule == .never ? .task : .routine,

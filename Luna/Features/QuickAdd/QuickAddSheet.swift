@@ -50,6 +50,13 @@ struct QuickAddSheet: View {
         VStack(alignment: .leading, spacing: 14) {
             inputRow
             QuickAddChipRow(chips: current.chips(context), onTap: tapChip)
+            ForEach(current.issues(context), id: \.self) { issue in
+                Text(issue.rawValue)
+                    .font(.callout)
+                    .foregroundStyle(Color.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel("Error: \(issue.rawValue)")
+            }
             toolRow
             if let panel {
                 panelView(panel)
@@ -139,6 +146,7 @@ struct QuickAddSheet: View {
             }
             .buttonStyle(PressScaleButtonStyle(scale: LunaMotion.PressScale.checkMark))
             .accessibilityLabel("Add")
+            .disabled(!current.issues(context).isEmpty)
         }
     }
 
@@ -201,7 +209,7 @@ struct QuickAddSheet: View {
                 let day = current.day(context) ?? calendar.startOfDay(for: context.now)
                 let minute = current.minute(context)
                     ?? SlotSearch.roundedUp(Timeline.minuteOfDay(context.now, calendar: calendar))
-                return calendar.date(byAdding: .minute, value: minute, to: day) ?? day
+                return LocalTime.date(minute: min(minute, 1439), on: day, calendar: calendar) ?? day
             },
             set: { draft.setTime(minute: Timeline.minuteOfDay($0, calendar: calendar), context) }
         )
@@ -284,6 +292,7 @@ struct QuickAddSheet: View {
         // A step that the user typed but did not submit still counts.
         if !newStep.trimmingCharacters(in: .whitespaces).isEmpty { item.steps.append(newStep) }
         let context = context
+        guard item.issues(context).isEmpty else { return }
         if case .block(_, let start) = store.addQuickAdd(item, context: context) {
             router.showToday(on: start, now: context.now, calendar: calendar)
         }

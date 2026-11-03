@@ -200,7 +200,7 @@ import Testing
     }
 
     @Test func updateHabitKeepsIDAndHistory() {
-        let habit = Habit(name: "Water", icon: "waterbottle", color: .slate, goal: 8, subtitle: "", history: [day: 3])
+        let habit = Habit(name: "Water", icon: "waterbottle", color: .slate, goal: 8, subtitle: "", history: [DayKey(day, calendar: TestCalendar.utc): 3])
         let store = PlannerStore(habits: [habit])
         var edit = HabitDraft(habit: habit)
         edit.name = "Tea"
@@ -209,19 +209,19 @@ import Testing
         #expect(store.habits[0].id == habit.id)
         #expect(store.habits[0].name == "Tea")
         #expect(store.habits[0].weekdays == [.saturday])
-        #expect(store.habits[0].history == [day: 3])
+        #expect(store.habits[0].history == [DayKey(day, calendar: TestCalendar.utc): 3])
         edit.name = ""
         store.updateHabit(id: habit.id, draft: edit)
         #expect(store.habits[0].name == "Tea")
     }
 
     @Test func archiveRestoreAndDeleteHabit() {
-        let names = ["A", "B", "C"].map { Habit(name: $0, icon: "circle", color: .rose, goal: 1, subtitle: "", history: [day: 1]) }
+        let names = ["A", "B", "C"].map { Habit(name: $0, icon: "circle", color: .rose, goal: 1, subtitle: "", history: [DayKey(day, calendar: TestCalendar.utc): 1]) }
         let store = PlannerStore(habits: names)
         store.archiveHabit(id: names[0].id)
         #expect(store.habits.map(\.name) == ["B", "C"])
         #expect(store.archivedHabits.map(\.name) == ["A"])
-        #expect(store.archivedHabits[0].history == [day: 1])
+        #expect(store.archivedHabits[0].history == [DayKey(day, calendar: TestCalendar.utc): 1])
         store.restoreHabit(id: names[0].id)
         #expect(store.habits.map(\.name) == ["B", "C", "A"])
         #expect(store.archivedHabits.isEmpty)

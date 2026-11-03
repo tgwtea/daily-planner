@@ -206,12 +206,12 @@ enum SampleData {
         _ name: String, _ icon: String, _ color: BlockColor, goal: Int, _ subtitle: String,
         today value: Int, recent: [Bool]
     ) -> Habit {
-        var history: [Date: Int] = [:]
-        if value > 0 { history[today] = value }
+        var history: [DayKey: Int] = [:]
+        if value > 0 { history[DayKey(today, calendar: calendar)] = value }
         for daysBack in 1..<84 {
             let done = daysBack <= recent.count ? recent[daysBack - 1] : (daysBack * 37 + 11) % 10 >= 3
             if done, let day = calendar.date(byAdding: .day, value: -daysBack, to: today) {
-                history[day] = goal
+                history[DayKey(day, calendar: calendar)] = goal
             }
         }
         return Habit(name: name, icon: icon, color: color, goal: goal, subtitle: subtitle, history: history)

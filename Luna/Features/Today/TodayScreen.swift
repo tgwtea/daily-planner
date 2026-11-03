@@ -24,6 +24,7 @@ struct TodayScreen: View {
             let day = router.todayDay ?? now
             let plan = DayPlan.make(
                 blocks: store.blocks(on: day, calendar: calendar),
+                anytimeTasks: store.anytimeTasks(on: day, calendar: calendar),
                 schedule: schedule, calendar: calendar, showFreeTime: showFreeTime
             )
             ScrollViewReader { proxy in
@@ -71,7 +72,10 @@ struct TodayScreen: View {
                 .padding(.top, 18)
             }
 
-            Group {
+            VStack(alignment: .leading, spacing: 22) {
+                if !plan.isEmpty {
+                    AnytimeSection(day: day, tasks: plan.anytimeTasks, isExpanded: $isAnytimeExpanded)
+                }
                 if plan.isEmpty {
                     EmptyDayView(day: day, schedule: schedule, calendar: calendar)
                         .padding(.top, 20)
@@ -86,7 +90,6 @@ struct TodayScreen: View {
 
     private func timeline(day: Date, now: Date, plan: DayPlan) -> some View {
         VStack(alignment: .leading, spacing: 22) {
-            AnytimeSection(day: day, tasks: store.anytimeTasks(on: day, calendar: calendar), isExpanded: $isAnytimeExpanded)
             ForEach(plan.sections) { section in
                 BandSectionView(
                     section: section,

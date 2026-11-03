@@ -200,6 +200,13 @@ Deprecated (2026-10-31). The user decided to skip the PNG export. Agents compare
 
 ---
 
+### 1c.7 Reliability fixes
+- **Depends on:** 1c.1
+- **Read:** Quick add, Anytime, Habits, Inbox, and timeline feature specs; Today and Quick add screen specs.
+- **Build:** Fix the seven audit defects: input overflow, calendar crash, hidden Anytime tasks, clock changes, lost years, habit date keys, invalid minutes.
+- **Decided (2026-10-31):** Execute this audit checkpoint before 1c.2. Persistent storage stays in 2.1.
+- **Done when:** Regression tests, simulator build, full test suite, and dark/light design comparison pass.
+
 ## Phase 2: Platform
 
 ### 2.1 Persistence
@@ -303,6 +310,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1b.6 | Project detail and smart lists | Done | Claude Code (Opus 5.5) | 2026-10-31 | 873669c | Checked in simulator, dark and light. No artboard for detail or lists. Logbook sorts by `completedAt` (decided 2026-10-31). 178 tests pass. |
 | 1b.7 | Habit management | Done | Claude Code (Opus 5.5) | 2026-10-31 | 07c351c | Checked in simulator, dark and light. No artboard for editor or archived list. Tap on a swipe button not confirmed in the simulator; full swipe works. 201 tests pass. |
 | 1c.1 | Quick add | Done | Claude Code (Opus 5.5) | 2026-10-31 | 011ebca | Checked in simulator, dark and light, against 2g markup. System sheet floats above the keyboard (intended). 282 test cases pass. |
+| 1c.7 | Reliability fixes | In progress | Codex | 2026-10-31 | | Seven audit defects. |
 | 1c.2 | Inbox drawer | Not started | | | | |
 | 1c.3 | Edit block | Not started | | | | |
 | 1c.4 | Plan my day | Not started | | | | |

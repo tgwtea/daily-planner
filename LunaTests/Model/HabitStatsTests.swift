@@ -11,12 +11,12 @@ import Testing
     private func habit(
         goal: Int = 1, weekdays: Set<Weekday> = Set(Weekday.allCases), doneDaysBack: [Int], partial: [Int: Int] = [:]
     ) -> Habit {
-        var history: [Date: Int] = [:]
+        var history: [DayKey: Int] = [:]
         for daysBack in doneDaysBack {
-            history[day(daysBack)] = goal
+            history[DayKey(day(daysBack), calendar: calendar)] = goal
         }
         for (daysBack, value) in partial {
-            history[day(daysBack)] = value
+            history[DayKey(day(daysBack), calendar: calendar)] = value
         }
         return Habit(name: "Habit", icon: "circle", color: .slate, goal: goal, subtitle: "", weekdays: weekdays, history: history)
     }
@@ -129,7 +129,7 @@ import Testing
 
     @Test func monthPercentOnFirstDay() {
         let first = TestCalendar.date(2026, 11, 1, 9)
-        let done = Habit(name: "A", icon: "circle", color: .rose, goal: 1, subtitle: "", history: [calendar.startOfDay(for: first): 1])
+        let done = Habit(name: "A", icon: "circle", color: .rose, goal: 1, subtitle: "", history: [DayKey(first, calendar: calendar): 1])
         #expect(HabitStats.monthPercent([done], today: first, calendar: calendar) == 100)
         // The October history does not count in November.
         #expect(HabitStats.monthPercent([habit(doneDaysBack: [0, 1])], today: first, calendar: calendar) == 0)

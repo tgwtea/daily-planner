@@ -31,7 +31,7 @@ import Testing
     @Test func roundTripKeepsHabitFields() {
         let habit = Habit(
             name: "Water", icon: "waterbottle", color: .slate, goal: 8, subtitle: "8 glasses a day",
-            weekdays: [.monday, .friday], history: [TestCalendar.date(2026, 10, 29): 5]
+            weekdays: [.monday, .friday], history: [DayKey(TestCalendar.date(2026, 10, 29), calendar: TestCalendar.utc): 5]
         )
         var copy = habit
         copy.name = "Changed"

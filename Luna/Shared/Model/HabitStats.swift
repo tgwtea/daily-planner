@@ -35,7 +35,7 @@ enum HabitStats {
     static func streak(_ habits: [Habit], today: Date, calendar: Calendar) -> Int {
         let end = calendar.startOfDay(for: today)
         // The walk stops at the first logged day, so a list with no scheduled day still ends.
-        guard let first = habits.flatMap(\.history.keys).min() else { return 0 }
+        guard let first = habits.flatMap(\.history.keys).min()?.date(calendar: calendar) else { return 0 }
         var day = end
         var count = 0
         while day >= first {
@@ -53,7 +53,7 @@ enum HabitStats {
     /// The longest run of done days from the first logged day to `today`. Off days are skipped.
     static func bestStreak(_ habits: [Habit], today: Date, calendar: Calendar) -> Int {
         let end = calendar.startOfDay(for: today)
-        guard var day = habits.flatMap(\.history.keys).min(), day <= end else { return 0 }
+        guard var day = habits.flatMap(\.history.keys).min()?.date(calendar: calendar), day <= end else { return 0 }
         var best = 0
         var run = 0
         while day <= end {

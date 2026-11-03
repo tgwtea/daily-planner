@@ -24,17 +24,18 @@ struct DayPlan {
         var doneCount: (done: Int, total: Int) { Timeline.doneCount(blocks) }
     }
 
+    var anytimeTasks: [AnytimeTask]
     var sections: [BandSection]
     var overlappingIDs: Set<Block.ID>
 
     var blocks: [Block] { sections.flatMap(\.blocks) }
-    var isEmpty: Bool { sections.allSatisfy(\.blocks.isEmpty) }
+    var isEmpty: Bool { anytimeTasks.isEmpty && sections.allSatisfy(\.blocks.isEmpty) }
     /// The day footer: "5 of 11 blocks done".
     var doneCount: (done: Int, total: Int) { Timeline.doneCount(blocks) }
 
     /// - Parameter blocks: the blocks of one day.
     /// - Parameter showFreeTime: the Settings switch. Off hides the free gap rows.
-    static func make(blocks: [Block], schedule: BandSchedule, calendar: Calendar, showFreeTime: Bool) -> DayPlan {
+    static func make(blocks: [Block], anytimeTasks: [AnytimeTask] = [], schedule: BandSchedule, calendar: Calendar, showFreeTime: Bool) -> DayPlan {
         let sorted = blocks.sorted { $0.start < $1.start }
         let sections = Band.allCases.map { band in
             let bandBlocks = sorted.filter { Timeline.band(of: $0, schedule: schedule, calendar: calendar) == band }
@@ -46,6 +47,6 @@ struct DayPlan {
                 .map(\.row)
             return BandSection(band: band, blocks: bandBlocks, rows: rows)
         }
-        return DayPlan(sections: sections, overlappingIDs: Timeline.overlappingIDs(sorted))
+        return DayPlan(anytimeTasks: anytimeTasks, sections: sections, overlappingIDs: Timeline.overlappingIDs(sorted))
     }
 }

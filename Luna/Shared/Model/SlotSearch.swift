@@ -26,15 +26,16 @@ enum SlotSearch {
             startMinute = max(startMinute, roundedUp(Timeline.minuteOfDay(now, calendar: calendar)))
         }
         let dayStart = calendar.startOfDay(for: day)
-        guard let bandEnd = date(minute: range.upperBound, dayStart: dayStart, calendar: calendar),
+        guard let bandEnd = LocalTime.boundary(minute: range.upperBound, on: dayStart, calendar: calendar),
               let latestEnd = DayLimit.latestEnd(forStart: dayStart, calendar: calendar)
         else { return nil }
         let end = min(bandEnd, latestEnd)
         let busy = blocks.filter { calendar.isDate($0.start, inSameDayAs: day) }
 
         for minute in stride(from: startMinute, to: range.upperBound, by: stepMinutes) {
-            guard let slotStart = date(minute: minute, dayStart: dayStart, calendar: calendar) else { return nil }
-            let slotEnd = slotStart.addingTimeInterval(TimeInterval(durationMinutes * 60))
+            guard let slotStart = LocalTime.date(minute: minute, on: dayStart, calendar: calendar), slotStart >= now else { continue }
+            guard Double(durationMinutes) <= end.timeIntervalSince(slotStart) / 60 else { continue }
+            let slotEnd = slotStart.addingTimeInterval(TimeInterval(durationMinutes) * 60)
             if slotEnd > end { return nil }
             // Touching blocks do not overlap.
             if !busy.contains(where: { $0.start < slotEnd && slotStart < $0.end }) {
@@ -49,7 +50,4 @@ enum SlotSearch {
         (minute + stepMinutes - 1) / stepMinutes * stepMinutes
     }
 
-    private static func date(minute: Int, dayStart: Date, calendar: Calendar) -> Date? {
-        calendar.date(byAdding: .minute, value: minute, to: dayStart)
-    }
 }
