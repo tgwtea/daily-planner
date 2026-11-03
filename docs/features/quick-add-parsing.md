@@ -1,12 +1,14 @@
-# Quick add parsing
+# Capture parsing
 
-Status: Implemented
+Status: Partial (implemented as Quick add in 1c.1; v3 gap: the no-time save rule, 1d.5)
 Code: `Luna/Shared/Model/QuickAddParser.swift`, `QuickAddDraft.swift`, `RepeatRule.swift`, `BlockIcons.swift`, `PlannerStore.swift` (`addQuickAdd`), `Luna/Features/QuickAdd/QuickAddChip.swift`
-Screens: [Quick add](../screens/quick-add.md)
+Screens: [Capture](../screens/capture.md)
+
+The file name keeps "quick-add" so that links stay stable. The term is Capture (decided 2026-11-03).
 
 ## Purpose
 
-Turn one line of plain text into a block, an Anytime task, or an Inbox task.
+Turn one line of plain text into a block, or save it to the Inbox as a capture item. The v3 `parse()` function is the same as v2.
 
 ## Observed
 
@@ -27,7 +29,9 @@ Examples:
 Save rules:
 - Empty title: close and save nothing.
 - With a time: create a task block on the parsed day (default today), duration default 30 min, with the chosen icon and color. Show Today on that day.
-- Without a time: add to the top of the Inbox with duration default 30 min and tag "Inbox".
+- Without a time (v2): add to the top of the Inbox with duration default 30 min and tag "Inbox".
+- Without a time (v3): add a capture item to the top of the Inbox with the raw text, no duration, and the organization state "organizing" (or "offline" when AI is off or not available). Toast "Saved to Inbox". See [Capture and organization](capture-and-organization.md).
+- With a time (v3): toast "Added to Today · 7:00 AM" (or the day name).
 - The color defaults to the last value. The color chip cycles Rose → Slate → Sage → Sand → Plum.
 
 ## Assumptions
@@ -44,7 +48,7 @@ Save rules:
 - The text is the one source of the day, time, and duration. A picker writes a token into the text ("tomorrow", "nov 6", "9:30am", "45m", "2h"). It replaces the token that is there, or adds the token at the end.
 - A token in the text wins over a pre-fill. A day token with a band pre-fill keeps the pre-fill time.
 - A band "+" on a full band pre-fills the band start.
-- A block that starts at 11:59 PM has no time left. It becomes an Anytime task on that day.
+- A block that starts at 11:59 PM has no time left. It becomes an Anytime task on that day. **Assumption (2026-11-03):** v3 keeps this rule.
 - A no-time item does not open Today. Only a new block opens Today on its day.
 - The Inbox tag "Inbox" means no project (`projectID == nil`).
 - The last color and icon carry over in `@AppStorage` (`quickAddColor`, `quickAddIcon`). The first default is Rose and `phone`, as in the mockup.
@@ -53,13 +57,13 @@ Save rules:
 
 ## Decisions
 
-- **Decided (2026-10-30):** Text with a day word and no time becomes an Anytime task on that day. This differs from the mockup, which sends it to the Inbox. Text with no day word and no time still goes to the Inbox.
+- **Decided (2026-11-03):** Text with no time becomes a capture item in the Inbox, with or without a day word. The day word becomes a suggested "When" field. This replaces the 2026-10-30 rule ("a day word and no time becomes an Anytime task"). An Anytime pre-fill still saves an Anytime task.
 - **Decided (2026-10-30):** Pre-fill by "+" button:
   - A band "+" pre-fills the next free time in that band.
   - The Anytime "+" pre-fills Anytime.
   - The header "+" and the tab bar "+" pre-fill nothing.
 - **Decided (2026-10-30):** The parser also reads weekday names ("mon", "friday": the next such day), dates in the device locale order ("nov 3", "3/11"), and 24-hour times ("14:30"). English only.
-- **Decided (2026-10-30):** The Date, Time, Duration, Repeat, and Checklist tools open inline native pickers. See [Quick add](../screens/quick-add.md#open-questions).
+- **Decided (2026-10-30):** The Date, Time, Duration, Repeat, and Checklist tools open inline native pickers. v3 shows Dictate, Date, Time, Duration, Reminder, and Icon. See [Capture](../screens/capture.md#v3-gaps-code-built-in-1c1-as-quick-add).
 - **Decided (2026-10-31):** A weekday name is always 1 to 7 days ahead. On a Monday, "mon" is next Monday.
 - **Decided (2026-10-31):** Quick add sets a repeat rule on the block (`Block.repeatRule`). A rule other than Never makes the block a routine. The repeated display and the per-day reset wait for 1c.3.
 - **Decided (2026-10-31):** The Checklist tool works only when the item becomes a block. Inbox items and Anytime tasks have no steps.

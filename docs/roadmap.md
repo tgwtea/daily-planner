@@ -44,10 +44,13 @@ Every checkpoint ends with these checks, unless it says otherwise:
 | 0 | Foundation | Project builds. Docs exist. |
 | 1a | App foundations | Tokens, model, in-memory store, tab shell, shared components |
 | 1b | Main tabs | Today, Inbox, Habits, Projects, Settings work on in-memory data |
-| 1c | Flows and sheets | Quick add, drawer, edit, plan, calendar, focus work |
-| 2 | Platform | Data persists. Calendar events, Live Activity, notifications work. |
+| 1c | Flows and sheets | Capture, drawer, Block detail, Plan hub, calendar, focus work |
+| 1d | v3 alignment | The model, shell, and screens built on v2 match the v3 design |
+| 2 | Platform | Data persists and syncs with iCloud. Calendar events and two-way sync, Live Activity, notifications, dictation work. |
 | 3 | Quality | Accessibility, UI tests, performance, polish |
 | 4 | Ship | TestFlight build, then App Store release |
+
+**Decided (2026-11-03):** Plan My Day v3 is the design source of truth. Checkpoints done before that date follow v2 and stay `Done`. Phase 1d brings their code to v3. Order after 1c.7: 1d.1, 1d.2, 1d.3, then 1c.2 to 1c.6, then 1d.4 to 1d.11. The **Depends on** lines encode this order.
 
 The in-memory store in 1a lets 1b and 1c ship real behavior before the persistence decision in 2.1. Keep the store behind one `@Observable` type so that 2.1 replaces only its storage.
 
@@ -60,6 +63,9 @@ Done. See [ADR-0001](adr/0001-native-swiftui-foundation.md).
 
 ### 0.2 Durable documentation
 Done. This file, the specs, the design reference, and the open questions.
+
+### 0.3 v3 re-baseline
+Done. All docs point at Plan My Day v3. The specs mark v3 gaps in code built on v2. Decisions of 2026-11-03 are recorded in the specs.
 
 ---
 
@@ -164,41 +170,42 @@ Deprecated (2026-10-31). The user decided to skip the PNG export. Agents compare
 - **Done when:** artboard 2g matches. Unit tests cover every example and edge case in the feature spec.
 
 ### 1c.2 Inbox drawer
-- **Depends on:** 1c.1
+- **Depends on:** 1d.3
 - **Read:** [screens/inbox-drawer.md](screens/inbox-drawer.md), [features/inbox-scheduling.md](features/inbox-scheduling.md)
-- **Build:** the drawer sheet from the Inbox pill and "Open Inbox". Tap to place. Drag to a free gap with a drop target.
+- **Build:** the drawer sheet from the Today header drawer button, "Open Inbox", and "Plan by hand". Tap to place. Drag to a free gap with a drop target.
 - **Decided (2026-10-30):** snap to 15 min, auto-scroll, drop only into a gap that fits, no drop on a block.
-- **Done when:** artboard 2d matches. Tap and drag both schedule.
+- **Done when:** artboard 3j matches. Tap and drag both schedule.
 
-### 1c.3 Edit block
-- **Depends on:** 1b.1
-- **Read:** [screens/edit-block.md](screens/edit-block.md), [features/block-editing.md](features/block-editing.md)
-- **Build:** the editor with hero, duration chips, detail rows (Date and Starts with pickers), color, icon, checklist with add step, title edit, delete.
-- **Decided (2026-10-30):** a large sheet with a draft, Save and Close. Tap the title to edit it. A "Delete block" row at the bottom with a confirmation. Repeat and Alert choices and the icon "More" grid are in [Block editing](features/block-editing.md#decisions).
-- **Done when:** artboard 2h matches. Save commits and Close discards.
+### 1c.3 Block detail
+- **Depends on:** 1d.3
+- **Read:** [screens/block-detail.md](screens/block-detail.md), [features/block-editing.md](features/block-editing.md), [features/block-types.md](features/block-types.md)
+- **Build:** the pushed Block detail screen: hero, type control with notes, duration chips, detail rows (Date and Starts with pickers), the "Show in Apple Calendar" switch (stored only until 2.2), color, icon, checklist with add step, title edit, delete dialog.
+- **Decided (2026-11-03):** a pushed screen, not a sheet. Heading "Edit block".
+- **Decided (2026-10-30):** a draft with Save and Close. Tap the title to edit it. A "Delete block" row with a confirmation. Repeat and Alert (Reminder) choices and the icon "More" grid are in [Block editing](features/block-editing.md#decisions).
+- **Done when:** artboard 3af matches. Save commits and Close discards. A type change shows on Today.
 
-### 1c.4 Plan my day
-- **Depends on:** 1c.2
-- **Read:** [screens/plan-my-day.md](screens/plan-my-day.md), [features/plan-my-day-suggestions.md](features/plan-my-day-suggestions.md)
-- **Build:** an ADR for on-device AI (Apple Foundation Models) before code. The suggestion sheet from the Plan button, with selection and accept. The deterministic rule as the fallback when the model is not available.
-- **Decided (2026-10-30):** on-device AI with the deterministic rule as fallback. The rule proposes up to 3 Inbox items, oldest first. The Plan button hides when Suggestions is off.
-- **Done when:** artboard 2q matches. The ADR is accepted. Unit tests cover the fallback rule.
+### 1c.4 Plan hub and drafts
+- **Depends on:** 1c.2, 1c.3
+- **Read:** [screens/plan-my-day.md](screens/plan-my-day.md), [features/plan-my-day-suggestions.md](features/plan-my-day-suggestions.md), [features/block-completion-and-routines.md](features/block-completion-and-routines.md)
+- **Build:** an ADR for on-device AI (Apple Foundation Models) before code. The Plan hub sheet (target, From earlier, energy, review row, considered line, draft and Plan by hand buttons, AI-unavailable state). The draft model. Suggestion rows on Today with actions, the draft header, "Doesn't fit" rows, Regenerate, and the draft approval bar in the bottom accessory. The deterministic fallback rule.
+- **Decided (2026-11-03):** AI is on-device only. A conflicting suggestion cannot be bulk-approved. The Plan button always shows.
+- **Decided (2026-10-30):** the fallback proposes up to 3 Inbox items, oldest first.
+- **Done when:** artboards 3k, 3l, 3m, 3p match. The ADR is accepted. Unit tests cover approve, skip, keep original, conflicts, and the fallback rule.
 
 ### 1c.5 Calendar
-- **Depends on:** 1b.1
+- **Depends on:** 1d.3
 - **Read:** [screens/calendar.md](screens/calendar.md), [features/calendar-views-and-events.md](features/calendar-views-and-events.md)
-- **Build:** the pushed Calendar screen with Day, 3 days, Week, and Month views, now line, month agenda. Data from the store only (events come in 2.2).
-- **Decided (2026-10-30):** swipe pages by the view length. Tap a task block to open Edit block. Tap an event to open a read-only detail. All-day events in a strip above the grid.
-- **Done when:** artboards 2o and 2p match.
+- **Build:** the pushed Calendar screen from the "Today ▾" title, with Day, 3 days, Week, and Month views, now line, month agenda. Open time and suggestion styles. Data from the store only (events come in 2.2).
+- **Decided (2026-10-30):** swipe pages by the view length. Tap a task block to open Block detail. Tap an event to open a read-only detail. All-day events in a strip above the grid.
+- **Done when:** artboard 3aj matches. The Month view matches the v3 prototype.
 
 ### 1c.6 Focus
-- **Depends on:** 1b.1
-- **Read:** [screens/focus.md](screens/focus.md), [features/focus-and-live-activity.md](features/focus-and-live-activity.md)
-- **Build:** the Focus screen with ring, timer, +5, pause, done. A session model based on an end date. The Focus button and timer on Today use it.
-- **Decided (2026-10-30):** Focus is a full-screen cover. +5 extends only the session. At zero, play feedback, show "Done" as the main action, and count overrun. Do not auto-complete. Focus can start on any undone task. The "More" menu items are in [Focus and Live Activity](features/focus-and-live-activity.md#decisions).
-- **Done when:** artboard 2i matches. Unit tests cover pause, resume, +5, and progress.
-
----
+- **Depends on:** 1d.3
+- **Read:** [screens/focus.md](screens/focus.md), [screens/stuck-sheet.md](screens/stuck-sheet.md), [screens/end-focus-sheet.md](screens/end-focus-sheet.md), [features/focus-and-live-activity.md](features/focus-and-live-activity.md)
+- **Build:** the Focus screen: Timer and No timer, ring, anchor (next step, checklist), next fixed commitment, +5, pause, End. The End Focus sheet. The I'm stuck sheet (a deterministic step until the 1c.4 model exists). Check-ins. The Focus mini-player in the bottom accessory. A session model based on dates. Focused time on the block.
+- **Decided (2026-11-03):** Focus keeps going after the timer or the block ends. Only "Mark done" marks the block done. No "More" menu.
+- **Decided (2026-10-30):** a full-screen cover. +5 extends only the session. Focus can start on any undone task.
+- **Done when:** artboards 3v, 3w, 3x, 3y, 3z match. Unit tests cover pause, resume, +5, overrun, and focused time.
 
 ### 1c.7 Reliability fixes
 - **Depends on:** 1c.1
@@ -207,34 +214,130 @@ Deprecated (2026-10-31). The user decided to skip the PNG export. Agents compare
 - **Decided (2026-10-31):** Execute this audit checkpoint before 1c.2. Persistent storage stays in 2.1.
 - **Done when:** Regression tests, simulator build, full test suite, and dark/light design comparison pass.
 
+---
+
+## Phase 1d: v3 alignment
+
+Each checkpoint reads the v3 handoff (`Plan My Day v3 Handoff.dc.html`) and the "v3 gaps" list in each screen spec it touches.
+
+### 1d.1 Model v3
+- **Depends on:** 1c.7
+- **Read:** [features/block-types.md](features/block-types.md), [features/block-completion-and-routines.md](features/block-completion-and-routines.md), [features/capture-and-organization.md](features/capture-and-organization.md), [features/inbox-scheduling.md](features/inbox-scheduling.md)
+- **Build:** `Block.Kind.open`, a Fixed flag, a synced flag, `outcome`, focused minutes. Inbox item due text, reminder, moved count. A capture item kind with raw text, organization state, and suggestion fields. Routine pill 150 pt. Add v3 states to the v2 sample data: one Fixed block, one Open time block, one synced block, one capture item.
+- **Decided (2026-11-03):** keep the v2 sample data. Add only these states.
+- **Done when:** unit tests cover the new fields, the unconfirmed rule, and the pill height.
+
+### 1d.2 Tokens and components v3
+- **Depends on:** 1d.1
+- **Read:** [design-reference.md](design/design-reference.md)
+- **Build:** unconfirmed (55%) and suggestion (20%) tints, `status-warning` and `status-error`, dashed pill and dashed check variants, the glyph row, the toast, the glass dialog, the header icon button with a badge, 11 pt tab labels.
+- **Done when:** the components gallery shows every new variant in dark and light.
+
+### 1d.3 App shell v3
+- **Depends on:** 1d.2
+- **Read:** [screens/README.md](screens/README.md#navigation-map), [design-reference.md](design/design-reference.md#native-swiftui-notes)
+- **Build:** compact tab bar on scroll (64 to 52 pt, icons only), the Inbox tab badge, the Capture circle label, one bottom accessory slot with its priority rule, the Settings gear on all four roots, the Today header drawer button with a badge (remove the Inbox pill), the "Today ▾" title that pushes Calendar (remove the Calendar button), Block detail as a route.
+- **Decided (2026-11-03):** keep the custom `LunaTabBar`. Gear on every root.
+- **Done when:** artboard 3c matches. The accessory shows one item at a time.
+
+### 1d.4 Today v3
+- **Depends on:** 1c.6
+- **Read:** [screens/today.md](screens/today.md), [features/timeline-and-day-bands.md](features/timeline-and-day-bands.md), [features/block-types.md](features/block-types.md)
+- **Build:** the Now · Next bar, the calendar-off banner (state only until 2.2), Anytime collapsed by default, the habit strip setting and 50 pt rings, block type styles and glyphs, unconfirmed and outcome meta, focused time meta, time left in the meta line, the second footer line.
+- **Done when:** artboards 3e, 3f, 3g, 3h, 3i match.
+
+### 1d.5 Capture v3
+- **Depends on:** 1d.4
+- **Read:** [screens/capture.md](screens/capture.md), [features/quick-add-parsing.md](features/quick-add-parsing.md), [features/capture-and-organization.md](features/capture-and-organization.md)
+- **Build:** rename `QuickAdd*` to `Capture*`. The v3 sheet copy, "Detected" dashed chips, the hint line, the tool row (Dictate as a placeholder until 2.5, Reminder). The save rule: no time becomes a capture item. Capture organization on the 1c.4 model with the deterministic fallback.
+- **Decided (2026-11-03):** no time means an Inbox capture, with or without a day word.
+- **Done when:** artboard 3q matches. Unit tests cover the save rule and the organization states.
+
+### 1d.6 Inbox v3 and Quick review
+- **Depends on:** 1d.5
+- **Read:** [screens/inbox.md](screens/inbox.md), [screens/quick-review.md](screens/quick-review.md), [features/inbox-review.md](features/inbox-review.md)
+- **Build:** the gear, the capture field, the review card, the Captured section with suggestion fields, the new meta parts, the Quick review sheet and its actions, the Plan hub review row.
+- **Done when:** artboards 3r, 3s, 3t, 3u match. Unit tests cover the review item rules and actions.
+
+### 1d.7 Running-late nudge and Before and after
+- **Depends on:** 1d.4
+- **Read:** [features/running-late-nudge.md](features/running-late-nudge.md), [screens/before-after.md](screens/before-after.md)
+- **Build:** the nudge in the bottom accessory, once per block, the Before and after sheet, the move rule.
+- **Done when:** artboards 3n and 3o match. Unit tests cover the trigger, once per block, and the move rule.
+
+### 1d.8 Projects workspace
+- **Depends on:** 1c.4
+- **Read:** [screens/projects.md](screens/projects.md), [screens/project-detail.md](screens/project-detail.md), [features/projects-and-areas.md](features/projects-and-areas.md)
+- **Build:** the gear and search on Projects, the next-step meta line, simple and rich projects, sections, the pick-up card (on-device summary), the honest fallback. Hide Connected services.
+- **Done when:** artboards 3ab, 3ac, 3ad, 3ae match.
+
+### 1d.9 Habits v3
+- **Depends on:** 1d.3
+- **Read:** [screens/habits.md](screens/habits.md), [features/habits.md](features/habits.md)
+- **Build:** the gear, the "all optional" subtitle, the Show streaks switch and both states, the footer.
+- **Done when:** artboard 3ak matches with streaks off. The streaks-on state keeps the 1b.3 layout.
+
+### 1d.10 Settings v3
+- **Depends on:** 1d.3
+- **Read:** [screens/settings.md](screens/settings.md), [screens/settings-group.md](screens/settings-group.md), [features/settings-and-appearance.md](features/settings-and-appearance.md#v3-settings-groups)
+- **Build:** the 12-area index and the group pages. Move the v2 settings into them. Store every v3 key with its default. A row whose feature comes later shows its stored value only.
+- **Done when:** artboards 3d, 3ah, 3al match.
+
+### 1d.11 Onboarding
+- **Depends on:** 1d.10
+- **Read:** [screens/onboarding.md](screens/onboarding.md), [features/onboarding.md](features/onboarding.md)
+- **Build:** the three-step onboarding cover and the first-run Today state. Calendar access is a placeholder until 2.2.
+- **Done when:** artboards 3am and 3an match.
+
+---
+
 ## Phase 2: Platform
 
 ### 2.1 Persistence
-- **Depends on:** 1c.6
+- **Depends on:** 1d.11
 - **Read:** [architecture/overview.md](architecture/overview.md), [adr/README.md](adr/README.md)
-- **Build:** write ADR-0002 for the storage choice. Move the store to it. Add migration-safe model versioning. Remove the sample data from release builds.
-- **Decided (2026-10-30):** SwiftData, local only. iCloud sync after v1. Keep the model CloudKit-compatible.
-- **Done when:** all data survives an app relaunch. Unit tests use an in-memory container.
+- **Build:** write ADR-0002 for the storage choice. Move the store to it. Add migration-safe model versioning. Remove the sample data from release builds. iCloud (CloudKit) sync and the Data & backup page (status, backups, export, waiting to sync). Captures save locally first.
+- **Decided (2026-10-30):** SwiftData. Keep the model CloudKit-compatible.
+- **Decided (2026-11-03):** iCloud sync and backup are in v1. This replaces "local only, iCloud after v1".
+- **Done when:** all data survives an app relaunch and syncs between two simulators on one iCloud account. Unit tests use an in-memory container.
 
 ### 2.2 Calendar events
 - **Depends on:** 2.1
 - **Read:** [features/calendar-views-and-events.md](features/calendar-views-and-events.md), [screens/settings.md](screens/settings.md)
-- **Build:** ADR-0003 for EventKit. Read-only events on Today and Calendar. Permission request, denied state, calendar picker in Settings. Usage description string.
+- **Build:** ADR-0003 for EventKit. Read-only events on Today and Calendar. Two-way per-block sync to one dedicated "Luna" calendar, the sync conflict dialog, keep-local when access is revoked. Permission request (onboarding and Settings), the denied banner and card, calendar checks in Settings. Usage description strings.
 - **Decided (2026-10-30):** ask when the user turns on Apple Calendar in Settings or on first open of Calendar. All calendars on by default.
-- **Done when:** events from the simulator calendar show. A denied permission shows a clear state with a link to Settings.
+- **Decided (2026-11-03):** two-way per-block sync is in v1.
+- **Done when:** events from the simulator calendar show. A synced block appears in the "Luna" calendar. An edit in Calendar shows the conflict dialog (3ag). A denied permission shows the banner (3ai) with a link to Settings.
 
 ### 2.3 Live Activity
 - **Depends on:** 1c.6
 - **Read:** [screens/live-activity.md](screens/live-activity.md), [features/focus-and-live-activity.md](features/focus-and-live-activity.md)
 - **Build:** ADR-0004 for the widget extension. Widget extension target, ActivityKit attributes, lock screen and Dynamic Island views, App Intents for pause, +5, done. The Settings switch controls it.
-- **Done when:** artboard 2j matches on a simulator lock screen. The buttons control the session.
+- **Done when:** artboard 3aa matches on a simulator lock screen. The buttons control the session. End opens the End Focus sheet.
 
 ### 2.4 Alerts, haptics, sound
 - **Depends on:** 2.1
 - **Read:** [screens/settings.md](screens/settings.md), [features/block-editing.md](features/block-editing.md)
-- **Build:** local notifications for block alerts, haptics on key actions, the end-of-block sound. Repeat rules if the user decided them.
+- **Build:** local notifications for block alerts and reminders, the Notifications settings rules (always delivered, optional, quiet hours), "set" copy only after scheduling succeeds, haptics on key actions, the end-of-timer sound.
 - **Decided (2026-10-30):** Alert choices None, At start, 5, 10, 15 min before. Repeat choices Never, Daily, Weekdays, Weekly. Local notifications per block. Ask for permission the first time a user sets an alert.
 - **Done when:** an alert fires in the simulator. The Haptics and Sound switches work.
+
+### 2.5 Dictation
+- **Depends on:** 1d.5
+- **Read:** [screens/capture.md](screens/capture.md)
+- **Build:** the Capture Dictate tool with the Speech framework, on-device recognition, the permission request, usage description strings.
+- **Done when:** dictated text fills the Capture field in the simulator.
+
+---
+
+## After v1
+
+**Decided (2026-11-03):** these v3 handoff items come after v1. Do not build them in v1.
+
+- Widgets, App Intents, Siri, Action Button.
+- Share Sheet capture.
+- Connected services for projects (GitHub context).
+- Cloud AI. AI stays on-device only in v1.
 
 ---
 
@@ -247,7 +350,7 @@ Deprecated (2026-10-31). The user decided to skip the PNG export. Agents compare
 
 ### 3.2 UI tests
 - **Depends on:** 3.1
-- **Build:** a `LunaUITests` target. Record it in a new ADR, because ADR-0001 says there is no UI test target. Tests for: quick add to timeline, Inbox place, complete a block, log a habit, Focus done.
+- **Build:** a `LunaUITests` target. Record it in a new ADR, because ADR-0001 says there is no UI test target. Tests for: capture to timeline, Inbox place, complete a block, approve a draft, log a habit, end Focus with Mark done.
 - **Done when:** UI tests pass in the standard test command.
 
 ### 3.3 Visual polish and fidelity
@@ -296,6 +399,7 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | --- | --- | --- | --- | --- | --- | --- |
 | 0.1 | Repository and Xcode project | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | Build and test compile pass. Tests not run: no iOS 26 runtime. |
 | 0.2 | Durable documentation | Done | Claude Code (Opus 5.5) | 2026-10-30 | a1f6e98 | |
+| 0.3 | v3 re-baseline | Done | Claude Code (Opus 5.5) | 2026-11-03 | ae9b902 | Docs only. v3 is the source of truth. |
 | 1a.1 | Test environment | Done | Claude Code (Opus 5.5) | 2026-10-30 | dd1691b | iOS 27.0 runtime, iPhone 17 simulator. Smoke test passes. |
 | 1a.2 | Design tokens | Done | Claude Code (Opus 5.5) | 2026-10-30 | 54628b1 | Colors in Swift code. Previews checked in the simulator in dark and light. |
 | 1a.3 | Domain model and in-memory store | Done | Claude Code (Opus 5.5) | 2026-10-30 | 73333d6 | 44 tests pass. Model and store only, no UI. Sample data via `-LunaSampleData` (DEBUG). |
@@ -311,15 +415,27 @@ Agents update this table. Use your agent name and model, for example "Claude Cod
 | 1b.7 | Habit management | Done | Claude Code (Opus 5.5) | 2026-10-31 | 07c351c | Checked in simulator, dark and light. No artboard for editor or archived list. Tap on a swipe button not confirmed in the simulator; full swipe works. 201 tests pass. |
 | 1c.1 | Quick add | Done | Claude Code (Opus 5.5) | 2026-10-31 | 011ebca | Checked in simulator, dark and light, against 2g markup. System sheet floats above the keyboard (intended). 282 test cases pass. |
 | 1c.7 | Reliability fixes | In progress | Codex | 2026-10-31 | | Seven audit defects. |
+| 1d.1 | Model v3 | Not started | | | | |
+| 1d.2 | Tokens and components v3 | Not started | | | | |
+| 1d.3 | App shell v3 | Not started | | | | |
 | 1c.2 | Inbox drawer | Not started | | | | |
-| 1c.3 | Edit block | Not started | | | | |
-| 1c.4 | Plan my day | Not started | | | | |
+| 1c.3 | Block detail | Not started | | | | |
+| 1c.4 | Plan hub and drafts | Not started | | | | |
 | 1c.5 | Calendar | Not started | | | | |
 | 1c.6 | Focus | Not started | | | | |
+| 1d.4 | Today v3 | Not started | | | | |
+| 1d.5 | Capture v3 | Not started | | | | |
+| 1d.6 | Inbox v3 and Quick review | Not started | | | | |
+| 1d.7 | Running-late nudge and Before and after | Not started | | | | |
+| 1d.8 | Projects workspace | Not started | | | | |
+| 1d.9 | Habits v3 | Not started | | | | |
+| 1d.10 | Settings v3 | Not started | | | | |
+| 1d.11 | Onboarding | Not started | | | | |
 | 2.1 | Persistence | Not started | | | | |
 | 2.2 | Calendar events | Not started | | | | |
 | 2.3 | Live Activity | Not started | | | | |
 | 2.4 | Alerts, haptics, sound | Not started | | | | |
+| 2.5 | Dictation | Not started | | | | |
 | 3.1 | Accessibility audit | Not started | | | | |
 | 3.2 | UI tests | Not started | | | | |
 | 3.3 | Visual polish and fidelity | Not started | | | | |

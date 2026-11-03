@@ -25,7 +25,7 @@ Each screen and feature spec starts with one status line:
 
 Specs mark each requirement with one of these labels:
 
-- **Observed**: the Plan My Day v2 mockup shows this.
+- **Observed**: the Plan My Day v3 mockup shows this. An older line that says "Observed (v2)" describes the v2 mockup and is history.
 - **Assumption**: a reasonable implementation choice that the mockup does not show. Change it freely, and update the spec.
 - **Decided**: a product decision that the user made. It carries the date, for example "Decided (2026-10-30)".
 - **Unresolved**: a product decision that is open. It links to [open-questions.md](open-questions.md). Do not decide it in code without the user.
@@ -36,10 +36,18 @@ These terms have one meaning in all docs and in code names.
 
 | Term | Meaning |
 | --- | --- |
-| Block | An item on the timeline with a start time and a duration. Its kind is `task`, `routine`, or `event`. |
+| Block | An item on the timeline with a start time and a duration. Its kind is `task`, `routine`, `event`, or `open`. |
+| Block type | How Plan treats a block: Flexible, Fixed, or Open time. See [Block types](features/block-types.md). |
+| Flexible block | The default block type. Plan can suggest a move. It never moves the block without approval. |
+| Fixed block | A block whose time is taken. It shows a lock glyph. Plan does not suggest a move. |
+| Open time | A protected block with a dashed outline, a shield glyph, and no checkbox. Plan never puts tasks in it. UI copy also says "Protected". In code: `Block.Kind.open` (from 1d.1). |
+| Unconfirmed block | A past task block that the user did not check off. It keeps a dashed checkbox and the meta text "Not checked off". Time passing never marks a block done. |
+| Outcome | The user's answer for an unfinished block: Done, Partly, Not started, or Skip. |
+| Focused time | The minutes of Focus recorded on a block, apart from its planned duration. |
+| Synced block | A block that the user marked to sync. It has a copy in the dedicated "Plan My Day" calendar in Apple Calendar. It shows a refresh glyph. |
 | Task block | A block that you can mark done. It has one color and one icon. |
 | Routine | A task block with a checklist of steps. It is done when all steps are done. |
-| Event | A read-only block that comes from the system calendar. It has no checkbox. |
+| Event | A read-only block that comes from the system calendar. It has no checkbox. Luna never edits it. |
 | Band | One of the three day parts: Morning, Afternoon, Night. The timeline groups blocks by band. |
 | Pill | The vertical capsule that draws a block on the timeline. Its height shows the duration. |
 | Free gap | A row between two blocks that shows unplanned time. |
@@ -48,10 +56,23 @@ These terms have one meaning in all docs and in code names.
 | Slot search | The rule that finds the first free start for a task in a band. In code: `SlotSearch`. See [Inbox scheduling](features/inbox-scheduling.md). |
 | Step | One checklist item inside a block. |
 | Repeat rule | How a block repeats: Never, Daily, Weekdays, Weekly. A rule other than Never makes the block a routine. In code: `RepeatRule`, `Block.repeatRule`. |
-| Quick add | The sheet that turns one line of text into a block, an Anytime task, or an Inbox task. In code: `QuickAddParser`, `QuickAddDraft`, `QuickAddSheet`. |
-| Pre-fill | The day or time that a "+" button gives Quick add before the user types. A token in the text wins. In code: `QuickAddPrefill`. |
+| Capture | The sheet that saves one line of text at once. Text with a time becomes a block. Any other text becomes a capture in the Inbox. It replaces the term "Quick add" (decided 2026-11-03). In code until checkpoint 1d.5: `QuickAddParser`, `QuickAddDraft`, `QuickAddSheet`. |
+| Capture item | An Inbox item that keeps the raw text as written. It has an organization state: organizing, ready, offline, or failed. |
+| Suggestion field | One AI-proposed field on a capture item (Title, When, Reminder, List, Estimate). Each field is opt-in. The user applies the checked fields. |
+| Pre-fill | The day or time that a "+" button gives Capture before the user types. A token in the text wins. In code: `QuickAddPrefill`. |
 | Block color | One of five muted colors: Rose, Slate, Sage, Sand, Plum. |
-| Focus session | A countdown timer that runs inside the active block. |
+| Focus session | A session that the user starts on a block. The timer is optional. The session keeps going after the block or the timer ends, until the user ends it. Ending asks whether the task is done. |
+| Check-in | An optional prompt during Focus. It is off by default. Nothing is recorded. |
+| Plan hub | The Plan sheet: unfinished work, optional energy, an optional review, then a draft. |
+| Draft | A set of suggestions for one day that the user approves, edits, skips, or rejects. A draft never changes the day until approval. |
+| Suggestion | One draft item on the timeline: new, move, or conflict. It has a dashed outline and a reason line. |
+| Energy | An optional input on the Plan hub: Focused, Steady, or Foggy. Luna never infers it. |
+| Running-late nudge | The bottom accessory prompt when the active block overruns. At most once per block. |
+| Bottom accessory | The one slot above the tab bar. Priority: Focus mini-player, then draft approval, then running-late nudge. |
+| Now · Next bar | The sticky glass bar on Today that shows the current and the next block. A tap scrolls to now. |
+| Quick review | The sheet that walks the user through Inbox items that need a decision, one card at a time. Skipping changes nothing. |
+| Pick-up summary | The card on a rich project that shows the next step and where the user left off, with its source line. |
+| Rich project | A project with sections (Tasks, Goals, Notes, Links, Scheduled). A simple project is a plain task list. |
 | Habit | A repeated daily goal with a count, a goal, and a streak. |
 | Habit streak | The count of done days in a row, up to today, or up to yesterday when today is not done. In code: `HabitStats`. |
 | Weekday schedule | The days of the week that a habit is due. In code: `Habit.weekdays`, `Weekday`. |
@@ -68,15 +89,15 @@ These terms have one meaning in all docs and in code names.
 | Band schedule | The start minute of each band. Settings edits it. Default 6:00 AM, 12:00 PM, 6:00 PM. Each band is at least 1 hour long. In code: `BandSchedule`, stored by `BandScheduleStorage`. |
 | Store | The one `@Observable` object that holds all app data and its intents. In code: `PlannerStore`. |
 | Sample data | The mockup week (Thursday, October 29, 2026, 10:20 AM). DEBUG builds only: previews and the `-LunaSampleData` launch argument. |
-| App shell | The root view: the four tabs, the floating tab bar with the "+" button, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
-| Route | A screen that a tab pushes onto its navigation stack (Calendar, project detail, smart list, band start, theme, archived habits). In code: `AppRoute`. |
+| App shell | The root view: the four tabs, the floating tab bar with the Capture button, the bottom accessory slot, and the root sheets and cover. In code: `RootView`, `LunaTabBar`. |
+| Route | A screen that a tab pushes onto its navigation stack (Calendar, Block detail, project detail, smart list, Settings and its groups, archived habits). In code: `AppRoute`. |
+| Day plan | The Today rows of one day: a section per band with block and free gap rows. In code: `DayPlan`. |
+| Active block | The task or routine that runs now and is not done. It shows the now line and the time left. |
+| Now line | The 2 pt line with the current time that crosses the active pill. In code: `NowLine`. |
 | Router | The `@Observable` navigation state: selected tab, one route path per tab, and the open sheet or cover. In code: `AppRouter`. |
 | Shared component | A reusable view that two or more screens use, built from design tokens. In code: `Luna/Shared/Components/`. `ComponentsGallery` shows all of them in DEBUG builds (previews and the `-LunaComponentsGallery` launch argument). |
 | Design token | A named design value in code (color role, text style, spacing, radius, shadow, motion). See `Luna/Shared/Design/`. |
 
 ## Naming
 
-The app name is **Luna**. The design project and its files use the older name "Plan My Day". Where mockup copy uses "Plan My Day" as the app name, use "Luna". The "Plan my day" suggestion sheet and the "Plan" button keep their names (decided 2026-10-30).
-| Day plan | The Today rows of one day: a section per band with block and free gap rows. In code: `DayPlan`. |
-| Active block | The task or routine that runs now and is not done. It shows Focus, a timer, and the now line. |
-| Now line | The 2 pt line with the current time that crosses the active pill. In code: `NowLine`. |
+The app name is **Luna**. The design project and its files use the older name "Plan My Day". Where mockup copy uses "Plan My Day" as the app name, use "Luna". The "Plan" button and the Plan hub keep their names (decided 2026-10-30). The dedicated Apple Calendar calendar for synced blocks is named "Luna" in the app. **Assumption (2026-11-03):** the mockup calls it "Plan My Day"; the app name rule applies.

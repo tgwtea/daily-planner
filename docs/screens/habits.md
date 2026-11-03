@@ -1,9 +1,20 @@
 # Habits
 
-Status: Implemented
+Status: Partial (built on v2 in 1b.3 and 1b.7; the v3 gaps are listed below)
 Code: `Luna/Features/Habits/` (`HabitsScreen`, `HabitHistoryCard`, `HabitCard`, `HabitsEmptyView`), `Luna/Shared/Model/HabitStats.swift`
-Artboards: 2m
+Artboards: 3ak
 Features: [Habits](../features/habits.md)
+
+## v3 changes (Observed in 3ak)
+
+- Header: a 44 pt glass Settings gear. Subtitle "Thursday · 1 of 5 done · all optional".
+- With "Show streaks" off: no flame. The trailing text is "3 this week". The history stats are "86% This month" and "5 of 7 This week" (no streak stats).
+- A grouped list at the bottom with a "Show streaks" switch. Footer: "Habits are optional. Missing a day isn't marked or counted against you."
+- **Assumption:** the "+" button from 1b.7 stays next to the gear.
+
+## v3 gaps
+
+- Gear, subtitle, streak switch and its states (1d.9).
 
 ## Purpose
 
@@ -49,7 +60,7 @@ Log daily habits and see streaks and history.
 - The check button label is "Log Water".
 - Each card has the accessibility actions "Edit" and "Archive". The week row value names the off days.
 
-## Intended differences from artboard 2m
+## Intended differences from artboard 2m (v2)
 
 - The history card header is "All habits", not "Water". The card combines all habits (decided 2026-10-30). Its numbers come from the sample history, not the mockup's static 12, 86%, 31.
 - Read shows a streak of 1, not 4. See [Habits](../features/habits.md#assumptions).

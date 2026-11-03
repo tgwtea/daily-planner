@@ -1,32 +1,44 @@
 # Settings
 
-Status: Partial (the Calendars row has no destination until 2.2)
+Status: Partial (built on v2 in 1b.5; v3 regroups it, see the v3 gaps)
 Code: `Luna/Features/Settings/SettingsScreen.swift`, `BandStartPicker.swift`, `ThemePicker.swift`, `BandStartText.swift`
-Artboards: 2n
+Artboards: 3d (and 3ah, 3al for groups)
 Features: [Settings and appearance](../features/settings-and-appearance.md)
 
 ## Purpose
 
-Change how the timeline, calendar, focus, and suggestions behave.
+An index of 12 settings areas, in five groups. Each row pushes a [Settings group](settings-group.md) page. Details stay out of sight until the user opens a group (progressive disclosure).
 
-**Decided (2026-10-31):** Settings is not a tab. The gear in the Today header pushes it. It uses the system navigation bar with a large "Settings" title and a back button. The tab bar hides on it. See [navigation map](README.md#navigation-map).
+**Decided (2026-11-03):** the Settings gear is on every root header (Today, Inbox, Projects, Habits). It pushes this screen. The tab bar hides.
 
-## Layout (top to bottom)
+## Layout (Observed in 3d)
 
-Navigation bar with a large title "Settings", then grouped lists with headers and footers:
+Glass back button, the title "Settings", then grouped lists. Each row: icon, name, value, chevron.
 
-| Group | Rows | Footer |
-| --- | --- | --- |
-| Day bands | Morning 6:00 AM ›, Afternoon 12:00 PM ›, Night 6:00 PM › (each with its band icon) | "Blocks move into the band their start time falls in." |
-| Timeline | Show calendar events (on), Show free time (on), Scroll to now on open (on) | — |
-| Calendars | Apple Calendar, subtitle "Work, Personal, Family", value "On" › | "Events are read-only. Plan My Day never edits your calendar." Use "Luna" in place of "Plan My Day". |
-| Focus | Live Activity (on), Haptics (on), End-of-block sound (off) | — |
-| Plan my day | Suggestions (on) | "When on, Plan suggests times for Inbox tasks. Nothing is scheduled until you add it." |
-| Appearance | Theme › value "Dark" | — |
+| Group | Row | Icon | Value in the mockup |
+| --- | --- | --- | --- |
+| Planning | Day bands | sunrise | 6 · 12 · 6 |
+| Planning | Scheduling | calendar-cog | Flexible |
+| Planning | Protected time | shield | 3 |
+| Planning | Energy | battery-medium | Off |
+| Assistance | AI planning | sparkles | On |
+| Assistance | Privacy & AI data | hand | On device first |
+| Focus & alerts | Focus | timer | Timer |
+| Focus & alerts | Notifications | bell | Quiet at 11 PM |
+| Connections | Calendar | calendar | 2 calendars (Off when access is denied) |
+| Connections | Inbox review | inbox | When I plan |
+| App | Appearance | sun-moon | Dark |
+| App | Data & backup | cloud | Synced |
 
-The values in brackets are the mockup defaults.
+A footer line: "Plan My Day 3.0". Use "Luna" and the app version.
 
-## Interactions
+**Assumption:** the Privacy & AI data value is "On device", because AI is on-device only (decided 2026-11-03).
+
+## v3 gaps
+
+- Replace the v2 single page with the index and the group pages (1d.10). Move the v2 rows into groups: Day bands, Timeline switches (Appearance › Today and Calendar), Focus switches (Focus), Suggestions (AI planning), Theme (Appearance).
+
+## Interactions (built in 1b.5, v2)
 
 - **Observed:** the switches toggle. "Show free time" off hides the free gap rows on Today.
 - **Observed:** rows with a chevron have no destination in the mockup.
@@ -34,18 +46,18 @@ The values in brackets are the mockup defaults.
 - **Assumption:** Theme pushes a choice list (Dark, Light, System) that works the same way.
 - **Assumption:** the Calendars row shows the mockup values and has no destination until checkpoint 2.2 adds the calendar picker.
 
-## Accessibility and iOS notes
+### Accessibility and iOS notes
 
 - Use `Form` or `List` with `Toggle` and `NavigationLink`. Restyle to Noir.
 - Store settings with `@AppStorage` until a persistence ADR says otherwise. **Assumption.**
 - **Assumption:** switches use `LunaSwitchStyle`, a `ToggleStyle` on the native `Toggle`. The system switch keeps a white thumb, so it cannot show the dark "on" state (white track, black thumb).
 
-## Intended differences
+## Intended differences (v2)
 
 - Switch rows are about 56 pt tall. The 44 pt hit target of the switch sets the height.
 - The icon box uses `surfaceTertiary` from `GroupedRow` (1a.5), not the Noir `surface-icon-container`.
 
-## Open questions
+## Open questions (v2)
 
-- The theme and switch decisions are in [Settings and appearance](../features/settings-and-appearance.md#decisions). The Suggestions decision is in [Plan my day suggestions](../features/plan-my-day-suggestions.md#decisions).
-- See [open-questions.md](../open-questions.md#settings).
+- The theme and switch decisions are in [Settings and appearance](../features/settings-and-appearance.md#decisions). The Suggestions decision is in [Plan hub suggestions](../features/plan-my-day-suggestions.md#decisions).
+- No settings question is open. See [open-questions.md](../open-questions.md).

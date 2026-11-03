@@ -2,6 +2,7 @@
 
 Status: Implemented
 Code: `Luna/Features/Projects/SmartListScreen.swift`, `ListItemRow.swift`, `ListEmptyView.swift`
+v3: No artboard. The v2 spec stays valid (decided 2026-11-03).
 Artboards: none
 Features: [Projects and areas](../features/projects-and-areas.md)
 

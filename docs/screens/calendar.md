@@ -1,7 +1,8 @@
 # Calendar
 
 Status: Planned
-Artboards: 2o (3 days), 2p (Month)
+v3: Existing. Changes: Open time and suggestion blocks, and the entry point.
+Artboards: 3aj (3 days). Month has no v3 artboard; the v3 prototype keeps it.
 Features: [Calendar views and events](../features/calendar-views-and-events.md)
 
 ## Purpose
@@ -15,7 +16,7 @@ See blocks and events across more than one day.
 3. **Grid views (Day, 3 days, Week):**
    - Column headers: weekday (12 pt, tertiary) and day number in a 30 pt circle. Today's circle is filled.
    - An hour grid from 7 AM to 11 PM. 38 pt per hour. Hour labels 10 pt on the left (every hour; every second hour in Week). Hairline dividers.
-   - Blocks as rounded rectangles (radius 8) at their time. Task blocks use their color with ink text. Events use `surface-raised`. Title 11 pt semibold and start time 10 pt. In Week view the blocks have no text.
+   - Blocks as rounded rectangles (radius 8) at their time. Task blocks use their color with ink text. Events use `surface-raised`. Open time is transparent with a 1.5 pt dashed `border-strong` outline. A suggestion uses a 20% tint and a 1.5 pt dashed outline in its color. Title 11 pt semibold and start time 10 pt. In Week view the blocks have no text.
    - Now line on the today column: 2 pt line and an 8 pt dot.
    - Day view shows today. 3 days starts at today. Week shows Monday to Sunday.
 4. **Month view:**
@@ -25,14 +26,14 @@ See blocks and events across more than one day.
 
 ## Navigation
 
-- Opened from the Calendar button on [Today](today.md). Back returns to Today.
+- Opened by the "Today ▾" title on [Today](today.md). **Decided (2026-11-03):** the v2 Calendar icon button is gone. Back returns to Today.
 - Tab bar is hidden.
 
 ## Interactions
 
 - Switch views with the segmented control.
 - **Observed:** blocks in grid views have no tap action.
-- **Decided (2026-10-30):** swipe pages by the view length. A tap on a task block opens Edit block. A tap on an event opens a read-only detail. See [Calendar views and events](../features/calendar-views-and-events.md#decisions).
+- **Decided (2026-10-30):** swipe pages by the view length. A tap on a task block opens [Block detail](block-detail.md). A tap on an event opens a read-only detail. See [Calendar views and events](../features/calendar-views-and-events.md#decisions).
 
 ## Accessibility and iOS notes
 

@@ -53,4 +53,4 @@ The full map is in [docs/architecture/repository-map.md](docs/architecture/repos
 
 ## Design
 
-The design reference is the Claude Design project "Plan My Day v2". See [docs/design/design-reference.md](docs/design/design-reference.md).
+The design reference is the Claude Design project "Plan My Day v3". See [docs/design/design-reference.md](docs/design/design-reference.md).

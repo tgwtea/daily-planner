@@ -1,12 +1,12 @@
 # Habits
 
-Status: Implemented
+Status: Partial (implemented on v2; v3 gap: hide streaks and the "optional" copy, 1d.9)
 Code: `Luna/Shared/Model/Habit.swift`, `Weekday.swift`, `HabitDraft.swift`, `HabitStats.swift`, `PlannerStore.swift` (`logHabit`, `addHabit`, `updateHabit`, `archiveHabit`, `restoreHabit`, `deleteArchivedHabit`, `moveHabits`), `Luna/Features/Habits/`, `Luna/Features/Today/HabitStripView.swift`
 Screens: [Today](../screens/today.md), [Habits](../screens/habits.md), [Habit editor](../screens/habit-editor.md), [Archived habits](../screens/archived-habits.md)
 
 ## Purpose
 
-Track small daily goals and keep streaks.
+Track small daily goals. Streaks are optional to show. Habits are optional: a missed day is not marked or counted against the user.
 
 ## Observed
 
@@ -18,6 +18,11 @@ Track small daily goals and keep streaks.
 - The Habits subtitle shows "N of M done today".
 - The habit card's week row shows Monday to Sunday. Past days come from history. Today follows the done state. Future days are empty.
 - The history card shows a 12-week heatmap for one habit and three numbers: day streak, this month %, best streak. In the mockup these values are static.
+
+v3 (3ak):
+- A "Show streaks" switch (on Habits, and in Settings › Appearance). Off: no flame and no streak numbers. Each card shows "N this week". The history card shows "86% This month" and "5 of 7 This week".
+- The Habits subtitle ends with "all optional". Footer: "Habits are optional. Missing a day isn't marked or counted against you."
+- The "Habits on Today" setting hides the habit strip on Today.
 
 ## Assumptions
 
