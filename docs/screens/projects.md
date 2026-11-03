@@ -1,8 +1,8 @@
 # Projects
 
-Status: Implemented
+Status: Partial (built on v2 in 1b.4 and 1b.6; the v3 gaps are listed below)
 Code: `Luna/Features/Projects/ProjectsScreen.swift`, `AreaSection.swift`, `ProjectRow.swift`, `ProjectsEmptyView.swift`, `NewProjectSheet.swift`, `NewAreaSheet.swift`
-Artboards: 2l
+Artboards: 3ab
 Features: [Projects and areas](../features/projects-and-areas.md)
 
 ## Purpose
@@ -11,16 +11,17 @@ Show work outside today: smart lists and projects grouped by area.
 
 ## Layout (top to bottom)
 
-1. Title "Projects" (34 pt bold).
-2. Grouped list of smart lists. Each row: a 32 pt icon box, a name, a count, a chevron.
+1. Title "Projects" (34 pt bold) and a 44 pt glass Settings gear.
+2. **v3:** a search field "Search tasks, projects and notes" (search icon).
+3. Grouped list of smart lists. Each row: a 32 pt icon box, a name, a count, a chevron.
    - Upcoming (calendar-range) 12
    - Anytime (layers) 8
    - Someday (archive) 14
    - Logbook (book-check), no count
-3. One section per area. Header: area icon + name (15 pt semibold, secondary), for example "Work" (briefcase) and "Personal" (house).
-4. Under each area, a grouped list of projects. Each row: a 24 pt progress ring in the project color, a name (17 pt semibold), a meta line ("Due Nov 14", "Dec 18 – 27", "No date", "Ongoing"), and a trailing count of open tasks.
+4. One section per area. Header: area icon + name (15 pt semibold, secondary). v3 sample: "School" (graduation-cap) and "Personal" (house).
+5. Under each area, a grouped list of projects. Each row: a 24 pt progress ring in the project color, a name (17 pt semibold), a meta line (v2: "Due Nov 14", "No date"; v3 also "Next: Drag rows onto the timeline", "Problem set 6 due Mon", "Added Oct 30"), and a trailing count of open tasks.
 
-## Sample data (Observed)
+## Sample data (Observed in v2; the app keeps it, decided 2026-11-03)
 
 | Area | Project | Color | Progress | Meta | Open |
 | --- | --- | --- | --- | --- | --- |
@@ -53,9 +54,14 @@ Show work outside today: smart lists and projects grouped by area.
 - Use `List` with `.insetGrouped` style restyled to Noir, or a custom grouped container.
 - The progress ring needs a text value for VoiceOver ("60 percent").
 
-## Artboard comparison (2026-10-31)
+## Artboard comparison (2026-10-31, v2)
 
 Checked in the iPhone 17 simulator (iOS 27.0), dark and light, after 1b.6. The screen matches 2l, except the "+" button next to the title (intended: the decided toolbar menu).
+
+## v3 gaps
+
+- Gear and search field (1d.8). **Assumption:** search filters tasks, projects, and notes by title. The mockup has no results state.
+- Meta line shows the next step for a rich project (1d.8).
 
 ## Open questions
 

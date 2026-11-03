@@ -1,6 +1,6 @@
 # Timeline and day bands
 
-Status: Implemented
+Status: Partial (implemented on v2; v3 gaps: routine pill 150, Now · Next bar, time left in the meta line)
 Code: `Luna/Features/Today/DayPlan.swift`, `Luna/Shared/Model/Week.swift`, `Luna/Shared/Model/Block.swift`, `Luna/Shared/Model/Band.swift`, `Luna/Shared/Model/Timeline.swift`, `Luna/Shared/Model/DayLimit.swift`, `Luna/Shared/Model/DurationFormat.swift`, `Luna/Shared/Model/AppClock.swift`, `Luna/Shared/Settings/BandScheduleStorage.swift`
 Screens: [Today](../screens/today.md), [Settings](../screens/settings.md)
 
@@ -11,7 +11,7 @@ Show one day's blocks in time order, grouped into Morning, Afternoon, and Night,
 ## Observed
 
 Data:
-- A block has: id, day, kind (`task`, `routine`, `event`), title, start (minutes after midnight), duration (minutes). A task or routine also has an icon and a block color. A routine has steps. An event has a calendar name ("Work", "Personal").
+- A block has: id, day, kind (`task`, `routine`, `event`, `open`), an optional mode `fixed`, title, start (minutes after midnight), duration (minutes). A task or routine also has an icon and a block color. A routine has steps. An event has a calendar name ("University", "Personal"). v3 adds `synced`, `outcome`, and `focusedMin`. See [Block types](block-types.md) and [Block completion](block-completion-and-routines.md).
 
 Bands:
 - The mockup code uses these ranges: Morning 0–720 (to 12:00 PM), Afternoon 720–1080 (to 6:00 PM), Night 1080–1440 (to midnight).
@@ -20,17 +20,22 @@ Bands:
 - A band with no blocks is shown closed with "Nothing planned". A collapsed band shows "N blocks · total duration".
 
 Rows:
-- A free gap row shows between two blocks in the same band when the gap is 20 minutes or more, and "Show free time" is on. The label is "1 h 15 min free". The gap starts at the latest end time so far.
-- Pill height: `min(112, 52 + duration × 0.5)` pt. A routine pill is 164 pt.
+- A free gap row shows between two blocks in the same band when the gap is 20 minutes or more (v3 unchanged), and "Show free time" is on. The label is "1 h 15 min free". The gap starts at the latest end time so far.
+- Pill height: `min(112, 52 + duration × 0.5)` pt. A routine pill is 150 pt (v3; v2 was 164).
 
 Time states (relative to now):
-- **Active**: a task or routine that is not done, on today, where `start ≤ now < start + duration`. The pill fills to the elapsed fraction. The meta line shows "N min left". The Focus button and timer show.
+- **Active**: a task or routine that is not done, on today, where `start ≤ now < start + duration`. The pill fills to the elapsed fraction. The meta line shows "N min left". The Focus button shows. v3 removes the timer capsule.
 - **Past**: the block ends at or before now, or is on an earlier day. Past events are dimmed. Past tasks are not dimmed unless done.
 - Duration format: "15 min", "1 h", "1 h 30 min". Time format: "9:30" (12-hour, no AM/PM on the timeline).
 
 Day navigation:
 - The week strip selects a day. Days with blocks show a dot.
-- The day footer shows "X of Y blocks done" for tasks and routines.
+- The day footer shows "X of Y blocks done" for tasks and routines (not events, Open time, or suggestions). On the current day, v3 adds "Everything else: N in Inbox · M could use a decision".
+
+Now · Next bar (v3):
+- Now: the focused block while Focus runs; else the first non-event block where `start ≤ now < end`; else any block in progress. Next: the first block that starts after now. Skipped suggestions do not count.
+- Labels: "Now · N min left", "Now · focusing 39:48", "Now" with "Free until 12:00"; "Next · 12:00" or "Next" with "Nothing else today".
+- It shows on the current day when the day has blocks and the "Now and next bar" setting is on. A tap scrolls to the now row.
 
 ## Assumptions
 

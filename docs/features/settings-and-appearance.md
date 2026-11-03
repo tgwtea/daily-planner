@@ -1,13 +1,13 @@
 # Settings and appearance
 
-Status: Partial (Show calendar events, Live Activity, Haptics, and End-of-block sound are stored only)
-Screens: [Settings](../screens/settings.md)
+Status: Partial (built on v2 in 1b.5; v3 regroups Settings into 12 areas in 1d.10)
+Screens: [Settings](../screens/settings.md), [Settings group](../screens/settings-group.md)
 
 ## Purpose
 
 Hold user preferences that change app behavior and the theme.
 
-## Observed
+## Observed (v2)
 
 | Setting | Default | Effect seen in the mockup |
 | --- | --- | --- |
@@ -21,6 +21,32 @@ Hold user preferences that change app behavior and the theme.
 | End-of-block sound | Off | Not wired |
 | Plan suggestions | On | Not wired |
 | Theme | Dark | The canvas shows a Light variant |
+
+## v3 settings groups
+
+Observed in v3 (`SIDX`, `SUB`, and the defaults in `TG0` in the prototype). Switch defaults in brackets. "Luna" replaces "Plan My Day" in all copy.
+
+| Group (index header) | Page | Rows | Footer |
+| --- | --- | --- | --- |
+| Planning | Day bands | Morning 6:00 AM, Afternoon 12:00 PM, Night 6:00 PM; Preferred hours: Day starts 7:00 AM, Day ends 11:30 PM | "Blocks move into the band their start time falls in." / "Plan only suggests blocks inside these hours." |
+| Planning | Scheduling | New blocks: Default type Flexible, Default length 30 min, Transition buffer 15 min. Changes: Suggest changes when running late (on), At most Once per block | "Blocks you placed are never moved without asking." |
+| Planning | Protected time | One row per Open time pattern ("Unwind · Weekdays · 6–7 PM"), "Add protected time" | "Plan never puts tasks here. You can still add blocks yourself." |
+| Planning | Energy | Use energy preferences (off), Ask when I plan (on); Usually: Most focused Morning, Lower energy After lunch | "Optional. Plan My Day never guesses how you feel. It only uses what you tell it." |
+| Assistance | AI planning | Planning suggestions (on), Organize captures (on), Project summaries (on); Drafts: Prepare tomorrow's draft (on), Ready by 9:00 PM, Group related work (on), Keep long blocks for hard work (on); Learning: Learn from approved plans (off), Clear learned patterns | "Drafts never change your day until you approve them. Everything works without AI." / "Only plans you approved are used." |
+| Assistance | Privacy & AI data | Process on device when possible (on), Share task titles (on), Share notes (off), Share event titles (off); Delete AI history | "Notes and calendar details stay on this iPhone unless you allow them." |
+| Focus & alerts | Focus | Default timer Until block ends, Start with a timer (on), Show "I'm stuck" (on); Check-ins (off), Every 20 min; Live Activity (on), Haptics (on), End-of-timer sound (off) | See [Focus](focus-and-live-activity.md). |
+| Focus & alerts | Notifications | See [Notifications](notifications.md). | |
+| Connections | Calendar | Show on timeline: University, Personal, Work (off), Holidays; Two-way sync: Sync selected blocks (on), Write to, New blocks Local only; When things change: Edited in Calendar Ask me, Calendar unavailable Keep local, Last synced | See [Two-way sync](calendar-views-and-events.md#two-way-sync). |
+| Connections | Inbox review | Suggest a review When I plan, Weekly reminder (off), Include unfinished blocks (on) | "Skipping a review never moves or deletes anything." |
+| App | Appearance | Theme, Text size System; Today: Habits on Today (on), Now and next bar (on), Show streaks (on); Accessibility: Reduce motion, Increase contrast, Reduce transparency (each "System") | "Follows iOS settings by default." |
+| App | Data & backup | iCloud sync "Synced 10:18 AM", Backups Daily, Export data; Waiting to sync 0 | "Captures save on this iPhone first, even offline." |
+
+Decisions for v3 settings:
+- **Decided (2026-11-03):** AI is on-device only. The Privacy & AI data page keeps "Delete AI history". The "Process on device" and "Share …" switches are hidden (intended difference).
+- **Decided (2026-11-03):** iCloud sync and backup are in v1 (roadmap 2.1). This replaces "local only for v1" (2026-10-30).
+- **Decided (2026-11-03):** the v2 "Show free time" and "Scroll to now on open" switches have no v3 row. **Assumption:** keep both, in Appearance › Today, because code uses them.
+- **Decided (2026-11-03):** v2 "Show calendar events" becomes the per-calendar checks in Calendar.
+- **Assumption:** "Text size" and the three accessibility rows show the iOS value and link to iOS Settings. They do not override iOS.
 
 ## Implementation
 
@@ -44,4 +70,4 @@ Hold user preferences that change app behavior and the theme.
 
 ## Related
 
-[Timeline](timeline-and-day-bands.md), [Calendar](calendar-views-and-events.md), [Focus](focus-and-live-activity.md), [Plan my day](plan-my-day-suggestions.md).
+[Timeline](timeline-and-day-bands.md), [Calendar](calendar-views-and-events.md), [Focus](focus-and-live-activity.md), [Plan hub](plan-my-day-suggestions.md), [Notifications](notifications.md).

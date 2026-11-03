@@ -1,6 +1,6 @@
 # Inbox scheduling
 
-Status: Partial (place in a band done; drawer tap and drag in 1c.2)
+Status: Partial (place in a band done; drawer tap and drag in 1c.2; v3 item fields in 1d.1)
 Code: `Luna/Shared/Model/SlotSearch.swift`, `Luna/Shared/Model/InboxItem.swift`, `Luna/Shared/Model/PlannerStore.swift` (`placeInBand`, `schedule`, `renameInboxItem`, `deleteInboxItem`, `moveInboxItems`), `Luna/Features/Inbox/`
 Screens: [Inbox](../screens/inbox.md), [Inbox drawer](../screens/inbox-drawer.md), [Today](../screens/today.md)
 
@@ -10,7 +10,7 @@ Move a task from the Inbox to a time on today's timeline.
 
 ## Observed
 
-Inbox item: id, title, duration, icon, color, tag. Sample items:
+Inbox item: id, title, duration, icon, color, tag. v3 adds an optional due text ("Due Fri"), a reminder ("Fri 6:00 PM", bell icon), and a moved count (`deferred`, meta "Moved 3×"). A capture item is a separate kind: see [Capture and organization](capture-and-organization.md). Sample items (v2, kept in the app):
 
 | Title | Duration | Tag |
 | --- | --- | --- |
@@ -32,9 +32,11 @@ Slot search (`findSlot`):
 - A slot fits when `start + duration ≤ band end` and it does not overlap any block on that day.
 - Return the first fit, or nothing.
 
-After scheduling: the task becomes a task block on today with the same title, duration, icon, and color. It leaves the Inbox.
+After scheduling: the task becomes a task block on today with the same title, duration (30 min when it has none), icon, and color. It leaves the Inbox. v3 shows a toast "Scheduled 2:30 PM" or "No free slot left today".
 
-The Inbox pill on Today shows the Inbox count. It hides when the Inbox is empty.
+The drawer lists the Inbox items to plan, not the capture items. Slot search is unchanged in v3.
+
+v2: the Inbox pill on Today shows the Inbox count. **Decided (2026-11-03):** v3 removes the pill. The Today header drawer button shows the count of items to plan as a badge. The Inbox tab shows the count of all Inbox items as a badge.
 
 ## Assumptions
 
@@ -67,4 +69,4 @@ The Inbox pill on Today shows the Inbox count. It hides when the Inbox is empty.
 
 ## Related
 
-[Timeline](timeline-and-day-bands.md), [Plan my day](plan-my-day-suggestions.md), [Quick add](quick-add-parsing.md).
+[Timeline](timeline-and-day-bands.md), [Plan hub](plan-my-day-suggestions.md), [Capture parsing](quick-add-parsing.md), [Inbox review](inbox-review.md).

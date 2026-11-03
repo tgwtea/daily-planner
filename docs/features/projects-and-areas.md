@@ -1,6 +1,6 @@
 # Projects and areas
 
-Status: Implemented
+Status: Partial (implemented on v2; v3 gaps: search, rich workspace, pick-up summary, 1d.8)
 Code: `Luna/Shared/Model/Area.swift`, `Project.swift` (timing text, notes), `ProjectProgress.swift`, `ProjectItems.swift`, `SmartList.swift`, `ListItem.swift`, `PlannerStore.swift` (add project, area, task; completion time)
 Screens: [Projects](../screens/projects.md), [Project detail](../screens/project-detail.md), [Smart list](../screens/smart-list.md)
 
@@ -13,7 +13,15 @@ Organize tasks that are not on today into projects, areas, and smart lists.
 - Smart lists: Upcoming, Anytime, Someday, Logbook, with counts (12, 8, 14, none).
 - Areas group projects: Work and Personal.
 - A project has a name, a color, a progress fraction, a meta line (due date, date range, "No date", "Ongoing"), and an open-task count.
-- No row has an action in the mockup.
+- No row has an action in the v2 mockup.
+
+v3 (3ab–3ae):
+- A search field: "Search tasks, projects and notes".
+- A project row meta line can show the next step ("Next: Drag rows onto the timeline").
+- A project is **simple** (a task list) or **rich** (sections Tasks, Goals, Notes, Links, Scheduled, collapsed except Tasks). "Add notes, goals or links" makes a simple project rich.
+- A rich project shows a **pick-up summary** when "Project summaries" is on: the next step with "Focus now" and "Schedule", "Where you left off" (a grounded summary), the source line "From your blocks, checklist and notes", and an activity list behind "Show details".
+- **Honest fallback:** with too little data, "Not much to go on yet" and why, with "Add a next step".
+- "Connected services" (GitHub) is "Optional, later".
 
 ## Assumptions
 
@@ -40,9 +48,11 @@ Organize tasks that are not on today into projects, areas, and smart lists.
 - **Decided (2026-10-30):** A toolbar "+" menu on Projects has New Project and New Area. Each opens a small sheet (name, color, and area for a project).
 - **Decided (2026-10-30):** An Inbox tag is a project.
 - **Decided (2026-10-31):** Logbook sorts by the completion time. `Block` and `AnytimeTask` have `completedAt`. The toggle intents set it when the item becomes done and clear it when the item becomes open. A routine gets it when its last step becomes done. Items with no completion time go last.
-- **Decided (2026-10-31):** the project detail "+" opens a text-field alert. It adds an Anytime task with no day to the project. Quick add (1c.1) can replace it.
+- **Decided (2026-10-31):** the project detail "+" opens a text-field alert. It adds an Anytime task with no day to the project. Capture (1c.1) can replace it.
 - **Decided (2026-10-31):** project detail groups: **Scheduled** (open blocks and open dated Anytime tasks, earliest first), **Anytime** (open Anytime tasks with no day, then Inbox items, then Someday items), **Done** (done blocks and done Anytime tasks, newest first).
 - **Decided (2026-10-31):** an Inbox tag links to its project through the row context menu item "Open <Project>". See [Inbox](../screens/inbox.md#interactions).
+
+- **Decided (2026-11-03):** the pick-up summary comes from the on-device model, built only from the project's blocks, checklists, notes, and Focus records. Connected services (GitHub) are post-v1.
 
 ## Related
 

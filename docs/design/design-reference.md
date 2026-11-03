@@ -8,43 +8,76 @@ This is the central visual reference for Luna. Screen specs link here for shared
 | --- | --- |
 | Tool | Claude Design |
 | Project | "Form submission waiting" (ID `feb8e067-7716-40d0-86ee-981e9a51c289`) |
-| URL | https://claude.ai/design/p/feb8e067-7716-40d0-86ee-981e9a51c289?file=Plan+My+Day+v2.dc.html |
-| Canvas file | `Plan My Day v2.dc.html`. It lists artboards 2a–2q with captions. |
-| Prototype file | `Plan My Day v2 App.dc.html`. It holds all markup, logic, and sample data. This is the main source. |
+| URL | https://claude.ai/design/p/feb8e067-7716-40d0-86ee-981e9a51c289?file=Plan+My+Day+v3.dc.html |
+| Canvas file | `Plan My Day v3.dc.html`. It lists artboards 3a–3an with captions and short rationale notes. |
+| Prototype file | `Plan My Day v3 App.dc.html`. It holds all markup, logic, and sample data. This is the main source. |
+| Handoff file | `Plan My Day v3 Handoff.dc.html`. It holds the change log, the navigation tree, the screen inventory, the component list, the token notes, the key rules, and the accessibility notes. |
+| Screenshot | `screenshots/v3-today.jpg` |
 | Runtime | `support.js`. The generic Claude Design template runtime. It has no product content. |
-| Design system | `_ds/noir-design-system-…/` ("Noir"). Its tokens are in `tokens/*.css` and its guidance is in `readme.md`. |
-| Superseded | `Plan My Day.dc.html` and `Plan My Day App.dc.html` (v1). Do not use them. |
+| Design system | `_ds/noir-design-system-…/` ("Noir"). Its tokens are in `tokens/*.css` and its guidance is in `readme.md`. v3 uses the same Noir files as v2. |
+| Superseded | `Plan My Day v2.dc.html` and `Plan My Day v2 App.dc.html` (v2), `Plan My Day.dc.html` and `Plan My Day App.dc.html` (v1). Do not use them as a reference. The completion log and older comparisons cite v2 artboard IDs (2a–2q). They are history. |
 | Not inspected | `uploads/refs-*.webp`, `uploads/refs-*.png` (two reference images). |
 
-Inspected on 2026-10-30. If the design changes, update this file and the affected specs.
+v3 inspected on 2026-11-03. **Decided (2026-11-03):** v3 is the source of truth. It replaces v2. If the design changes, update this file and the affected specs.
 
-The canvas describes the app as a calm, reliable time blocker. It names its inspirations: a Structured-style timeline, Tiimo-style day bands, a Things-like Projects tab, TickTick-style calendar views and habits, and Todoist-style quick add.
+v3 calls itself "cognitive-first": the same timeline and identity as v2, plus block types (Flexible, Fixed, Open time), planned versus actual, AI drafts that the user approves, capture that saves before it organizes, a Focus anchor with "I'm stuck", project pick-up summaries, and two-way sync for selected blocks. The prototype simulates AI, calendar, permissions, and network.
+
+The handoff tags each screen **Existing** (v2, unchanged), **Enhanced**, or **New**, and each dependency **AI**, **iOS permission**, or **External**.
+
+### Sample data
+
+The v3 prototype uses a new sample (a student: "Algorithms lecture", "Linear algebra", "Operating systems", project "Plan My Day app"). The date and time are the same: Thursday, October 29, 2026, 10:20 AM. **Decided (2026-11-03):** the app keeps the v2 sample data. A checkpoint adds a v3 state to it (one Fixed block, one Open time block, one synced block, one capture item) only when it needs one. Compare layout and states with the artboards. Do not compare titles.
 
 ### Artboards
 
 | ID | Caption | Screen spec |
 | --- | --- | --- |
-| 2a | Interactive · scrolls to now | [Today](../screens/today.md) |
-| 2b | Top of the day · habits · Anytime | [Today](../screens/today.md) |
-| 2c | Now line · timer inside the active block | [Today](../screens/today.md) |
-| 2d | Inbox drawer · dragging into a free gap | [Inbox drawer](../screens/inbox-drawer.md) |
-| 2e | Empty day | [Today](../screens/today.md) |
-| 2f | Light | [Today](../screens/today.md) |
-| 2g | Quick add · parsed as you type | [Quick add](../screens/quick-add.md) |
-| 2h | Edit block · color, icon, checklist | [Edit block](../screens/edit-block.md) |
-| 2i | Full-screen focus | [Focus](../screens/focus.md) |
-| 2j | Lock screen · Live Activity + Dynamic Island | [Live Activity](../screens/live-activity.md) |
-| 2k | Inbox · swipe to place | [Inbox](../screens/inbox.md) |
-| 2l | Projects · Upcoming, Anytime, Someday | [Projects](../screens/projects.md) |
-| 2m | Habits · streaks + heatmap | [Habits](../screens/habits.md) |
-| 2n | Settings | [Settings](../screens/settings.md) |
-| 2o | 3 days | [Calendar](../screens/calendar.md) |
-| 2p | Month | [Calendar](../screens/calendar.md) |
-| 2q | Plan my day · suggestion sheet | [Plan my day](../screens/plan-my-day.md) |
+| 3a | Interactive v3 · start here | [Today](../screens/today.md) |
+| 3b | Before · v2 bottom edge | History only |
+| 3c | After · scrolled, compact bar, one accessory | [Navigation map](../screens/README.md#navigation-map) |
+| 3d | Settings · grouped, progressive | [Settings](../screens/settings.md) |
+| 3e | Busy day · top | [Today](../screens/today.md) |
+| 3f | Night · open time, events, fixed | [Today](../screens/today.md) |
+| 3g | Partially planned · Friday | [Today](../screens/today.md) |
+| 3h | Empty day | [Today](../screens/today.md) |
+| 3i | Light | [Today](../screens/today.md) |
+| 3j | Inbox drawer · drag into a gap | [Inbox drawer](../screens/inbox-drawer.md) |
+| 3k | Plan sheet · unfinished work follow-up | [Plan hub](../screens/plan-my-day.md) |
+| 3l | Daily draft · on the timeline | [Today](../screens/today.md), [Plan hub](../screens/plan-my-day.md) |
+| 3m | Conflicting proposal | [Today](../screens/today.md) |
+| 3n | Running long · gentle nudge | [Today](../screens/today.md) |
+| 3o | Before / after | [Before and after](../screens/before-after.md) |
+| 3p | AI unavailable · plan by hand | [Plan hub](../screens/plan-my-day.md) |
+| 3q | Capture · detected details | [Capture](../screens/capture.md) |
+| 3r | Saved immediately · organizing | [Inbox](../screens/inbox.md) |
+| 3s | AI organization suggestion | [Inbox](../screens/inbox.md) |
+| 3t | Inbox review | [Quick review](../screens/quick-review.md) |
+| 3u | Offline capture | [Inbox](../screens/inbox.md) |
+| 3v | Focus anchor · timer | [Focus](../screens/focus.md) |
+| 3w | No timer | [Focus](../screens/focus.md) |
+| 3x | "I'm stuck" reorientation | [I'm stuck sheet](../screens/stuck-sheet.md) |
+| 3y | Optional check-in | [Focus](../screens/focus.md) |
+| 3z | Ending · done is your call | [End Focus sheet](../screens/end-focus-sheet.md) |
+| 3aa | Live Activity | [Live Activity](../screens/live-activity.md) |
+| 3ab | Projects | [Projects](../screens/projects.md) |
+| 3ac | Simple project | [Project detail](../screens/project-detail.md) |
+| 3ad | Rich project · context summary | [Project detail](../screens/project-detail.md) |
+| 3ae | Not enough context · honest fallback | [Project detail](../screens/project-detail.md) |
+| 3af | Block · type and per-block sync | [Block detail](../screens/block-detail.md) |
+| 3ag | Sync conflict | [Sync conflict](../screens/sync-conflict.md) |
+| 3ah | Calendar settings · sync scope | [Settings group](../screens/settings-group.md) |
+| 3ai | Permission denied | [Today](../screens/today.md) |
+| 3aj | 3-day calendar | [Calendar](../screens/calendar.md) |
+| 3ak | Habits · streaks hidden | [Habits](../screens/habits.md) |
+| 3al | AI planning settings (light) | [Settings group](../screens/settings-group.md) |
+| 3am | Onboarding | [Onboarding](../screens/onboarding.md) |
+| 3an | First launch · no tasks | [Today](../screens/today.md) |
+
+v3 has no artboard for the Month view, smart lists, the habit editor, or archived habits. Their v2 specs stay valid. The Month view is still in the v3 prototype (`calView` `month`).
 
 The repository holds no exported PNGs of these artboards. To compare a screen, read the artboard from the design project. Decided (2026-10-31).
 
-The mockup frame is 440 × 956 pt with a 66 pt corner radius. It draws a mock status bar, Dynamic Island, and home indicator. Do not draw these in the app. iOS provides them.
+The mockup frame is 440 × 956 pt with a 66 pt corner radius. It draws a mock status bar, Dynamic Island, keyboard, and home indicator. Do not draw these in the app. iOS provides them.
 
 ## Principles
 
@@ -52,7 +85,9 @@ From the Noir readme: "Typography creates hierarchy. Solid surfaces organize con
 
 - The UI is monochrome. Color appears only on blocks, habits, and projects that the user colors. Each block has one muted color and one line icon.
 - Dark is the default theme. Light is a full alternate theme (artboard 2f).
-- Solid graphite surfaces hold content. Glass is only for floating or temporary layers: tab bar, Inbox pill, sheets, Live Activity.
+- Solid graphite surfaces hold content. Glass is only for floating or temporary layers: tab bar, bottom accessory, Now · Next bar, sheets, dialogs, toasts, Live Activity.
+- State is never color-only. A glyph and text carry it too: lock (Fixed), shield (Open time), calendar (event), sparkles (suggestion), refresh (synced), triangle-alert (sync conflict).
+- Nothing is marked complete because time passed or a session ended. AI output is always a draft.
 - Copy is calm and plain. Use sentence case. Buttons are verbs. Empty states say the situation, then the next step. No emoji in UI chrome. The metadata separator is a middle dot with spaces: "9:30 – 11:00 · 1 h 30 min".
 
 ## Color
@@ -64,7 +99,7 @@ In code: `Color` static properties in `Luna/Shared/Design/LunaColor.swift`. The 
 | Role | Dark | Light | Use |
 | --- | --- | --- | --- |
 | `bg-canvas` | `#000000` | `#FFFFFF` | Screen background |
-| `bg-secondary` | `#1A1A1A` | `#F5F5F5` | Keyboard area in quick add |
+| `bg-secondary` | `#1A1A1A` | `#F5F5F5` | Keyboard area in Capture |
 | `surface-primary` | `#1C1C1E` | `#F2F2F3` | Cards, grouped lists, band chips |
 | `surface-secondary` | `#2C2C2E` | `#E8E8EA` | Past event pill, focus ring track |
 | `surface-tertiary` | `#3A3A3C` | `#D6D6D9` | Upcoming event pill, ring tracks, empty heat cells |
@@ -90,7 +125,7 @@ High contrast (from Noir `tokens/colors.css`, dark only): `text-secondary` becom
 
 **Assumption (1a.2):** Noir has no light high-contrast values. The app uses `text-secondary` `#3D3D40`, `text-tertiary` `#6B6B70`, `border-subtle` black 18%, `border-standard` black 28%, `divider-default` black 20%.
 
-Status colors exist in Noir (`#FF6961`, `#FFB340`, `#32D74B`, `#64B5FF` in dark). The mockup does not use them.
+Status colors exist in Noir (`#FF6961`, `#FFB340`, `#32D74B`, `#64B5FF` in dark). v3 uses two of them: `status-warning` only for calendar conflicts and sync changes (for example the meta line "Changed in Calendar"), and `status-error` only for a delete action. Do not use the others.
 
 ### Block colors
 
@@ -107,7 +142,8 @@ In code: `BlockColor` in `Luna/Shared/Design/BlockColor.swift`, with `displayNam
 | Plum | `oklch(0.67 0.07 330)` | `#AE86AA` |
 
 - An icon or check mark on a block color uses ink `#151517` in both themes.
-- A done block uses its color mixed 38% with the canvas, in oklch. A done icon uses ink at 55% opacity.
+- Tints mix the block color with the canvas, in oklch: done 38%, unconfirmed 55%, suggestion 20%. A done icon uses ink at 55% opacity. A suggestion icon uses the block color.
+- An Open time pill is transparent with a 2 pt dashed `border-strong` outline and an `icon-secondary` shield or icon. A suggestion pill has a 2 pt dashed outline in its block color.
   - **Assumption (1a.2):** SwiftUI has no oklch mix. The app uses `Color.mix(with:by:in: .perceptual)`, the nearest native color space.
 - The habit heatmap uses Slate mixed 35–100% with the canvas. A heatmap filtered to one habit uses that habit's color (1b.3).
 
@@ -121,7 +157,7 @@ The font is the system font (SF Pro). Use tabular figures for every time, count,
 | Focus timer | 72 bold | −0.035 em |
 | Large screen title (Today, Inbox, …) | 34 bold | −0.025 em |
 | Calendar title | 28 bold | −0.02 em |
-| Edit block title | 26 bold | −0.02 em |
+| Block detail title | 26 bold | −0.02 em |
 | Sheet title, Live Activity timer | 24–30 bold | −0.02 em |
 | Section heading, empty-state title | 20 semibold | −0.01 em |
 | Row and block title | 17 semibold | — |
@@ -130,7 +166,9 @@ The font is the system font (SF Pro). Use tabular figures for every time, count,
 | Band chip label, buttons | 14–15 semibold | — |
 | Meta line, caption | 13 regular | — |
 | Time label, weekday | 12 medium | — |
-| Tab label | 10 semibold | — |
+| Tab label | 11 semibold (v2: 10) | — |
+| Now · Next title | 15 semibold, labels 12 medium | — |
+| Capture field | 19 medium | — |
 
 Noir defines a type scale (display 48/38, heading 30/24/20, body 17/16, label 15/14, caption 13/12). Map the rows above to Dynamic Type styles: 34 → `.largeTitle`, 20 → `.title3`, 17 → `.headline`/`.body`, 15 → `.subheadline`, 13 → `.footnote`, 12 → `.caption`. Fixed sizes such as the timers use `Font.system(size:weight:)` and scale with `@ScaledMetric`.
 
@@ -143,6 +181,9 @@ In code: `View.lunaTextStyle(_:)` with one `LunaTextStyle` case per row above (`
 - Grouped list row padding: 10–14 pt vertical, 14–16 pt horizontal. Card padding: 20 pt.
 - Minimum hit target: 44 × 44 pt. Small visual controls (34 pt chips, 26 pt check circles) get a 44 pt hit area.
 - Timeline grid columns: 44 pt time label, 52 pt pill, flexible text, 44 pt check. Column gap 12 pt.
+- Tab bar: 64 pt high, 52 pt when compact. 20 pt side margin, 30 pt from the bottom of the frame. The Capture circle matches the bar height. 12 pt gap.
+- Bottom accessory: 106 pt above the frame bottom, 94 pt when the bar is compact. 16 pt side margin (Focus mini-player 20 pt). The bottom accessory moves in 250 ms.
+- Today bottom content padding: 200 pt.
 
 In code: `LunaSpacing` (`Luna/Shared/Design/LunaSpacing.swift`). **Assumption (1a.2):** for a range, the token is a 4 pt step inside it: section gap 24, header gap 12, row padding 12 × 16.
 
@@ -161,6 +202,9 @@ In code: `LunaSpacing` (`Luna/Shared/Design/LunaSpacing.swift`). **Assumption (1
 | Buttons, chips, band chips, tab bar, search | Capsule |
 | Icon buttons, "+" button, check marks | Circle |
 | Timeline pill | 52 pt wide capsule (radius 26) |
+| Now · Next bar | 18 |
+| Bottom accessory | 28 (Focus mini-player: capsule) |
+| Banner (calendar off) | 16 |
 
 In code: `LunaRadius` (`Luna/Shared/Design/LunaRadius.swift`). Icon tiles use 12.
 
@@ -184,6 +228,8 @@ In code: `LunaRadius` (`Luna/Shared/Design/LunaRadius.swift`). Icon tiles use 12
 - Selection and pill changes use a slight-overshoot spring (`cubic-bezier(.34,1.3,.64,1)`). Map it to `.spring(duration: 0.25, bounce: 0.15)` or similar.
 - Sheets enter with ease-out in 350 ms and exit with ease-in in 250 ms. Use the system sheet animation.
 - The focus ring moves linearly once a second.
+- The tab bar height and the bottom accessory position animate in 250 ms with `cubic-bezier(.2,.8,.2,1)`.
+- Reduce Motion: no pill fill animation. Sheets cross-fade.
 - No bounce loops, parallax, or decorative motion. Reduce Motion sets durations to zero.
 - In code: `LunaMotion` (`Luna/Shared/Design/LunaMotion.swift`). `LunaMotion.animation(_:reduceMotion:)` returns `nil` under Reduce Motion.
 
@@ -194,17 +240,24 @@ These patterns appear on two or more screens. Build each one as a shared view wh
 | Pattern | Where | Description |
 | --- | --- | --- |
 | Large title header | Today, Inbox, Projects, Habits, Settings | 34 pt bold title, optional 15 pt secondary line above or below |
-| Capsule chip button | Band headers, Anytime, Plan, quick-add chips | 34 pt (30 pt in quick add) capsule on `surface-primary` or `surface-hover`, icon + label + count |
+| Capsule chip button | Band headers, Anytime, Plan, Capture chips | 34 pt (30 pt in Capture) capsule on `surface-primary` or `surface-hover`, icon + label + count |
 | Round add button | Band headers, Anytime | 34 pt circle, plus icon |
 | Check circle | Blocks, Anytime, steps, habits, proposals | 26 pt (18–30 pt variants) ring in the block color. Filled with the color and an ink check when done. |
 | Colored icon tile | Anytime, Inbox, habits, drawer, proposals | 36–40 pt rounded square or circle in the block color, ink icon |
-| Grouped list | Projects, Settings, Edit block, Inbox | `surface-primary`, radius 20, hairline dividers between rows |
-| Settings row | Settings, Projects, Edit block | Leading 32 pt icon box, title, trailing value, chevron or switch |
+| Grouped list | Projects, Settings, Block detail, Inbox | `surface-primary`, radius 20, hairline dividers between rows |
+| Settings row | Settings, Projects, Block detail | Leading 32 pt icon box, title, trailing value, chevron or switch |
 | Progress ring | Habits strip, projects | Circular stroke in the item color on a `surface-tertiary` track |
-| Glass sheet | Quick add, drawer, Plan | Radius 36 top corners, grabber 36 × 5 pt |
-| Floating tab bar | Main tabs | Glass capsule, 64 pt high, 5 tabs, plus a separate 64 pt primary "+" circle. The app uses 4 tabs (decided 2026-10-31, see [Native SwiftUI notes](#native-swiftui-notes)) |
-| Segmented control | Calendar | Day, 3 days, Week, Month |
+| Glass sheet | Capture, drawer, Plan, Before and after, Quick review, I'm stuck, End Focus | Radius 36 top corners, grabber 36 × 5 pt |
+| Glass dialog | Sync conflict, delete | Radius 28, title, body, stacked full-width buttons |
+| Toast | All screens | Glass capsule with an icon and one line. Hides after 2.6 s. |
+| Floating tab bar | Main tabs | Glass capsule, 4 tabs (Today, Inbox, Projects, Habits), 64 pt high, 52 pt and icons only when compact. The Inbox tab has a count badge. A separate primary Capture circle (plus icon) of the same height. |
+| Bottom accessory | Today, all roots while Focus runs | One glass slot above the tab bar. Priority: Focus mini-player, then draft approval bar, then running-late nudge. |
+| Now · Next bar | Today | Sticky glass bar under the header: an 8 × 28 pt color bar, "Now · 40 min left" and the title, then "Next · 12:00" and the title. Tap scrolls to now. |
+| Header icon button | Root headers | 44 pt glass circle. Settings gear on every root. The Today Inbox drawer button has a count badge. |
+| Segmented control | Calendar, Block detail, Focus, Plan hub | Calendar views; block type (Flexible, Fixed, Open time); Timer or No timer; Rest of today or Tomorrow |
 | Selected-day fill | Week strip, calendar, month | Circle filled with `text-primary`, number in `text-inverse` |
+
+v3 handoff component names: TimelineBlockRow (variants: flexible, fixed, open, event, suggestion new / move / conflict, active, focusing, done, unconfirmed), FreeGap (shown at 20 min or more), NowLine, BandHeader, NowNextBar, BottomAccessory (FocusMini, DraftBar, Nudge), SuggestionField (check toggle, label, value, status note), ReviewCard (item, reason chips, two-column action grid), FocusRing, FocusAnchor (next step and checklist), CheckInSheet, StuckSheet, PickupCard (next step, summary, source line, details disclosure). Build each as a shared view when the second screen needs it.
 
 In code (1a.5): `Luna/Shared/Components/`. `LargeTitleHeader`, `ChipButton` (34 pt, `isCompact` 30 pt), `RoundAddButton`, `CheckCircle` (`.small` 18, `.regular` 26, `.large` 30, optional `count` for a multi-count habit), `IconTile`, `GroupedList` with `GroupedRow`, `ProgressRing`, and `BlockPill` (the timeline pill). The tab bar is `LunaTabBar`. Glass is `View.lunaGlass(in:)` (`LunaGlass.swift`). The other patterns come with their screens.
 
@@ -212,8 +265,8 @@ Added in 1b.5: `GroupedSection` (small header, grouped list, optional footer) an
 
 Component values from the prototype (read 2026-10-31):
 
-- Pill: fill rules in [Today](../screens/today.md#states). Done wins over active. The active fill is a hard stop at the progress point. Icon 20 pt. A routine pill shows its icon at the top.
-- Check circle: ring 2 pt (1.75 pt at 18 pt). Check 14 pt (11 pt at 18 pt). The ring takes the block color. Edit block steps use `border-strong` when off. Plan proposals fill with `text-primary` and a `text-inverse` check.
+- Pill: fill rules in [Today](../screens/today.md#states). Done wins over active. Height `clamp(52, 52 + 0.5 × minutes, 112)`. Routine pill 150 pt (v2: 164). The active fill is a hard stop at the progress point. Icon 20 pt. A routine pill shows its icon at the top.
+- Check circle: ring 2 pt (1.75 pt at 18 pt). An unconfirmed block has a dashed ring in `text-tertiary`. Check 14 pt (11 pt at 18 pt). The ring takes the block color. Block detail steps use `border-strong` when off. Plan proposals fill with `text-primary` and a `text-inverse` check.
 - Chip: padding 0 × 12 pt, 15 pt semibold, 16 pt icon, count in `text-tertiary`, chevron in `icon-secondary`.
 - Round add button: 34 pt `surface-primary` circle, 16 pt plus in `icon-secondary`.
 - Icon tile: 36 pt, radius 12, 18 pt ink icon.
@@ -243,15 +296,36 @@ The mockup uses Lucide icon names through the Noir `Icon` component. Use SF Symb
 | play / pause | `play.fill` / `pause.fill` |
 | flame | `flame` |
 | laptop, file-text, git-pull-request, dumbbell, bike, utensils, book-open, phone, shopping-basket, plane | `laptopcomputer`, `doc.text`, `arrow.triangle.pull`, `dumbbell`, `bicycle`, `fork.knife`, `book`, `phone`, `basket`, `airplane` |
+| lock / shield / refresh-cw / triangle-alert | `lock` / `shield` / `arrow.triangle.2.circlepath` / `exclamationmark.triangle` |
+| panel-bottom-open / text-quote / mic / shapes | `rectangle.bottomhalf.inset.filled` / `text.quote` / `mic` / `square.on.circle` |
+| wifi-off / loader / circle-alert / circle-slash | `wifi.slash` / `progress.indicator` (or `ProgressView`) / `exclamationmark.circle` / `nosign` |
+| calendar-off / calendar-plus / calendar-clock / calendar-range / calendar-cog | `calendar.badge.exclamationmark` / `calendar.badge.plus` / `calendar.badge.clock` / `calendar` / `calendar.badge.checkmark` |
+| hourglass / square / circle-dashed / circle-dot / arrow-right | `hourglass` / `stop.fill` / `circle.dashed` / `smallcircle.filled.circle` / `arrow.right` |
+| zap / minus / cloud-fog / battery-medium | `bolt` / `minus` / `cloud.fog` / `battery.50percent` |
+| archive / archive-x / book-check / layers / list-checks / target / notebook-text / link | `archivebox` / `xmark.bin` / `book.closed` / `square.stack` / `checklist` / `scope` / `note.text` / `link` |
+| hand / sun-moon / cloud / users / sofa / gamepad-2 / heart / sigma / notebook-pen | `hand.raised` / `circle.lefthalf.filled` / `icloud` / `person.2` / `sofa` / `gamecontroller` / `heart` / `sum` / `square.and.pencil` |
 
 The candidates are assumptions. Check each one in the SF Symbols app.
 
+## Accessibility (v3 handoff)
+
+- Dynamic Type: rows grow. Pill heights are minimums. 44 pt targets throughout.
+- VoiceOver block label: title, time range, type, status. Example: "Build SwiftUI timeline, 10:00 to 11:30, flexible, 70 minutes left". A suggestion announces "Suggested".
+- Reduce Motion: no pill fill animation. Sheets cross-fade.
+- Reduce Transparency: glass becomes opaque graphite (`glass-fallback`).
+- Light theme: white canvas. Block accents do not change. Ink stays dark on pills.
+
 ## Native SwiftUI notes
 
-- Tab bar: use `TabView` with four `Tab`s and hide the system tab bar. **Decided (2026-10-30):** a custom floating tab bar draws the design: a glass capsule with five tabs and a separate primary "+" circle. A system bar with five tabs fills the iPhone width, so a "+" circle cannot sit next to it. See [screens/README.md](../screens/README.md#navigation-map). **Decided (2026-10-31):** four tabs. Settings moves to a gear in the Today header. This is an intended difference from the design.
-- Sheets: use `.sheet` with `presentationDetents`. The Inbox drawer is a medium detent (440 of 956 pt). Quick add sits above the system keyboard. The mockup draws a fake keyboard. Do not build it.
+- Tab bar: **Decided (2026-11-03):** keep the custom floating `LunaTabBar` over a `TabView` with the system bar hidden, plus the separate Capture circle. Add the v3 behavior by hand: compact to icons only on a downward scroll (64 to 52 pt), labels return on an upward scroll, and one bottom accessory slot. The v3 handoff suggests `.tabBarMinimizeBehavior(.onScrollDown)` and `.tabViewBottomAccessory`. They are not used, because the system bar cannot hold the separate Capture circle. The custom bar itself was decided on 2026-10-30.
+- Four tabs: Today, Inbox, Projects, Habits. A Settings gear is on every root header, Today included. **Decided (2026-11-03):** this follows the handoff. The v3 canvas omits the gear on Today.
+- The tab bar hides on pushed screens (Calendar, Block detail, project detail, Settings) and while Capture is open.
+- Pushed screens: Calendar (from "Today ▾"), Block detail, project detail, Settings and its groups. Sheets: Plan hub, Capture, Quick review, Inbox drawer (medium detent), Before and after, I'm stuck, End Focus. Full-screen cover: Focus, onboarding. Dialogs: sync conflict, delete.
+- Capture sits above the system keyboard. The mockup draws a fake keyboard. Do not build it.
 - Lists with swipe actions: `List` with `.swipeActions`. The Inbox places with a leading swipe and deletes with a trailing swipe (decided 2026-10-30). Native swipe buttons use `Color.swipeActionTint`: `surface-raised` in dark, a dark neutral in light, because the system draws the icon white.
 - Drag and drop: use `.draggable` and `.dropDestination` on timeline gaps.
-- Calendar events: EventKit, read-only.
+- Calendar: EventKit. Events are read-only. Synced blocks are written to one dedicated calendar (two-way sync, decided 2026-11-03).
+- AI: on-device only (Apple Foundation Models) with a deterministic fallback. **Decided (2026-11-03).** See [Plan hub suggestions](../features/plan-my-day-suggestions.md).
 - Live Activity: ActivityKit and a widget extension.
+- Dictation in Capture: the Speech framework.
 - Haptics: `.sensoryFeedback`. Settings has a Haptics switch.

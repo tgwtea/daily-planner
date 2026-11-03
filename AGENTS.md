@@ -4,9 +4,11 @@ This file is the single source of truth for every coding agent in this repositor
 
 ## Project
 
-Luna is a native iOS time-blocking day planner, built with SwiftUI. The visual and interaction reference is a Claude Design prototype named "Plan My Day v2". See [docs/design/design-reference.md](docs/design/design-reference.md).
+Luna is a native iOS time-blocking day planner, built with SwiftUI. The visual and interaction reference is a Claude Design prototype named "Plan My Day v3". See [docs/design/design-reference.md](docs/design/design-reference.md).
 
-Current state: **foundation only.** The app target has one placeholder view. Design tokens exist in `Luna/Shared/Design/`. The domain model, the in-memory `PlannerStore`, and the sample data exist in `Luna/Shared/Model/`. No screen from the design exists in code yet. A spec has the status `Planned` until code implements it.
+**Decided (2026-11-03):** v3 is the design source of truth. It replaces v2. Where an older decision conflicts with v3, v3 wins, and the spec records the change. Code built before 2026-11-03 follows v2. Roadmap Phase 1d brings it to v3.
+
+Current state: Phases 1a and 1b and checkpoint 1c.1 are done, on the v2 design. The in-memory `PlannerStore` holds all data. Check the [completion log](docs/roadmap.md#completion-log) for the exact state. A spec has the status `Planned` until code implements it.
 
 ## Roadmap and checkpoints
 

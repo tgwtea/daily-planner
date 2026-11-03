@@ -1,13 +1,33 @@
 # Project detail
 
-Status: Implemented
+Status: Partial (built in 1b.6 before v3; the v3 gaps are listed below)
 Code: `Luna/Features/Projects/ProjectDetailScreen.swift`, `ListItemRow.swift`, `ListEmptyView.swift`
-Artboards: none
+Artboards: 3ac (simple), 3ad (rich), 3ae (fallback)
 Features: [Projects and areas](../features/projects-and-areas.md)
 
 ## Purpose
 
-Show one project: its progress, its notes, and its items.
+Show one project. A simple project stays a task list. A rich project opens on a next step and a grounded "where you left off".
+
+## v3 layout (Observed)
+
+1. Glass back button ("Projects") and a glass "More" button. Header: the area (small), the project name (large), and a meta line ("6 tasks · TestFlight by Dec 1").
+2. **Pick-up card** (rich project, when "Project summaries" is on): "Next step" and the step, "Focus now" (primary, play) and "Schedule" (secondary, calendar-plus). Then "Where you left off" with a summary, for example "Last worked on Tuesday for 1 h 20 min. The week strip layout is done. Dragging rows onto the timeline is in progress, 1 of 3 steps. You left a note about .draggable and .dropDestination." A source line with sparkles: "From your blocks, checklist and notes". A "Show details" disclosure lists activity ("Today · Focus started at 10:00", "Tue · Focused 1 h 20 min · Week strip layout done").
+3. **Fallback card** (3ae, too little data): "Not much to go on yet", "You added this project on Oct 30 and haven't worked on it yet, so there's nothing to summarize. A next step makes coming back easier.", and "Add a next step".
+4. **Sections** (rich project): Tasks, Goals, Notes, Links, Scheduled. Each is a collapsed disclosure row with an icon and a count. Tasks opens by default.
+5. **Connected services** group: "Connect a service · None". Footer: "Optional, later. A connected service like GitHub can add recent work to "Where you left off."" **Decided (2026-11-03):** post-v1. Hide it in v1.
+6. **Simple project** (3ac): a task list with check circles, "Add task", and a button "Add notes, goals or links" that makes it rich.
+
+### v3 interactions
+
+- "Focus now" opens [Focus](focus.md) on the next step's block. "Schedule" goes to Today and asks the user to drag from the Inbox drawer.
+- The summary is a draft from the on-device model, grounded in blocks, checklists, and notes. It never invents work. With too little data, the fallback card shows.
+
+## v3 gaps
+
+- Pick-up card, fallback card, sections, simple-to-rich upgrade, header meta (1d.8). The v2 progress card and Scheduled / Anytime / Done groups (below) map into the Tasks and Scheduled sections. **Assumption:** keep the progress ring in the header.
+
+## Layout (1b.6, before v3)
 
 ## Layout (top to bottom)
 
